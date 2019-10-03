@@ -1,0 +1,108 @@
+  <nav class="navbar navbar-expand-lg navbar-light" style="margin-top:0px; background-color: #e33333;">
+                <!-- <a class="navbar-brand" href="#">STL Vision</a> -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent" style="">
+                    <div class="navbar-nav mr-auto">
+                        <v-menu offset-y style="margin-left:0px;">
+                            <template v-slot:activator="{ on }">
+                            <v-btn text                             
+                                style="background-color:#e33333; border: none; color:#ffffff;"
+                                v-on="on"
+                            >
+                                STL Vision
+                            <span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>
+                            </v-btn>
+                            </template>
+                            <v-list>
+                            <v-list-item-title style="color: #e33333; padding: 15px;">Company List</v-list-item-title>
+                            <v-list-item-subtitle style="color: #e33333; padding-bottom:15px; padding-left:15px;">STL Vision</v-list-item-subtitle>
+                            <v-list-item
+                                v-for="(item, index) in items"
+                                :key="index"                                
+                            >
+                            <v-list-item-title>{{ item.title }} <v-divider></v-divider></v-list-item-title>  
+                            </v-list-item>
+                            </v-list>
+                        </v-menu>   
+                    </div>
+
+                    <v-spacer></v-spacer>
+                        <img class="bgimg-1" src="../img/eboard-sm.png">
+                    <v-spacer></v-spacer>
+                    <form class="form-inline my-2 my-lg-0">
+                        <!--  -->
+                        <!-- <p><button class="btn btn-lg btn-primary" v-on:click="seen1 = !seen1">Toggle</button></p> -->
+
+                        <!-- English -->
+                        <v-menu offset-y style="margin-left:0px;">
+                            <template v-slot:activator="{ on }">
+                            <v-btn text                             
+                                style="background-color:#e33333; border: none; color:#ffffff;"
+                                v-on="on"
+                            >
+                                English
+                            </v-btn>
+                            </template>
+                            <v-list style="position">
+                            <v-list-item-title style="color: #e33333; padding: 15px;">Select Language</v-list-item-title>
+                            <v-list-item
+                                v-for="(language, index) in languages"
+                                :key="index"                                
+                            >
+                            <v-list-item-title>{{ language.title }} <v-divider></v-divider></v-list-item-title>  
+                            </v-list-item>
+                            </v-list>
+                        </v-menu>   
+                        <!-- Refresh -->
+                        <v-btn text @click="reloadPage" style="padding:0px; color:white; background-color:#e33333;"><v-icon>mdi-refresh</v-icon></v-btn>
+                  
+                        <!-- Search -->
+                         <v-menu offset-y style="margin-left:0px;">
+                            <template v-slot:activator="{ on }">
+                            <v-btn text                             
+                                style="background-color:#e33333; border: none; color:#ffffff;"
+                               v-on="on"
+                            >   
+                            <span class="input-group-addon"><v-icon style="color:white">mdi-magnify</v-icon></span>                                
+                            </v-btn>
+                            </template>
+                            <v-list style="padding:10px;">
+                                <v-text-field
+                                    outlined
+                                    rounded
+                                    label="Search"
+                                    +icon="place"
+                                ></v-text-field>
+                            </v-list>
+                        </v-menu>   
+
+                        <!-- Profile -->
+                        <a><span class="input-group-addon"><v-icon style="margin-right:20px; color:white">mdi-contact-mail</v-icon></span></a>
+                        
+                        <!-- Right Hidden Menu -->
+                         <v-menu offset-y style="margin-left:0px;">
+                            <template v-slot:activator="{ on }">
+                            <v-btn text                             
+                                style="background-color:#e33333; border: none; color:#ffffff;"
+                                v-on="on"
+                            >
+                                <span class="input-group-addon"><v-icon style="color:white">mdi-dip-switch</v-icon></span>                                
+                            </v-btn>
+                            </template>
+                            <v-list>
+                            <v-list-item-title style="color: #e33333; padding: 15px;">Company List</v-list-item-title>
+                            <v-list-item-subtitle style="color: #e33333; padding-bottom:15px; padding-left:15px;">STL Vision</v-list-item-subtitle>
+                            <v-list-item
+                                v-for="(item, index) in items"
+                                :key="index"                                
+                            >
+                            <v-list-item-title>{{ item.title }} <v-divider></v-divider></v-list-item-title>  
+                            </v-list-item>
+                            </v-list>
+                        </v-menu>                       
+                    </form>
+                </div>
+            </nav>
