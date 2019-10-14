@@ -14,7 +14,7 @@
                 <!-- <v-spacer></v-spacer> -->
                 <button class="btn btn-lg" style="outline:none; border:none;" text v-on:click="seen2 = !seen2; ">English</button>
                 <button class="btn btn-lg" @click="reloadPage"><v-icon color="#ffffff">mdi-refresh</v-icon></button>
-                <button class="btn btn-lg" text v-on:click="seen4 = !seen4"><v-icon color="#ffffff">mdi-magnify</v-icon></button>
+                <button class="btn btn-lg" text v-on:click="seen4 = !seen4;"><v-icon color="#ffffff">mdi-magnify</v-icon></button>
                 <button class="btn btn-lg" text v-on:click="seen5 = !seen5"><v-icon color="#ffffff">mdi-contact-mail</v-icon></button>
                 <button class="btn btn-lg" text v-on:click="seen6 = !seen6"><v-icon color="#ffffff">mdi-dip-switch</v-icon></button>
           </div>
@@ -23,12 +23,12 @@
             <div style="height: auto; width: auto; position: absolute; z-index: 1;" v-if="seen1">
                 <v-list>
                     <v-list-item-title style="color:#e33333; padding:15px;">Company List</v-list-item-title>
-                    <v-list-item-subtitle style="color: #e33333; padding-bottom:15px; padding-left:15px;">STL Vision</v-list-item-subtitle>
+                    <!-- <v-list-item-subtitle style="color: #e33333; padding-bottom:15px; padding-left:15px;">STL Vision</v-list-item-subtitle> -->
                     <v-list-item
-                        v-for="(item, index) in items"
+                        v-for="(item, index) in getCompanyList.companyList"
                         :key="index"                                
                     >
-                    <v-list-item-title>{{ item.title }} <v-divider></v-divider></v-list-item-title>  
+                    <v-list-item-title>{{ item.companyName }} <v-divider></v-divider></v-list-item-title>  
                     </v-list-item>
                 </v-list>
             </div>
@@ -41,7 +41,7 @@
                      
                 <!-- Loops from Static JSON -->
                     <v-list-item
-                        v-for="(item, index) in requestUserLogin.allLanguages" 
+                        v-for="(item, index) in getEboardUpdates.allLanguages" 
                         :key="index"                        
                     >
                     <v-list-item-title> {{item.language}} <v-divider></v-divider></v-list-item-title>  
@@ -382,85 +382,173 @@
             
 
             <div class="col-right">
-                <div class="col-right-top">
+                <div class="col-right-top" style="padding-bottom:10px;">
+
                     <div class="input-group" style="color: #27ae60; font-weight:bold;">
                         <span class="input-group-addon"><v-icon color="#27ae60">mdi-file-document</v-icon></span>
                         <p style="margin-left:20px; margin-right:20px;">My Inbox</p> 
-                        <v-spacer></v-spacer>
-                        <!-- <span class="input-group-addon"><v-icon color="#27ae60">mdi-refresh</v-icon></span> -->
+                        <v-spacer></v-spacer>                        
                         <button class="btn btn-lg" text @click="reloadPage"><v-icon color="#27ae60">mdi-refresh</v-icon></button>
                     </div>
-                     <table class="table table-striped">
-                        <thead style="background-color: #27ae60; color: #ffffff;">
-                        <tr>
-                            <th>No.</th>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Created On</th>
-                            <th>Briefcase</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>
-                                <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
-                                Doe
-                            </td>
-                            <td>0.18 MB</td>
-                            <td>23-Aug-2019</td>
-                            <td><button class="btn btn-danger">Remove</button></td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                             <td>
-                                <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
-                                Moe
-                            </td>
-                            <td>0.18 MB</td>
-                            <td>23-Aug-2019</td>
-                            <td><button class="btn btn-danger">Remove</button></td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                             <td>
-                                <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
-                                Dooley
-                            </td>
-                            <td>0.18 MB</td>
-                            <td>23-Aug-2019</td>
-                            <td><button class="btn btn-danger">Remove</button></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                             <td>
-                                <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
-                                Alhga
-                            </td>
-                            <td>0.18 MB</td>
-                            <td>23-Aug-2019</td>
-                            <td><button class="btn btn-danger">Remove</button></td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                             <td>
-                                <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
-                                Gaiah
-                            </td>
-                            <td>0.18 MB</td>
-                            <td>23-Aug-2019</td>
-                            <td><button class="btn btn-success">Add</button></td>
-                        </tr>
-                        </tbody>
-                    </table> 
-                </div>
-                <div class="col-right-bottom">
 
-                    <div class="col-right-bottom-left">
-                     
+
+                    <table class="table table-striped scroll">
+                        <thead>
+                            <!-- <tr style="background-color:#27ae60; color:#ffffff;"> -->
+                            <tr>
+                                <th style="">No.</th>
+                                <th style="padding-right:10px;"></th>
+                                <th style="padding-right:405px;">Name</th>
+                                <th style="padding-right:35px;">Size</th>
+                                <th style="padding-right:10px;">Created On</th>
+                                <th style="padding-right:30px;">Briefcase</th>
+                            </tr>
+                        </thead>
+
+                        <tbody >
+                            <tr v-for="(item, index) in getRecentDocuments.recentDocumentsList" :key="index">
+                                <td>1.</td>
+                                <td>    
+                                    <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
+                                </td>
+                                <td style="max-width:450px;" >
+                                    {{item.itemName}}
+                                </td>
+                                 <td style="max-width:210px;">
+                                    {{item.itemSize}}
+                                </td>
+                                <td style="max-width:210px;" >
+                                    {{item.itemCreatedOn}}
+                                </td>
+                                <td style="max-width:180px; padding-right:10px;">
+                                    <button class="btn btn-danger">Remove</button>
+                                </td>
+                            </tr>
+
+                            <!-- <tr>
+                                <td style="max-width:40px;">Contentiuyjghfhgfhgfhgfbdhdhdhththteh 1</td>
+                                <td style="max-width:40px;">Content 2</td>
+                                <td style="max-width:380px;">Contekjhghg,jhhjgkjhbjkjhnt 3</td>
+                                <td style="max-width:180px;">Content 4</td>
+                                <td style="max-width:180px;">Content 5</td>
+                                <td style="max-width:150px;">Content 5</td>
+                            </tr>
+                            <tr>
+                                <td style="max-width:40px;">Content 1</td>
+                                <td style="max-width:40px;">Lorem ipsum dolor sit amet.</td>
+                                <td style="max-width:380px;">Content 3</td>
+                                <td style="max-width:180px;">Content 4</td>
+                                <td style="max-width:180px;">Content 5</td>
+                                <td style="max-width:150px;">Content 5</td>
+                            </tr>
+                            <tr>
+                                <td style="max-width:40px;">Content 1</td>
+                                <td style="max-width:40px;">Content 2</td>
+                                <td style="max-width:380px;">Content 3</td>
+                                <td style="max-width:180px;">Content 4</td>
+                                <td style="max-width:180px;">Content 5</td>
+                                <td style="max-width:150px;">Content 5</td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+
+
+                    <!-- <div style="padding:10px; height:170px; overflow:auto;"> -->
+                     <!-- <table class="table table-striped"> -->
+                        <!-- <thead> -->
+                        <!-- <tr style="background-color:#27ae60; color:#ffffff; width:100%;">
+                            <td>No.</td>
+                            <td></td>
+                            <td>Name</td>
+                            <td>Size</td>
+                            <td>Created On</td>
+                            <td>Briefcase</td>
+                        </tr> -->
+                        <!-- </thead> -->
+
+                        <!-- <tbody> -->
+                          <!-- <span>   -->
+                            <!-- <tr v-for="(item, index) in getRecentDocuments.recentDocumentsList" :key="index"
+                                style="width:100%;">
+                                <td>1.</td>
+                                <td>    
+                                    <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
+                                </td>
+                                <td>
+                                    {{item.itemName}}
+                                </td>
+                                 <td>
+                                    {{item.itemSize}}
+                                </td>
+                                <td>
+                                    {{item.itemCreatedOn}}
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger">Remove</button>
+                                </td>
+                            </tr> -->
+                          <!-- </span> -->
+
+                            <!-- <tr>
+                                <td>1</td>
+                                <td>
+                                    <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
+                                    Doe
+                                </td>
+                                <td>0.18 MB</td>
+                                <td>23-Aug-2019</td>
+                                <td><button class="btn btn-danger">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
+                                    Moe
+                                </td>
+                                <td>0.18 MB</td>
+                                <td>23-Aug-2019</td>
+                                <td><button class="btn btn-danger">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>
+                                    <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
+                                    Dooley
+                                </td>
+                                <td>0.18 MB</td>
+                                <td>23-Aug-2019</td>
+                                <td><button class="btn btn-danger">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
+                                    Alhga
+                                </td>
+                                <td>0.18 MB</td>
+                                <td>23-Aug-2019</td>
+                                <td><button class="btn btn-danger">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>
+                                    <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
+                                    Gaiah
+                                </td>
+                                <td>0.18 MB</td>
+                                <td>23-Aug-2019</td>
+                                <td><button class="btn btn-success">Add</button></td>
+                            </tr> -->
+                        <!-- </tbody> -->
+                    <!-- </table>  -->
+                    <!-- </div> -->
+                </div>
+
+
+                <div class="col-right-bottom">
+                    <div class="col-right-bottom-left">                     
                         <div id="wrapper">
-                            <div v-if="test" class="input-group" style="">
-                                <!-- click app -->
+                            <div v-show="test" class="input-group" style="">
                                 <span class="input-group-addon" ><v-icon style="color: #e33333; font-size:22px; margin-top:4px; font-weight:bold;">mdi-bell-outline</v-icon></span>
                                     <p v-on:click="test = !test" style="margin-left:9px; font-size:19px; color: #e33333; font-weight:bold; cursor: pointer;">Notifications</p> 
                                         <v-spacer></v-spacer>
@@ -468,15 +556,15 @@
                                 <span class="input-group-addon" style="font-size:13px; font-weight:bold; color: #e33333; margin-top:4px;"><i class="fa fa-chevron-right"></i></span>
                                
                                 <div style="height:380px; overflow:scroll;">
-                                    <span style="margin:0px; padding:0px;" v-for="(notification, index) in notifications" :key="index">
+                                    <span style="margin:0px; padding:0px;" v-for="(notification, index) in getLatestNotifications.notificationsList" :key="index">
                                         <div class="row" style="width:100%; margin:0px; padding:0px;">
                                             <div class="col-md-2" style=" margin:0px; padding:0px;">
                                                 <v-icon color="#E74343" style="margin-top:25px;">mdi-square</v-icon>
                                             </div>
                                             <div class="col-md-10" style="margin:0px; padding:0px;">
-                                                <p style="font-size:17px; margin:0px; padding:0px;">{{ notification.title }}</p> 
-                                                <p style="font-size:12px; margin:0px; padding:0px;">{{ notification.date }}</p> 
-                                                <p style="font-size:12px; margin:0px; padding:0px;">{{ notification.mark }}</p>
+                                                <p style="font-size:17px; margin:0px; padding:0px;">{{ notification.notificationTitle }}</p> 
+                                                <p style="font-size:12px; margin:0px; padding:0px;">{{ notification.notificationDateTime }}</p> 
+                                                <p style="font-size:12px; margin:0px; padding:0px;">{{ notification.companyName }}</p>
                                             </div>
                                         </div>   
                                         <v-divider></v-divider>
@@ -484,8 +572,7 @@
                                 </div>
                             </div>
 
-                            <div v-else class="input-group" style="">
-                                <!-- hide me -->
+                            <div v-show="!test" class="input-group" style="">
                                     <span class="input-group-addon" ><v-icon style="color: #e33333; margin-top:4px; font-size:22px; font-weight:bold;">mdi-bell-outline</v-icon></span>
                                     <p v-on:click="test = !test" style="margin-left:9px; font-size:19px; color: #e33333; font-weight:bold; cursor: pointer;">Tasks</p> 
                                         <v-spacer></v-spacer>
@@ -493,15 +580,15 @@
                                     <span class="input-group-addon" style="font-size:13px; font-weight:bold; margin-top:4px; color: #e33333;"><i class="fa fa-chevron-right"></i></span>
                                
                                 <div style="height:380px; overflow:scroll;">
-                                    <span style="margin:0px; padding:0px;" v-for="(task, index) in tasks" :key="index">
+                                    <span style="margin:0px; padding:0px;" v-for="(task, index) in getLatestNotifications.taskList" :key="index">
                                         <div class="row" style="width:100%; margin:0px; padding:0px;">
                                             <div class="col-md-2" style=" margin:0px; padding:0px;">
                                                 <v-icon color="#E74343" style="margin-top:25px;">mdi-radiobox-marked</v-icon>
                                             </div>
                                             <div class="col-md-10" style="margin:0px; padding:0px;">
-                                                <p style="font-size:17px; margin:0px; padding:0px;">{{ task.title }}</p> 
-                                                <p style="font-size:12px; margin:0px; padding:0px;">{{ task.date }}</p> 
-                                                <p style="font-size:12px; margin:0px; padding:0px;">{{ task.mark }}</p>
+                                                <p style="font-size:17px; margin:0px; padding:0px;">{{ task.taskTitle }}</p> 
+                                                <p style="font-size:12px; margin:0px; padding:0px;">{{ task.taskDateTime }}</p> 
+                                                <p style="font-size:12px; margin:0px; padding:0px;">{{ task.companyName }}</p>
                                             </div>
                                         </div>   
                                         <v-divider></v-divider>
@@ -510,6 +597,7 @@
                                 </div>
                             </div>
                         </div>
+
                         
                     </div>
 
@@ -630,7 +718,9 @@
     import axios from 'axios';
     import FullCalendar from '@fullcalendar/vue';
     import dayGridPlugin from '@fullcalendar/daygrid';
+    // import vueFilterPrettyBytes from 'vue-filter-pretty-bytes'
     // import requestUserLogin from "../../assets/requestUserLogin.json";
+
 
     export default{
         data: () => ({
@@ -683,6 +773,7 @@
             requestUserLogin : [],
             userInfo : [],
             dashboardMenuList : [],
+            
 
             // dashStyle:{
             //      color: "rgb(0,255,0)"
@@ -690,9 +781,13 @@
 
         }),
 
+        mounted() {
+          
+        },
+
         methods: {
             reloadPage(){
-                window.location.reload()
+                window.location.reload();
             },            
 
             getRequestUserLogin(){
@@ -726,6 +821,46 @@
                 // });
             },
 
+            getCompanyList(){
+                axios.get("../assets/json-APIs/getCompanyList.json")
+                    .then(response => {
+                        this.getCompanyList = response.data;
+                    })
+                    .catch(e => {
+                        console.log('Error', e);
+                    })
+            },
+
+            getLatestNotifications(){
+                axios.get("../assets/json-APIs/getLatestNotifications.json")
+                    .then(response => {
+                        this.getLatestNotifications = response.data;
+                    })
+                    .catch(e => {
+                        console.log('Error', e);
+                    })
+            },
+
+            getEboardUpdates(){
+                axios.get("../assets/json-APIs/getEboardUpdates.json")
+                    .then(response => {
+                        this.getEboardUpdates = response.data;
+                    })
+                    .catch(e => {
+                        console.log('Error', e);
+                    })
+            },
+
+            getRecentDocuments(){
+                axios.get("../assets/json-APIs/getRecentDocuments.json")
+                    .then(response => {
+                        this.getRecentDocuments = response.data;
+                    })
+                    .catch(e => {
+                        console.log('Error', e);
+                    })
+            },
+
             even: function(dashboardMenuList) {
                 // Set slice() to avoid to generate an infinite loop!
                 return dashboardMenuList.slice().sort(function(a, b) {
@@ -738,11 +873,14 @@
                 const request = axios.post("../assets/json-APIs/requestUserLogin.json", dt);
                 console.log(request);
             }
-
         },
 
         beforeMount(){
             this.getRequestUserLogin();
+            this.getCompanyList();
+            this.getLatestNotifications();
+            this.getEboardUpdates();
+            this.getRecentDocuments();
         },
 
         components: {
@@ -825,7 +963,6 @@
         height:230px;
         background-color: #f5f5f5;
         margin-bottom: 15px;
-        overflow: scroll;
         padding: 10px;
         border-top: 5px solid #27ae60;
     }
@@ -861,5 +998,44 @@
         padding:0px;
         color:#e33333;
     }
+
+    table.scroll {
+        width: 100%; 
+        border-spacing: 0;
+    }
+
+    table.scroll tbody,
+    table.scroll thead { 
+        display: block; 
+    }
+
+    table.scroll tbody {
+        height: 120px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    thead tr th { 
+        height: 30px;
+        line-height: 30px;
+        /* width: 180px; */
+        /*text-align: left;*/
+    }
+
+    tbody tr td {
+        /* width: 20%; Optional */
+        /* border-right: 1px solid black; */
+        /* overflow: hidden; */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        /* width: 180px; */
+        /* max-width: 230px; */
+    }
+
+    tbody td:last-child, thead th:last-child {
+        border-right: none;
+    }
+
 
 </style>

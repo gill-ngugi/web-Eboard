@@ -5,7 +5,8 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import App from "./App.vue";
 import store from './stores/store';
-import Slider from '@jeremyhamm/vue-slider'
+import Slider from '@jeremyhamm/vue-slider';
+// import vueFilterPrettyBytes from 'vue-filter-pretty-bytes';
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from './components/Auth/Login';
@@ -21,6 +22,7 @@ import Discussion from './components/Discussion';
 import Plans from './components/Plans';
 import Conference from './components/Conference';
 
+
 // axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded'
 // axios.defaults.headers.common["Authorization"] = result;
 // var options = {headers: { "Content-Type": application.json }};
@@ -35,6 +37,7 @@ Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(Slider);
+// Vue.use(vueFilterPrettyBytes);
 window.axios = axios;
 // Vue.prototype.$http = Axios;
 // const accessToken = localStorage.getItem('access_token')
