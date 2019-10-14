@@ -3,7 +3,7 @@
         <div class="wrap">    
 
           <div class="nav-menu">
-                <button class="btn btn-lg" style="outline:none; border:none;" text v-on:click="seen1 = !seen1">
+                <button class="btn btn-lg" text v-on:click="seen1 = !seen1">
                     STL Vision
                     <span class="input-group-addon"><i class="fa fa-chevron-down"></i></span>                            
                 </button>
@@ -12,7 +12,7 @@
                     <img class="bgimg-1" src="../img/eboard_Logo_new@2x.png" style="margin-left:30%; margin-right:17.5%; height:75%; width:auto; padding-top:5px">
                     <!-- <img class="bgimg-1" src="../img/eboard-sm.png" style="margin-left:30%; margin-right:20%;"> -->
                 <!-- <v-spacer></v-spacer> -->
-                <button class="btn btn-lg" style="outline:none; border:none;" text v-on:click="seen2 = !seen2; ">English</button>
+                <button class="btn btn-lg" text v-on:click="seen2 = !seen2; ">English</button>
                 <button class="btn btn-lg" @click="reloadPage"><v-icon color="#ffffff">mdi-refresh</v-icon></button>
                 <button class="btn btn-lg" text v-on:click="seen4 = !seen4;"><v-icon color="#ffffff">mdi-magnify</v-icon></button>
                 <button class="btn btn-lg" text v-on:click="seen5 = !seen5"><v-icon color="#ffffff">mdi-contact-mail</v-icon></button>
@@ -398,23 +398,28 @@
                             <tr>
                                 <th style="">No.</th>
                                 <th style="padding-right:10px;"></th>
-                                <th style="padding-right:405px;">Name</th>
-                                <th style="padding-right:35px;">Size</th>
+                                <th style="padding-right:410px;">Name</th>
+                                <th style="padding-right:40px;">Size</th>
                                 <th style="padding-right:10px;">Created On</th>
-                                <th style="padding-right:30px;">Briefcase</th>
+                                <th style="">Briefcase</th>
                             </tr>
                         </thead>
 
-                        <tbody >
+                        <tbody>                            
                             <tr v-for="(item, index) in getRecentDocuments.recentDocumentsList" :key="index">
-                                <td>1.</td>
+                                <td>{{index + 1 + "."}}</td>
                                 <td>    
                                     <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
                                 </td>
-                                <td style="max-width:450px;" >
-                                    {{item.itemName}}
+                                <td style="max-width:450px;">
+                                    <a v-bind:href="item.itemUrl">
+                                        {{item.itemName}}
+                                    </a>
+                                    <!-- <a v-on:click="getLink()">
+                                        {{item.itemName}}
+                                    </a> -->
                                 </td>
-                                 <td style="max-width:210px;">
+                                <td style="max-width:210px;">
                                     {{item.itemSize}}
                                 </td>
                                 <td style="max-width:210px;" >
@@ -861,6 +866,11 @@
                     })
             },
 
+            getLink(){
+                let routeData = this.$router.resolve({name: this.getRecentDocuments.recentDocumentsList.itemUrl, query: {data: this.getRecentDocuments.recentDocumentsList.itemUrl}});
+                window.open(routeData.href, '_blank');
+            },  
+
             even: function(dashboardMenuList) {
                 // Set slice() to avoid to generate an infinite loop!
                 return dashboardMenuList.slice().sort(function(a, b) {
@@ -872,9 +882,10 @@
                 const dt = { data: { value: "gdfg1df2g2121dgfdg" }};
                 const request = axios.post("../assets/json-APIs/requestUserLogin.json", dt);
                 console.log(request);
-            }
+            },
+        
         },
-
+      
         beforeMount(){
             this.getRequestUserLogin();
             this.getCompanyList();
@@ -1035,6 +1046,21 @@
 
     tbody td:last-child, thead th:last-child {
         border-right: none;
+    }
+
+    button:focus {
+        outline: 0 !important;
+        border: 0 !important;
+        box-shadow: none !important;
+    }
+
+    a{
+        text-decoration: none;
+        color:#000000;
+    }
+
+    a:hover{
+        color:#27ae60;
     }
 
 
