@@ -395,35 +395,40 @@
                     <table class="table table-striped scroll">
                         <thead>
                             <!-- <tr style="background-color:#27ae60; color:#ffffff;"> -->
-                            <tr>
+                            <tr style="background-color:#27ae60; color:#ffffff;">
                                 <th style="">No.</th>
                                 <th style="padding-right:10px;"></th>
-                                <th style="padding-right:410px;">Name</th>
-                                <th style="padding-right:40px;">Size</th>
+                                <th style="padding-right:415px;">Name</th>
+                                <th style="padding-right:45px;">Size</th>
                                 <th style="padding-right:10px;">Created On</th>
-                                <th style="">Briefcase</th>
+                                <th style="padding-right:40px;">Briefcase</th>
                             </tr>
                         </thead>
 
                         <tbody>                            
                             <tr v-for="(item, index) in getRecentDocuments.recentDocumentsList" :key="index">
-                                <td>{{index + 1 + "."}}</td>
+                                <td>{{ index + 1 + "." }}</td>
                                 <td>    
                                     <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
                                 </td>
                                 <td style="max-width:450px;">
-                                    <a v-bind:href="item.itemUrl">
-                                        {{item.itemName}}
+                                     <a v-bind:href="item.itemUrl">
+                                        {{ item.itemName }}
                                     </a>
                                     <!-- <a v-on:click="getLink()">
                                         {{item.itemName}}
+                                        item.itemCreatedOn
                                     </a> -->
                                 </td>
                                 <td style="max-width:210px;">
-                                    {{item.itemSize}}
+                                    {{ item.itemSize | prettyBytes }} 
+                                    <!-- {{ 15364878 | prettyBytes }} -->
                                 </td>
                                 <td style="max-width:210px;" >
-                                    {{item.itemCreatedOn}}
+                                    {{ parseInt(item.itemCreatedOn, 10) |  moment('DD-MMM-YYYY') }}
+                                    <!-- {{ 	1570064727 |  moment("dddd, MMMM Do YYYY, h:mm:ss a") }}
+                                    {{ 	1570064727 |  moment('DD-MMM-YYYY hh:mm A') }} -->
+                                    <!-- {{ item.itemCreatedOn }} -->                                    
                                 </td>
                                 <td style="max-width:180px; padding-right:10px;">
                                     <button class="btn btn-danger">Remove</button>
@@ -557,7 +562,7 @@
                                 <span class="input-group-addon" ><v-icon style="color: #e33333; font-size:22px; margin-top:4px; font-weight:bold;">mdi-bell-outline</v-icon></span>
                                     <p v-on:click="test = !test" style="margin-left:9px; font-size:19px; color: #e33333; font-weight:bold; cursor: pointer;">Notifications</p> 
                                         <v-spacer></v-spacer>
-                                    <p style="margin-right:9px; color: #e33333;">Tasks</p> 
+                                    <p v-on:click="test = !test" style="margin-right:9px; color: #e33333; cursor: pointer">Tasks</p> 
                                 <span class="input-group-addon" style="font-size:13px; font-weight:bold; color: #e33333; margin-top:4px;"><i class="fa fa-chevron-right"></i></span>
                                
                                 <div style="height:380px; overflow:scroll;">
@@ -568,7 +573,7 @@
                                             </div>
                                             <div class="col-md-10" style="margin:0px; padding:0px;">
                                                 <p style="font-size:17px; margin:0px; padding:0px;">{{ notification.notificationTitle }}</p> 
-                                                <p style="font-size:12px; margin:0px; padding:0px;">{{ notification.notificationDateTime }}</p> 
+                                                <p style="font-size:12px; margin:0px; padding:0px;">{{"Due on "}} {{ parseInt(notification.notificationDateTime, 10) | moment('DD-MMM-YYYY') }}</p> 
                                                 <p style="font-size:12px; margin:0px; padding:0px;">{{ notification.companyName }}</p>
                                             </div>
                                         </div>   
@@ -581,18 +586,18 @@
                                     <span class="input-group-addon" ><v-icon style="color: #e33333; margin-top:4px; font-size:22px; font-weight:bold;">mdi-bell-outline</v-icon></span>
                                     <p v-on:click="test = !test" style="margin-left:9px; font-size:19px; color: #e33333; font-weight:bold; cursor: pointer;">Tasks</p> 
                                         <v-spacer></v-spacer>
-                                    <p style="margin-right:9px; color: #e33333;">Notifications</p> 
+                                    <p v-on:click="test = !test" style="margin-right:9px; color: #e33333; cursor: pointer">Notifications</p> 
                                     <span class="input-group-addon" style="font-size:13px; font-weight:bold; margin-top:4px; color: #e33333;"><i class="fa fa-chevron-right"></i></span>
                                
                                 <div style="height:380px; overflow:scroll;">
                                     <span style="margin:0px; padding:0px;" v-for="(task, index) in getLatestNotifications.taskList" :key="index">
                                         <div class="row" style="width:100%; margin:0px; padding:0px;">
-                                            <div class="col-md-2" style=" margin:0px; padding:0px;">
+                                            <div class="col-md-2" style=" margin:0px; p adding:0px;">
                                                 <v-icon color="#E74343" style="margin-top:25px;">mdi-radiobox-marked</v-icon>
                                             </div>
                                             <div class="col-md-10" style="margin:0px; padding:0px;">
                                                 <p style="font-size:17px; margin:0px; padding:0px;">{{ task.taskTitle }}</p> 
-                                                <p style="font-size:12px; margin:0px; padding:0px;">{{ task.taskDateTime }}</p> 
+                                                <p style="font-size:12px; margin:0px; padding:0px;">{{"Due on "}} {{ parseInt(task.taskDateTime, 10) | moment('DD-MMM-YYYY') }}</p> 
                                                 <p style="font-size:12px; margin:0px; padding:0px;">{{ task.companyName }}</p>
                                             </div>
                                         </div>   
@@ -626,7 +631,14 @@
 
                         <!-- <div v-bind:key="data.userId" v-for="data in stl" style="overflow:scroll;">{{data}}</div> -->
                         <FullCalendar defaultView="dayGridMonth" :plugins="calendarPlugins" />                      
-                                               
+
+                        <!-- <dl>
+                        <dt v-text="getTimezone"></dt>
+                        <dd v-text="convertDate(date, 'MM/DD/YYYY hh:mm A')"></dd>
+                        <dt v-text="`UTC`"></dt>
+                        <dd v-text="convertToUtc(date, 'MM/DD/YYYY hh:mm A')"></dd>
+                        </dl> -->
+
                         <!-- <slider style="color:white;" :width="300" format="push" direction="right" :opacity="0.15"></slider> -->
                         <!-- <button class="btn btn-lg btn-primary" v-on:click="seen = !seen">Toggle</button> -->
                             <!-- <p v-if="seen">Message Can Be Seen!</p> -->
@@ -719,10 +731,12 @@
 </template>
 
 <script>
+    var moment = require('moment');
     // import Slider from '@jeremyhamm/vue-slider';
     import axios from 'axios';
     import FullCalendar from '@fullcalendar/vue';
     import dayGridPlugin from '@fullcalendar/daygrid';
+    // Vue.use(require('vue-moment'));
     // import vueFilterPrettyBytes from 'vue-filter-pretty-bytes'
     // import requestUserLogin from "../../assets/requestUserLogin.json";
 
@@ -778,6 +792,11 @@
             requestUserLogin : [],
             userInfo : [],
             dashboardMenuList : [],
+            // itemCreatedOn: [],
+
+            moment: moment,
+
+            date: 1570064727,
             
 
             // dashStyle:{
@@ -793,8 +812,15 @@
         methods: {
             reloadPage(){
                 window.location.reload();
-            },            
-
+            },          
+            
+            convertDate(date, format) {
+                return moment(this.date).format(format)
+            },
+            convertToUtc(date, format) {
+                return moment(this.date).utc().format(format)
+            },
+          
             getRequestUserLogin(){
                 // fetch("../assets/json-APIs/requestUserLogin.json")
                 // .then(response => response.json())
@@ -840,6 +866,8 @@
                 axios.get("../assets/json-APIs/getLatestNotifications.json")
                     .then(response => {
                         this.getLatestNotifications = response.data;
+                        // this.success = this.tLatestNotifications.notificationsList
+                        // console.log(this.getLatestNotifications.notificationsList);
                     })
                     .catch(e => {
                         console.log('Error', e);
@@ -860,12 +888,16 @@
                 axios.get("../assets/json-APIs/getRecentDocuments.json")
                     .then(response => {
                         this.getRecentDocuments = response.data;
+                        // this.itemCreatedOn = parseInt(this.getRecentDocuments.recentDocumentsList.itemCreatedOn, 10);
+                        // this.itemCreatedOn = this.getRecentDocuments.recentDocumentsList;
+                        // this.itemCreatedOn = parseInt(this.itemCreatedOn, 10);
+                        // console.log(this.itemCreatedOn);
                     })
                     .catch(e => {
                         console.log('Error', e);
                     })
             },
-
+          
             getLink(){
                 let routeData = this.$router.resolve({name: this.getRecentDocuments.recentDocumentsList.itemUrl, query: {data: this.getRecentDocuments.recentDocumentsList.itemUrl}});
                 window.open(routeData.href, '_blank');
