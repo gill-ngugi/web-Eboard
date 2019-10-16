@@ -14,6 +14,7 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from './components/Auth/Login';
 import Dashboard from './components/Auth/Dashboard';
+import TestLayout from './components/Auth/Test-Layout';
 import Briefcase from './components/Briefcase';
 import MeetingPacks from './components/MeetingPacks';
 import Meetings from './components/Meetings';
@@ -103,6 +104,10 @@ const routes = [
     path: '/Conference',
     component: Conference,
     name: 'Conference'
+  },{
+    path: '/TestLayout',
+    component: TestLayout,
+    name: 'TestLayout'
   },
 ];
 

@@ -1,8 +1,8 @@
 <template>
   <div id="app" style="padding:0px; margin:0px;">
-    <div class="container" style="padding:0px; margin:0px;">
+    <!-- <div class="container" style="padding:0px; margin:0px;"> -->
       <router-view></router-view> 
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 
