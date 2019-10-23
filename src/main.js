@@ -10,6 +10,7 @@ import Slider from '@jeremyhamm/vue-slider';
 import vueFilterPrettyBytes from 'vue-filter-pretty-bytes';
 import VueMoment from 'vue-moment'
 import moment from 'moment-timezone'
+import VueLocalStorage from 'vue-localstorage'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from './components/Auth/Login';
@@ -44,6 +45,7 @@ Vue.use(Slider);
 Vue.use(vueFilterPrettyBytes);
 // Vue.use(require('vue-moment'));
 Vue.use(VueMoment, { moment });
+Vue.use(VueLocalStorage);
 window.axios = axios;
 // Vue.prototype.$http = Axios;
 // const accessToken = localStorage.getItem('access_token')

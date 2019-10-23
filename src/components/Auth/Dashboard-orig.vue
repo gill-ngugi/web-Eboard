@@ -34,7 +34,7 @@
             </div>
 
             <!-- English -->
-            <div style="margin-left:80%; height:auto; width:20%; position:absolute; z-index:1;" 
+            <div style="margin-left:80%; height:auto; width:20%; position:absolute; z-index:1; margin-right:1%;" 
                 v-if="seen2">
                  <v-list style="position">
                     <v-list-item-title style="color:#e33333; padding:15px;">Select Language</v-list-item-title>
@@ -57,7 +57,7 @@
             </div>
 
             <!-- Search -->
-            <div style="margin-left: 70%; height:auto; width: 30%; position: absolute; z-index: 1;" 
+            <div style="margin-left: 80%; height:auto; width: 20%; position: absolute; z-index: 1; margin-right:1%;" 
                 v-if="seen4">
                 <v-list style="position; padding:5%; color:#e33333">
                     <div class="input-group-addon" style="margin-bottom:20px;">
@@ -68,13 +68,13 @@
             </div>
 
             <!-- Profile -->
-            <div style="margin-left:65%; height:auto; width:35%; position:absolute; z-index:1;" 
+            <div style="margin-left:80%; height:auto; width:20%; position:absolute; z-index:1; margin-right:1%;" 
                 v-if="seen5">
                 <v-card style="padding:1%; color:#e33333; height:auto;">
                     <v-card-actions>
                     <div style="float:left; margin:0px;">
                         <!-- <v-icon size="55">mdi-contact-mail</v-icon> -->
-                        <img src="../img/male-icon.png" style="height:85px; width:95px; background-color:cyan; border:1px solid black;">
+                        <img src="../img/male-icon.png" style="height:85px; width:95px;  border:1px solid black;">
                     </div>
                     <div style="float:left; position:relative; margin:0px;">    
                         <v-card-text>
@@ -88,7 +88,7 @@
             </div>
 
             <!-- OPTIONS -->
-            <div style="margin-left:75%; height:auto; width:25%; position:absolute; z-index:1;" v-if="seen6">
+            <div style="margin-left:75%; height:auto; width:25%; position:absolute; z-index:1; margin-right:1%;" v-if="seen6">
                 <v-list style="padding:2%; background-color:#ffffff;">
                  
                     <div><p style="color:#e33333;">Options<span style="float:right;">v3.0.1</span></p></div>
@@ -381,7 +381,7 @@
             </div>
             
 
-            <div class="col-right">
+            <div class="col-right" style="z-index: -1;">
                 <div class="col-right-top" style="padding-bottom:10px;">
 
                     <div class="input-group" style="color: #27ae60; font-weight:bold;">
@@ -612,7 +612,7 @@
                         
                     </div>
 
-                    <div class="col-right-bottom-right"> 
+                    <div class="col-right-bottom-right" style="z-index: -1; background-color:cyan;"> 
                         <!-- <button v-on:click="getRequestUserLogin"> Get API Data </button> -->
                          <!-- <ul style=""> -->
                              <!--<li v-for="(item, index) in requestUserLogin.companyDetail" 

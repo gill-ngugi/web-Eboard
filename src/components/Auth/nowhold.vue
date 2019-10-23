@@ -1,6 +1,7 @@
-<template>    
+<template>
     <div>
-        <div class = "nav-menu parent" style=" height:45px; width:98%; padding:0px; padding-top:0.3%; margin-left:1%; margin-right:1%;">
+
+        <div class = "nav-menu parent" style=" height:45px; width:98%; padding:0px; padding-top:0.3%; min-width:1200px; overflow:auto; margin-left:1%; margin-right:1%; margin-bottom:1%;">
             <div class="left-buttons" style="margin-left:10px;">
                 <button class="btn btn-lg" text v-on:click="seen1 = !seen1">
                     STL Vision
@@ -18,7 +19,6 @@
                 <button class="btn btn-lg" text v-on:click="seen6 = !seen6"><v-icon color="#ffffff">mdi-dip-switch</v-icon></button>
             </div>
         </div>
-
 
          <!-- STL Vision -->
             <div style="height: auto; width: auto; position: absolute; z-index: 1; margin-left:1%;" v-if="seen1">
@@ -79,7 +79,7 @@
             </div>    
 
         <!-- OPTIONS -->
-            <div style="margin-left:80%; height:auto; width:19%; position:absolute; z-index:1; margin-right:1%;" v-if="seen6">
+            <div style="margin-left:75%; height:auto; width:24%; position:absolute; z-index:1; margin-right:1%;" v-if="seen6">
                 <v-list style="padding:2%; background-color:#ffffff;">
                  
                     <div><p style="color:#e33333;">Options<span style="float:right;">v3.0.1</span></p></div>
@@ -228,15 +228,31 @@
 
                 </v-list>
             </div>
-  
-            <!-- <div style="min-width:1200px; overflow:auto;"> -->
-                <div class="col-left" style="width:20%; height:900px; overflow:auto; margin-left:1%; margin-right:1%; margin-top:1%; float:left; position:relative;">
+
+
+
+        <div class="fjk" style="min-width:1200px; overflow:auto;">
+            <div class="col-left" style="width:20%; height:900px; overflow:auto; margin-left:1%; margin-right:1%; float:left; position:relative;">
+                <!-- <div v-for="(item, index) in even(dashboardMenuList)" :key="index">
+                    <router-link :to="{name : item.menuTitle}" style="text-decoration:none;" :style="{color:'rgb(' + item.menuColor + ')'}"> 
+                        <div class="left-menu" style="border-top: 5px solid">
+                            <div class="input-group" >
+                                <span class="input-group-addon">
+                                    <img v-bind:src="item.menuImageUrl"  v-bind:alt="item.menuTitle" v-bind:style="{width:'60px', height:'50px' }">
+                                    </span>
+                                <v-spacer></v-spacer>       
+                                <p> {{item.menuTitle}}</p>
+                            </div>                        
+                        </div>  
+                    </router-link>
+                </div> -->
+
                     <div v-for="(item, index) in even(dashboardMenuList)" :key="index">
                         <router-link :to="{name : item.menuTitle}" style="text-decoration:none;" :style="{color:'rgb(' + item.menuColor + ')'}"> 
-                            <div class="left-menu" style="border-top: 5px solid; padding:3.3%;">
+                            <div class="left-menu" style="border-top: 5px solid">
                                 <div class="input-group" >
                                     <span class="input-group-addon">
-                                        <img v-bind:src="item.menuImageUrl"  v-bind:alt="item.menuTitle" v-bind:style="{width:'60px', height:'50px' }">
+                                        <img v-bind:src="item.menuImageUrl"  v-bind:alt="item.menuTitle" v-bind:style="{width:'50px', height:'40px' }">
                                         <!-- <img v-bind:src="{ 'background-image': 'url(' + item.menuImageUrl + ')' }" v-bind:alt="item.menuTitle"> -->
                                         <!-- <i class="fa fa-briefcase" style="font-size:48px;"></i> -->
                                         </span>
@@ -246,9 +262,9 @@
                             </div>  
                         </router-link>
                     </div>
-                </div>
+            </div>
 
-            <div class="right" style="width:77%; height:900px; overflow:hidden; margin-right:1%; margin-top:1%; float:left; position:relative; z-index:-1">
+            <div class="right" style="width:77%; height:900px; overflow:hidden; margin-right:1%; float:left; position:relative; z-index:-1">
                 <div class="col-right-top" style="padding:1%; width:100%; height:35%;">
                    
                     <div class="input-group" style="color: #27ae60; font-weight:bold;">
@@ -258,49 +274,10 @@
                         <button class="btn btn-lg" text @click="reloadPage"><v-icon color="#27ae60">mdi-refresh</v-icon></button>
                     </div>
 
-                    <div style="width:100%;">
-                        <table class="table-striped" style="width:100%; display:block; overflow-y:auto; overflow-x:auto;">
-                            <!-- <thead style="width:500px; "> -->
-                                <tr style="background-color:#27ae60; width:100%; height:auto; display:block; line-height:30px; overflow-y:hidden; overflow-x:hidden; color:#ffffff;">
-                                    <th style="padding:7px; min-width:100px;">No.</th>
-                                    <th style="padding:7px; min-width:100px;"></th>
-                                    <th style="padding:7px; min-width:450px;">Name</th>
-                                    <th style="padding:7px; min-width:200px;">Size</th>
-                                    <th style="padding:7px; min-width:200px;" >Created On</th>
-                                    <th style="padding:7px; min-width:200px;">Briefcase</th>
-                                </tr>
-                            <!-- </thead> -->
 
-                            <!-- <tbody style="width:100%; height:190px; display:block; overflow-y:auto; overflow-x:hidden;"> -->
-                            <tbody style="overflow-y:auto; overflow-x:auto; height:190px; display:block;">
-                                <tr v-for="(item, index) in getRecentDocuments.recentDocumentsList" :key="index" 
-                                    style="width:100%;">
-                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:100px; max-width:100px;">{{ index + 1 + "." }}</td>
-                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:100px; max-width:100px;">    
-                                        <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
-                                    </td>
-                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:450px; max-width:450px;">
-                                        <a v-bind:href="item.itemUrl">
-                                            {{ item.itemName }}
-                                        </a>
-                                    </td>
-                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
-                                        {{ item.itemSize | prettyBytes }} 
-                                    </td>
-                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
-                                        {{ parseInt(item.itemCreatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                    </td>
-                                    <td style="padding-right:10px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
-                                        <button class="btn btn-danger">Remove</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-
-                    <!-- <table class="table table-striped scroll" style="width:100%;">
+                    <table class="table table-striped scroll" style="width:100%;">
                         <thead>
+                            <!-- <tr style="background-color:#27ae60; color:#ffffff;"> -->
                             <tr style="background-color:#27ae60; color:#ffffff;">
                                 <th style="">No.</th>
                                 <th style="padding-right:10px;"></th>
@@ -321,12 +298,20 @@
                                      <a v-bind:href="item.itemUrl">
                                         {{ item.itemName }}
                                     </a>
+                                    <!-- <a v-on:click="getLink()">
+                                        {{item.itemName}}
+                                        item.itemCreatedOn
+                                    </a> -->
                                 </td>
                                 <td style="">
                                     {{ item.itemSize | prettyBytes }} 
+                                    <!-- {{ 15364878 | prettyBytes }} -->
                                 </td>
                                 <td style="" >
-                                    {{ parseInt(item.itemCreatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                    {{ parseInt(item.itemCreatedOn, 10) |  moment('DD-MMM-YYYY') }}
+                                    <!-- {{ 	1570064727 |  moment("dddd, MMMM Do YYYY, h:mm:ss a") }}
+                                    {{ 	1570064727 |  moment('DD-MMM-YYYY hh:mm A') }} -->
+                                    <!-- {{ item.itemCreatedOn }} -->                                    
                                 </td>
                                 <td style="padding-right:10px;">
                                     <button class="btn btn-danger">Remove</button>
@@ -334,7 +319,7 @@
                             </tr>
                            
                         </tbody>
-                    </table> -->
+                    </table>
                    
                 </div>
 
@@ -405,21 +390,16 @@
                     </div>
                 </div>
             </div>
-        
-
-        </div>       
-    <!-- </div> -->
+        </div>
+    </div>
 </template>
+
 
 <script>
     var moment = require('moment');
-    // import Slider from '@jeremyhamm/vue-slider';
     import axios from 'axios';
     import FullCalendar from '@fullcalendar/vue';
     import dayGridPlugin from '@fullcalendar/daygrid';
-    // Vue.use(require('vue-moment'));
-    // import vueFilterPrettyBytes from 'vue-filter-pretty-bytes'
-    // import requestUserLogin from "../../assets/requestUserLogin.json";
 
 
     export default{
@@ -455,7 +435,7 @@
                 {title: 'Finalize on budgets for FY 2019-2020', date: 'Due on 31-Oct-2020', mark:'STL Vision'},
                 {title: 'To prepare a Variance Report', date: 'Due on 27-Oct-2020', mark:'STL Vision'},
                 {title: 'Prepare advert for new CEO position', date: 'Due on 9-Nov-2020', mark:'STL Vision'}
-            ],
+            ], 
 
             seen: false,
             seen1: false,
@@ -473,23 +453,16 @@
             requestUserLogin : [],
             userInfo : [],
             dashboardMenuList : [],
-            // getRecentDocuments: [],
-            // getLatestNotifications: [],
-            // getCompanyList: [],
-            // getEboardUpdates: [],
-
-            // itemCreatedOn: [],
 
             moment: moment,
 
             date: 1570064727,
-            
-            // dashStyle:{
-            //      color: "rgb(0,255,0)"
-            // }
-
+      
         }),
 
+        mounted() {
+          
+        },
 
         methods: {
             reloadPage(){
@@ -504,35 +477,17 @@
             },
           
             getRequestUserLogin(){
-                // fetch("../assets/json-APIs/requestUserLogin.json")
-                // .then(response => response.json())
-                // .then(data => (this.requestUserLogin = data))
-
                 axios.get("../assets/json-APIs/requestUserLogin.json")
                     .then(response => {
                         this.requestUserLogin = response.data;
                         this.userInfo = (JSON.parse(JSON.stringify(this.requestUserLogin.userInfo)));
                         this.dashboardMenuList = this.requestUserLogin.dashboardMenuList;
-                        // this.dashStyle={
-                        //     // color: "rgb("+ this.dashboardMenuList.menuColor +")"    
-                        //     color: "blue"                          
-                        // };
-                        // console.log(JSON.parse(JSON.stringify(this.requestUserLogin.userInfo)));
-                        //userInfo=JSON.parse();
-                    })
+                       })
 
                     .catch(error => {
                         console.log(error);
                     })
-
-                // this.$http.get("../assets/json-APIs/requestUserLogin.json", {responseType: 'json'}).then(response => {
-                //     return response.json();
-                // }).then(jsonData => {
-                //     this.data = JSON.parse(jsonData);
-                // }).catch(e => {
-                //     console.log('Error', e);
-                // });
-            },
+                },
 
             getCompanyList(){
                 axios.get("../assets/json-APIs/getCompanyList.json")
@@ -548,9 +503,6 @@
                 axios.get("../assets/json-APIs/getLatestNotifications.json")
                     .then(response => {
                         this.getLatestNotifications = response.data;
-                        this.$localStorage.set('getLatestNotifications', JSON.stringify(this.getLatestNotifications))
-                        // this.success = this.tLatestNotifications.notificationsList
-                        // console.log(this.getLatestNotifications.notificationsList);
                     })
                     .catch(e => {
                         console.log('Error', e);
@@ -571,11 +523,6 @@
                 axios.get("../assets/json-APIs/getRecentDocuments.json")
                     .then(response => {
                         this.getRecentDocuments = response.data;
-                        this.$localStorage.set('getRecentDocuments', JSON.stringify(this.getRecentDocuments))
-                        // this.itemCreatedOn = parseInt(this.getRecentDocuments.recentDocumentsList.itemCreatedOn, 10);
-                        // this.itemCreatedOn = this.getRecentDocuments.recentDocumentsList;
-                        // this.itemCreatedOn = parseInt(this.itemCreatedOn, 10);
-                        // console.log(this.itemCreatedOn);
                     })
                     .catch(e => {
                         console.log('Error', e);
@@ -610,36 +557,29 @@
             this.getRecentDocuments();
         },
 
-        mounted() {
-            const getRecentDocuments = JSON.parse(this.$localStorage.get('getRecentDocuments'));
-            const getLatestNotifications = JSON.parse(this.$localStorage.get('getLatestNotifications'))
-            
-            if (getRecentDocuments) {  
-                this.getRecentDocuments = getRecentDocuments;
-            }
-
-            if (getLatestNotifications) {  
-                this.getLatestNotifications = getLatestNotifications;
-            }
-        },
-
         components: {
             FullCalendar // make the <FullCalendar> tag available
-            // 'slider': Slider
         },
-    }
 
+    }
 </script>
+
 
 <style scoped>
 @import '~@fullcalendar/core/main.css';
 @import '~@fullcalendar/daygrid/main.css';
+ 
+    .wrap{
+        width:100%;
+        margin-left:2.3%;
+        position: relative;
+    }
 
     .nav-menu{
         margin-top:0px; 
         background-color: #e33333;
-        /* height: 45px; */
-        /* padding-left:10px; */
+        height: 45px;
+        padding-left:10px;
     }
 
     .nav-menu .btn{
@@ -659,9 +599,9 @@
     .col-left .left-menu{
         background-color: #f5f5f5 ;
         align-content: center;
-        /* padding: 3%; */
+        padding: 3%;
         margin-bottom:10px;
-        font-size:20px;
+        font-size:24px;
     }
 
     .col-right{
@@ -727,24 +667,23 @@
         border-spacing: 0;
     }
 
-    /* table.scroll tbody,
-    table.scroll thead {  */
-        /* display: block;  */
-    /* } */
+    table.scroll tbody,
+    table.scroll thead { 
+        display: block; 
+    }
 
-    /* table.scroll tbody { */
-        /* height: 190px;
+    table.scroll tbody {
+        height: 200px;
         overflow-y: auto;
-        overflow-x: hidden; */
-    /* } */
+        overflow-x: hidden;
+    }
 
-    /* thead tr th {  */
-        /* height: 30px;
-        line-height: 30px; */
-
+    thead tr th { 
+        height: 30px;
+        line-height: 30px;
         /* width: 180px; */
         /*text-align: left;*/
-    /* } */
+    }
 
     tbody tr td {
         /* width: 20%; Optional */
@@ -784,19 +723,19 @@
         padding:2%;
     }
 
-    /* .left-buttons { */
+    .left-buttons {
     /* width: 50px; */
     /* background: pink; */
-    /* } */
+    }
 
     .filler {
     flex-grow: 1;
     /* background: lightgreen; */
     }
 
-    /* .right-buttons { */
+    .right-buttons {
     /* width: 50px; */
     /* background: lightblue; */
-    /* } */
+    }
 
    </style>

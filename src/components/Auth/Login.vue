@@ -1,42 +1,49 @@
 <template>
   <div>
-    <img class="bgimg-1" src="../img/login-bg.jpg">
 
+      <div style="margin-left:10%; margin-right:10%; margin-top:2%;">
+        <img class="bgimg-1" src="../img/login-bg.jpg">
+      
         <div class="quote">
             "MANAGEMENT IS DOING THINGS RIGHT,<br>
             BUT LEADERSHIP IS DOING RIGHT THINGS"
         </div>
 
-        <div class="login-form">
+        </div>
+
+        <div class="login-form" style="margin-left:60%; width:320px;">
           <span class="image1"><img src="../img/eboard.png" style="width:40%; height:20%; margin-left:5%;"></span>
           <span class="image2"><img src="../img/stl.png" style="width:40%; height: 20%; margin-left:10%"></span>
 
         <h4>Login to your account</h4>
         <hr>
+        <p style="text-align:center; color:red; font-weight:bold;">{{error}}</p>
           <form class="form-login" @submit.prevent="login">
+          <!-- <form class="form-login"> -->
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
-                    <input type="text" class="form-control" name="userName" id="userName" placeholder="Username" v-model="userName" />
+                    <input type="text" class="form-control" name="userName" id="userName" placeholder="Username" v-model="input.userName" />
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                    <input type="password" class="form-control" name="userPassword" id="userPassword" placeholder="Password" v-model="userPassword" />
+                    <input type="password" class="form-control" name="userPassword" id="userPassword" placeholder="Password" v-model="input.userPassword" />
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                    <input type="number" class="form-control" name="companyCode" id="companyCode" placeholder="Company Code" v-model="companyCode" />
+                    <input type="number" class="form-control" name="companyCode" id="companyCode" placeholder="Company Code" v-model="input.companyCode" />
                 </div>
             </div>    
 
             <div class="form-group">
                 <button type="submit" class="btn btn-danger" style="color:#fff">Log In</button><br>
+                <!-- <button class="btn btn-danger" style="color:#fff" v-on:click="login()">Log In</button><br> -->
             </div>    
            
             <div class="forgot">
@@ -50,9 +57,10 @@
 
       <!-- <div class="footer-text">Software Technologies Limited 2011-2019</div> -->
 
-    <!-- </div> -->
+      <!-- </div> -->
+    </div>
 
-</div>
+
 
 
 </template>
@@ -65,21 +73,35 @@ import axios from 'axios';
 
     data(){
       return {
-        userName : "",
-        userPassword : "",
-        companyCode : "",
-        model: "requestUserLogin",
+        input:{
+          userName : "",
+          userPassword : "",
+          companyCode : "",
+          // model: "requestUserLogin",
+        },
+        error: "",        
         // stl: {},
       }
     },
+
+    mounted(){
+      // axios.get("../assets/json-APIs/requestUserLogin.json");
+      // axios.get('http://mealbooking.stl-horizon.com/api/users');
+      // axios.get('http://tst-visitors.stl-horizon.com/api/user/login');
+      // axios.get('http://192.168.1.34:8000/api/country');
+      // axios.get('http://ziptasticapi.com/')
+    },
+
     methods: {
       login(){
           // axios.post('http://eserver1.stl-horizon.com/api_tst_v12/frontend/web/user/create',{
           // axios.get('http://mealbooking.stl-horizon.com/api/users',{
           // axios.get('http://localhost/web-Eboard-APIs/requestUserLogin.json')
-            // axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+          // axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+          if(this.input.userName != "" && this.input.userPassword != "" && this.input.companyCode != " "){
 
-          axios.get('http://tst-visitors.stl-horizon.com/api/student',{
+          axios.get("../assets/json-APIs/requestUserLogin.json", this.input)
+          // axios.get('http://tst-visitors.stl-horizon.com/api/student',{
           // axios.post('http://tst-visitors.stl-horizon.com/api/user/login',{
           // axios.get('http://ziptasticapi.com/')
           // axios.get('http://192.168.1.167/apps/mealbooking/public/api/users',{
@@ -116,7 +138,7 @@ import axios from 'axios';
               // currency: '87666',
               // phone_code:'ytrf'
             // }
-        })
+    // })
             // method: 'POST',
             // mode: 'no-cors',
             //   headers: {
@@ -131,17 +153,18 @@ import axios from 'axios';
             // companyCode : this.companyCode,
             // model : this.model
         
+        
           .then(response => {
-              // console.log(this.userName),
-              // console.log(this.userPassword),
-              // console.log(this.companyCode),
+              console.log(this.input.userName),
+              console.log(this.input.userPassword),
+              console.log(this.input.companyCode),
               // console.log(this.model),
               // console.log(this.response);
               // this.stl = response.data;
               // console.log(this.stl);
               console.log(response);
               // console.log(this.stl.companyDetail.companyName);
-              // this.$router.push('/login')
+              this.$router.push('/');
           })
           .catch(error => {
           // .catch(function(error){
@@ -158,9 +181,13 @@ import axios from 'axios';
           //       )
           //   .catch(err => console.log(err)) 
          }
-     },
-           
-  }
+          else{
+            this.error = "Fill in all credentials";
+            console.log("Fill in all credentials");
+          }
+        }
+      },             
+    }
 </script>
 
 <style scoped>
@@ -181,7 +208,7 @@ import axios from 'axios';
     background-repeat: no-repeat;
     background-size: cover;
 }
-  
+
   .bgimg-1, .bgimg-2, .bgimg-3 {
     position: relative;
     opacity: 1.0;
@@ -207,7 +234,7 @@ import axios from 'axios';
       top: 34%;
       width: 50%;
       color: #fff;
-      margin-left: 3%;
+      margin-left: 11%;
       margin-right:2%;
       font-size:28px;
       font-family: Arial, Helvetica, sans-serif;
@@ -243,13 +270,13 @@ import axios from 'axios';
 
  .login-form{
       position: absolute;
-      width:30%;
-      min-width:270px;
+      /* width:30%; */
+      /* min-width:270px; */
       height:auto;
       background: #fff;
       border-radius: 5px;
       top:29%;
-      margin-left: 65%;
+      /* margin-left: 65%; */
   }
    .login-form h4{
       text-align: center;
