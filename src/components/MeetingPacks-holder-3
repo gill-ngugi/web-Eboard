@@ -1,0 +1,88 @@
+  <div style="height:850px; margin-top:0.5%; margin-bottom:0.5%; background-color:#f8f9f9; border-top:5px solid rgb(86,182,229); width:98%; margin-left:1%; margin-right:1%;">
+                <div class = "parent" style="height:45px; width:100%; margin-top: 7px; background-color:#fff;">
+                    <div class="left-buttons">                
+                        <router-link to=""><v-icon style="float:left; margin-left:10px; background-color:rgb(86,182,229); color:#fff" size="30">mdi-chevron-left</v-icon></router-link> 
+                        <p style="float:left; font-weight:bold; font-size:24px; text-align:left; margin-left:10px; width:250px;">Meeting Packs</p>              
+                    </div>
+                        <div class="filler"></div>
+                    <div class="right-buttons" style="display:inline;">                
+                        
+                        <div class="dropdown-table" style="display:inline;">
+                                <v-menu>
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn
+                                            color="primary" 
+                                            text
+                                            v-on="on"
+                                        >
+                                            Acsending
+                                            <v-icon>mdi-swap-vertical-bold</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <v-list>
+                                        <!-- <v-list-item v-for="(item, index) in items" :key="index"> -->
+                                        <v-list-item style="display:block;">    
+                                            <!-- <v-list-item-title>{{ item.title }}</v-list-item-title> -->
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer">Name</v-list-item-title>
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer">Size</v-list-item-title>
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer">Modified On</v-list-item-title>
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer">Submitted By</v-list-item-title>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-menu>       
+                            </div> 
+                        
+                        <div style="display:inline;"><button class="btn btn-lg" text>Name</button></div>
+                        <div style="display:inline;"><button class="btn btn-lg" text>List</button></div>
+                        <div style="display:inline;"><button class="btn btn-lg" text>Grid</button></div>
+                    </div> 
+                </div> 
+            
+                <div class = "parent" style="height:55px; width:100%; background-color:#f1f1f1;">
+                    <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">{{itemName}}{{"/"}}{{itemName2}}{{"/"}}{{itemName3}}</p>                
+                </div>
+
+            
+                <div class="p[oopl" style="width:100%;">
+
+                    <table class="table-striped" style="width:100%; display:block; overflow-y:auto; overflow-x:auto;">
+                        <tr style="background-color:rgb(86,182,229); width:100%; height:auto; display:block; line-height:30px; overflow-y:hidden; overflow-x:hidden; color:#ffffff;">
+                            <th style="padding:7px; min-width:70px;">No.</th>
+                            <th style="padding:7px; min-width:70px;"></th>
+                            <th style="padding:7px; min-width:650px;">Name</th>
+                            <th style="padding:7px; min-width:200px;">Size</th>
+                            <th style="padding:7px; min-width:200px;">Modified On</th>
+                            <th style="padding:7px; min-width:200px;">Submitted By</th>
+                            <th style="padding:7px; min-width:200px;">Briefcase</th>
+                        </tr>
+
+                        <tbody style="overflow-y:auto; overflow-x:auto; height:670px; display:block;">
+                            <tr v-for="(item, index) in itemSubArray3" :key="index" 
+                                style="width:100%;">
+                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:70px; max-width:70px;">{{ index + 1 + "." }}</td>
+                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:70px; max-width:70px;">    
+                                    <span class="input-group-addon"><v-icon color="rgb(86,182,229)" style="margin-right:5px;">mdi-folder-open</v-icon></span>
+                                </td>
+                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:650px; max-width:650px;">
+                                    <a v-bind:href="item.itemUrl">
+                                        {{ item.itemName }}
+                                    </a>
+                                </td>
+                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
+                                    {{ item.itemSize | prettyBytes }} 
+                                </td>
+                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
+                                    {{ parseInt(item.itemLastUpdatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                </td>
+                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
+                                    {{ item.itemUploadedBy }}                                 
+                                </td>
+                                <td style="padding-right:10px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
+                                    <button class="btn btn-danger">Remove</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>  
+        

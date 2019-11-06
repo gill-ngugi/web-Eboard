@@ -1,7 +1,9 @@
 <template>
   <div id="app" style="padding:0px; margin:0px;">
     <!-- <div class="container" style="padding:0px; margin:0px;"> -->
-      <router-view></router-view> 
+      <router-view>
+        <!-- <Gillian></Gillian> -->
+        </router-view> 
     <!-- </div> -->
   </div>
 </template>

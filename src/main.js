@@ -47,6 +47,22 @@ Vue.use(vueFilterPrettyBytes);
 Vue.use(VueMoment, { moment });
 Vue.use(VueLocalStorage);
 window.axios = axios;
+
+Vue.component('Gillian', {
+  template: `<div><p> I am headed for {{city}} <button @click="changeCity()">Change Name</button></p></div>`,
+  data: function(){
+    return{
+      city: 'Los Angeles'
+    }
+  },
+
+  methods: {
+    changeName:function(){
+        this.name = 'San Fransisco';
+    }
+  }
+
+});
 // Vue.prototype.$http = Axios;
 // const accessToken = localStorage.getItem('access_token')
 // if (accessToken) {
@@ -74,19 +90,23 @@ const routes = [
     path: '/Meeting Packs',
     component: MeetingPacks,
     name: 'Meeting Packs'
-  },  {
+  },  
+  {
     path: '/Meetings',
     component: Meetings,
     name: 'Meetings'
-  },  {
+  },  
+  {
     path: '/Resources',
     component: Resources,
     name: 'Resources'
-  },  {
+  },  
+  {
     path: '/Approvals',
     component: Approvals,
     name: 'Approvals'
-  },  {
+  },  
+  {
     path: '/Compliance',
     component: Compliance,
     name: 'Compliance'

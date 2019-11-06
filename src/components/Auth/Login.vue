@@ -15,10 +15,10 @@
           <span class="image1"><img src="../img/eboard.png" style="width:40%; height:20%; margin-left:5%;"></span>
           <span class="image2"><img src="../img/stl.png" style="width:40%; height: 20%; margin-left:10%"></span>
 
-        <h4>Login to your account</h4>
+        <h4>Login to your account: {{ip}}</h4>
         <hr>
         <p style="text-align:center; color:red; font-weight:bold;">{{error}}</p>
-          <form class="form-login" @submit.prevent="login">
+          <!-- <form class="form-login" @submit.prevent="sendData"> -->
           <!-- <form class="form-login"> -->
             <div class="form-group">
                 <div class="input-group">
@@ -42,7 +42,8 @@
             </div>    
 
             <div class="form-group">
-                <button type="submit" class="btn btn-danger" style="color:#fff">Log In</button><br>
+                <button v-on:click="sendData()">Send</button>
+                <!-- <button type="submit" class="btn btn-danger" style="color:#fff">Log In</button><br> -->
                 <!-- <button class="btn btn-danger" style="color:#fff" v-on:click="login()">Log In</button><br> -->
             </div>    
            
@@ -52,7 +53,7 @@
                 <p>{{stl.userInfo.userEmail}}}</p> -->
             </div>
 
-          </form>
+          <!-- </form> -->
         </div>
 
       <!-- <div class="footer-text">Software Technologies Limited 2011-2019</div> -->
@@ -73,11 +74,16 @@ import axios from 'axios';
 
     data(){
       return {
+        ip: "",
         input:{
-          userName : "",
-          userPassword : "",
-          companyCode : "",
-          // model: "requestUserLogin",
+          companyCode: "010",
+          model: "requestUserLogin",
+          mobileVersion: "11.4.1",
+          deviceName: "ipad air 2",
+          deviceToken: "b41dfaf1ba018196d5068a0ecc3bde33f83c94131ecf71d053260b944da14612",
+          userName : "gngugi",
+          userPassword : "gngugi",
+          eboardVersion: "2.5.7"  
         },
         error: "",        
         // stl: {},
@@ -85,14 +91,35 @@ import axios from 'axios';
     },
 
     mounted(){
+       axios({ method: "GET", "url": "https://httpbin.org/ip" }).then(result => {
+                this.ip = result.data.origin;
+            }, error => {
+                console.error(error);
+            });
       // axios.get("../assets/json-APIs/requestUserLogin.json");
       // axios.get('http://mealbooking.stl-horizon.com/api/users');
       // axios.get('http://tst-visitors.stl-horizon.com/api/user/login');
       // axios.get('http://192.168.1.34:8000/api/country');
       // axios.get('http://ziptasticapi.com/')
+         
+         // axios({ method: "POST", "url": "eserver1.stl-horizon.com/api_v9/frontend/web/user/create", "headers": { "content-type": "application/json" } }).then(result => {
+          //     this.response = result.data;
+          //     console.log(this.response);
+          //   }, error => {
+          //       console.error(error);
+          //   });
     },
 
     methods: {
+       sendData() {
+          axios({ method: "POST", "url": "http://eserver1.stl-horizon.com/api_tst_v12/frontend/web/user/create", "data": this.input, "headers": { "content-type": "application/json" } }).then(result => {
+              this.response = result.data;
+              console.log(this.response);
+          }, error => {
+              console.error(error);
+          });
+      },
+
       login(){
           // axios.post('http://eserver1.stl-horizon.com/api_tst_v12/frontend/web/user/create',{
           // axios.get('http://mealbooking.stl-horizon.com/api/users',{

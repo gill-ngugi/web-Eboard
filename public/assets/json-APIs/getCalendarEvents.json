@@ -9369,6 +9369,28 @@
         {
             "companyId": "2",
             "companyName": "STL Vision",
+            "eventId": "2147",
+            "eventTitle": "Role of Management",
+            "eventBeginDate": "1554076800",
+            "module": "CMP",
+            "eventEndDate": "",
+            "meetingId": "",
+            "eventType": {
+                "id": "3",
+                "code": "CMP",
+                "name": "Compliance",
+                "color_code": ""
+            },
+            "eventAction": [],
+            "location": "",
+            "longitude": "",
+            "latitude": "",
+            "participants": [],
+            "eventColor": "87,181,227"
+        },
+        {
+            "companyId": "2",
+            "companyName": "STL Vision",
             "eventId": "1431",
             "eventTitle": "test 070620148",
             "eventBeginDate": "1528351200",
@@ -9791,6 +9813,44 @@
             "eventBeginDate": "1572422400",
             "module": "AGN",
             "eventEndDate": "1572436800",
+            "meetingId": "",
+            "eventType": {
+                "id": "9",
+                "code": "AGN",
+                "name": "Meeting Agenda",
+                "color_code": ""
+            },
+            "eventAction": [
+                {
+                    "actionId": "1",
+                    "actionName": "Attending",
+                    "isSelected": "0"
+                },
+                {
+                    "actionId": "2",
+                    "actionName": "Not Attending",
+                    "isSelected": "0"
+                },
+                {
+                    "actionId": "3",
+                    "actionName": "May Attend",
+                    "isSelected": "0"
+                }
+            ],
+            "location": "",
+            "longitude": "",
+            "latitude": "",
+            "participants": [],
+            "eventColor": "87,181,227"
+        },
+        {
+            "companyId": "2",
+            "companyName": "STL Vision",
+            "eventId": "2127",
+            "eventTitle": "Test",
+            "eventBeginDate": "1571911200",
+            "module": "AGN",
+            "eventEndDate": "1571913000",
             "meetingId": "",
             "eventType": {
                 "id": "9",
