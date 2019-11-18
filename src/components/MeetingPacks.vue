@@ -32,10 +32,31 @@
                                         <!-- <v-list-item v-for="(item, index) in items" :key="index"> -->
                                         <v-list-item style="display:block;">    
                                             <!-- <v-list-item-title>{{ item.title }}</v-list-item-title> -->
-                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortByName()">Name</v-list-item-title>
+ 
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
+                                                v-on:click="doSort('itemName')" href="javascript:">Name
+                                                <span v-if="sort.field=='itemName'">({{sort.desc?'desc':'asc'}})</span>
+                                            </v-list-item-title>
+
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
+                                                v-on:click="doSort('itemSize')" href="javascript:">Size
+                                                <span v-if="sort.field=='itemSize'">({{sort.desc?'desc':'asc'}})</span>
+                                            </v-list-item-title>
+
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
+                                                v-on:click="doSort('itemLastUpdatedOn')" href="javascript:">Modified On
+                                                <span v-if="sort.field=='itemLastUpdatedOn'">({{sort.desc?'desc':'asc'}})</span>
+                                            </v-list-item-title>
+
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
+                                                v-on:click="doSort('itemUploadedBy')" href="javascript:">Submitted By
+                                                <span v-if="sort.field=='itemUploadedBy'">({{sort.desc?'desc':'asc'}})</span>
+                                            </v-list-item-title>
+
+                                    <!--    <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortByName()">Name</v-list-item-title>
                                             <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortBySize()">Size</v-list-item-title>
                                             <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortByModifiedOn()">Modified On</v-list-item-title>
-                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortBySubmittedBy()">Submitted By</v-list-item-title>
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortBySubmittedBy()">Submitted By</v-list-item-title> -->
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>       
@@ -51,9 +72,20 @@
                     <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">{{itemName}}{{"/"}}{{itemName2}}</p>                
                 </div>
 
-            
-                <div class="p[oopl" style="width:100%;">
+        <!--  VUE ARRAY SORTING EXAMPLE             
+                <a v-on:click="doSort('id')" href="javascript:">ID<span v-if="sort.field=='id'">({{sort.desc?'desc':'asc'}})</span></a>
+                <a v-on:click="doSort('name')" href="javascript:">User<span v-if="sort.field=='name'">({{sort.desc?'desc':'asc'}})</span></a>
+                <a v-on:click="doSort('leave')" href="javascript:">Leave Owing<span v-if="sort.field=='leave'">({{sort.desc?'desc':'asc'}})</span></a>
 
+                <div id="page_list">
+                    <div class="user_row" v-for="(item,index) in sortedData" :key="index">
+                        <div class="user_status">{{ item.id }}</div>
+                        <div class="username">{{ item.name }}</div>
+                        <div class="leave_owing">{{ item.leave }}</div>
+                    </div>
+                </div>     -->
+            
+                <div class="blackish" style="width:100%;">
                     <table class="table-striped" style="width:100%; display:block; overflow-y:auto; overflow-x:auto;">
                         <tr style="background-color:rgb(86,182,229); width:100%; height:auto; display:block; line-height:30px; overflow-y:hidden; overflow-x:hidden; color:#ffffff;">
                             <th style="padding:7px; min-width:70px;">No.</th>
@@ -66,7 +98,7 @@
                         </tr>
 
                         <tbody style="overflow-y:auto; overflow-x:auto; height:670px; display:block;">
-                            <tr v-for="(item, index) in itemSubArray2" :key="index" 
+                            <tr v-for="(item, index) in sortedData2" :key="index" 
                                 style="width:100%;">
                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:70px; max-width:70px;">{{ index + 1 + "." }}</td>
                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:70px; max-width:70px;">    
@@ -122,7 +154,7 @@
             itemName2: '',
             itemName3: '',
 
-            items: [
+            items2: [
                 { title: 'Name' },
                 { title: 'Size' },
                 { title: 'Modified On' },
@@ -130,13 +162,25 @@
             ],
 
             currentComponent: null,
+
             componentsArray: ['comp1', 'comp2'],
 
             dynamicComponent: {
                 template: `<p>Wheee</p>`
-            }
-        }),
+            },
 
+            sort: {
+                field: '',
+                desc: true        
+            },
+
+            items: [
+                { id: 1, name: 'Person 1', leave: 123.45 },
+                { id: 2, name: 'John Smith', leave: 13.45 },
+                { id: 3, name: 'Bill Smith', leave: 23.45 },
+                { id: 4, name: 'John Doe', leave: 133.53 }
+            ]
+        }),
 
         methods: {
             reloadPage(){
@@ -162,7 +206,7 @@
                         this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray;
                         this.itemName = this.getMeetingPackFolder.data.itemName;
                         // this.$localStorage.set('getMeetingPackFolder', JSON.stringify(this.getMeetingPackFolder))
-                       // console.log(this.itemSubArray);
+                        // console.log(this.itemSubArray);
                         console.log(this.itemName);
                     })
                     .catch(e => {
@@ -202,8 +246,48 @@
 
             swapComponent: function(component){
                 this.currentComponent = component;
-            }
+            },
 
+            doSort (field) {
+                if(field == this.sort.field){
+                    this.sort.desc = !this.sort.desc
+                }else{
+                    this.sort.field = field;
+                    this.sort.desc = true;
+                }
+            },
+        },
+
+        computed: {
+            sortedData () {
+                if(!this.sort.field){
+                    return this.items
+                }
+
+                return this.items.concat().sort((a,b)=>{
+                    if(this.sort.desc){
+                        return a[this.sort.field] > b[this.sort.field] ? -1:1        
+                    }
+                    else{
+                        return a[this.sort.field] > b[this.sort.field] ? 1:-1                  
+                    }
+                })
+            },
+
+            sortedData2 () {
+                if(!this.sort.field){
+                    return this.itemSubArray2
+                }
+
+                return this.itemSubArray2.concat().sort((a,b)=>{
+                    if(this.sort.desc){
+                        return a[this.sort.field] > b[this.sort.field] ? -1:1        
+                    }
+                    else{
+                        return a[this.sort.field] > b[this.sort.field] ? 1:-1                  
+                    }
+                })
+            }
         },
       
         beforeMount(){
@@ -228,16 +312,16 @@
         },
 
         components: {
-            itemSubArray2: function() {
-                function compare(a, b) {
-                    if (a.item < b.item)
-                    return -1;
-                    if (a.item > b.item)
-                    return 1;
-                    return 0;
-                }
-                return this.arrays.sort(compare);
-            }
+            // itemSubArray2: function() {
+            //     function compare(a, b) {
+            //         if (a.item < b.item)
+            //         return -1;
+            //         if (a.item > b.item)
+            //         return 1;
+            //         return 0;
+            //     }
+            //     return this.arrays.sort(compare);
+            // }
 
             // 'comp1': {
             //     template: `
@@ -386,5 +470,14 @@
     .right-buttons{
         display: inline;
     }
+
+    .user_row{
+        display:flex;
+    }
+    .user_row>div{
+        flex:1;
+        text-align: center;
+    }
+
 
    </style>

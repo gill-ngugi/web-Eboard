@@ -396,8 +396,7 @@
                     </div>
                     <!-- { title:eventArray.eventTitle, date:parseInt(eventArray.eventBeginDate, 10), textColor:'#000', color:'cyan' } -->
 
-                    <div class="col-right-bottom-right" style="padding:1%; width:64%; height:100%; float:left; position:relative; overflow:auto;"
-                        v-for="(item, index) in eventArray" :key="index">
+                    <div class="col-right-bottom-right" style="padding:1%; width:64%; height:100%; float:left; position:relative; overflow:auto;">
                         <FullCalendar                             
                             defaultView="dayGridMonth" 
                             :plugins="calendarPlugins"  
