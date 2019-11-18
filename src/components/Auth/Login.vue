@@ -112,8 +112,9 @@ import axios from 'axios';
 
     methods: {
        sendData() {
-          axios({ method: "POST", "url": "http://eserver1.stl-horizon.com/api_tst_v12/frontend/web/user/create", "data": this.input, "headers": { "content-type": "application/json" } }).then(result => {
-              this.response = result.data;
+          axios.post("https://wachiaapp.com/wachia/api/user/login", {"data": this.input}  
+          ).then(result => {
+              this.response = result.data;      
               console.log(this.response);
           }, error => {
               console.error(error);
@@ -174,13 +175,11 @@ import axios from 'axios';
             // },
             // withCredentials: true,
             // credentials: 'same-origin',
-
             // userName : this.userName, 
             // userPassword : this.userPassword,
             // companyCode : this.companyCode,
             // model : this.model
-        
-        
+               
           .then(response => {
               console.log(this.input.userName),
               console.log(this.input.userPassword),

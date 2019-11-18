@@ -19,7 +19,6 @@
             </div>
         </div>
 
-
          <!-- STL Vision -->
             <div style="height: auto; width: auto; position: absolute; z-index: 1; margin-left:1%;" v-if="seen1">
                 <v-list>
@@ -331,11 +330,9 @@
                                 <td style="padding-right:10px;">
                                     <button class="btn btn-danger">Remove</button>
                                 </td>
-                            </tr>
-                           
+                            </tr>                           
                         </tbody>
-                    </table> -->
-                   
+                    </table> -->                   
                 </div>
 
                 <div class="right-bottom" style="width:100%; height:64%; margin-top:1%;">
@@ -368,45 +365,47 @@
                                 </div>                                                              
                             </div>
 
-
-
                         <div v-else class="input-group" style="width:100%;">
-                                <div class="parent">
-                                    <div class="left-buttons">
-                                        <v-icon size="40" style="color: #e33333; margin-top:4px; font-weight:bold; display:inline;">mdi-bell-outline</v-icon>
-                                        <p v-on:click="test = !test" style="margin-left:9px; font-size:25px; color: #e33333; font-weight:bold; cursor: pointer; display:inline;">Tasks</p> 
-                                    </div>
-                                    <div class="filler"></div>   
-                                    <div class="right-buttons">                                    
-                                        <p v-on:click="test = !test" style="margin-right:9px; font-size:20px; color: #e33333; cursor: pointer; display:inline;">Notifications</p> 
-                                        <span class="input-group-addon" style="font-size:17px; font-weight:bold; color: #e33333; margin-top:4px; display:inline;"><i class="fa fa-chevron-right"></i></span>
-                                    </div>
+                            <div class="parent">
+                                <div class="left-buttons">
+                                    <v-icon size="40" style="color: #e33333; margin-top:4px; font-weight:bold; display:inline;">mdi-bell-outline</v-icon>
+                                    <p v-on:click="test = !test" style="margin-left:9px; font-size:25px; color: #e33333; font-weight:bold; cursor: pointer; display:inline;">Tasks</p> 
                                 </div>
-
-                                <div style = "height:500px; overflow:auto;">
-                                    <div class="parent" style="padding:4%; padding-bottom:1%;" v-for="(task, index) in getLatestNotifications.taskList" :key="index">
-                                        <div class="left-buttons">
-                                            <v-icon color="#E74343" style="margin-top:25px; margin-right:70px; ">mdi-radiobox-marked</v-icon>
-                                        </div>
-                                        <div class="right-buttons">    
-                                            <p style="font-size:21.5px;">{{ task.taskTitle }}</p>
-                                            <p style="font-size:17px;">{{"Due on "}} {{ parseInt(task.taskDateTime, 10) | moment('DD-MMM-YYYY') }}</p>
-                                            <p style="font-size:17px;">{{ task.companyName }}</p>
-                                        </div>
-                                        <hr>
-                                    </div>
-                                </div>                                                              
+                                <div class="filler"></div>   
+                                <div class="right-buttons">                                    
+                                    <p v-on:click="test = !test" style="margin-right:9px; font-size:20px; color: #e33333; cursor: pointer; display:inline;">Notifications</p> 
+                                    <span class="input-group-addon" style="font-size:17px; font-weight:bold; color: #e33333; margin-top:4px; display:inline;"><i class="fa fa-chevron-right"></i></span>
+                                </div>
                             </div>
 
+                            <div style = "height:500px; overflow:auto;">
+                                <div class="parent" style="padding:4%; padding-bottom:1%;" v-for="(task, index) in getLatestNotifications.taskList" :key="index">
+                                    <div class="left-buttons">
+                                        <v-icon color="#E74343" style="margin-top:25px; margin-right:70px; ">mdi-radiobox-marked</v-icon>
+                                    </div>
+                                    <div class="right-buttons">    
+                                        <p style="font-size:21.5px;">{{ task.taskTitle }}</p>
+                                        <p style="font-size:17px;">{{"Due on "}} {{ parseInt(task.taskDateTime, 10) | moment('DD-MMM-YYYY') }}</p>
+                                        <p style="font-size:17px;">{{ task.companyName }}</p>
+                                        <p style="font-size:17px;">{{"Test"}} {{ parseInt(1515456000, 10) | moment('YYYY-MM-DD') }}</p>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>                                                              
+                        </div>
                     </div>
+                    <!-- { title:eventArray.eventTitle, date:parseInt(eventArray.eventBeginDate, 10), textColor:'#000', color:'cyan' } -->
 
-                    <div class="col-right-bottom-right" style="padding:1%; width:64%; height:100%; float:left; position:relative; overflow:auto;">
-                        <FullCalendar defaultView="dayGridMonth" :plugins="calendarPlugins" />                      
+                    <div class="col-right-bottom-right" style="padding:1%; width:64%; height:100%; float:left; position:relative; overflow:auto;"
+                        v-for="(item, index) in eventArray" :key="index">
+                        <FullCalendar                             
+                            defaultView="dayGridMonth" 
+                            :plugins="calendarPlugins"  
+                            :events="eventArray"
+                        />                      
                     </div>
                 </div>
-            </div>
-        
-
+            </div>      
         </div>       
     <!-- </div> -->
 </template>
@@ -474,6 +473,9 @@
             requestUserLogin : [],
             userInfo : [],
             dashboardMenuList : [],
+            eventArray: [],
+            // eventBeginDate: [],
+
             // getRecentDocuments: [],
             // getLatestNotifications: [],
             // getCompanyList: [],
@@ -484,22 +486,56 @@
             moment: moment,
 
             date: 1570064727,
+
+        //     calendar: new Calendar(calendarEl, {
+        //         eventSources: [
+        //             // your event source
+        //             {
+        //             events: [ // put the array in the `events` property
+        //                 {
+        //                 title  : 'event1',
+        //                 start  : '2019-11-01'
+        //                 },
+        //                 {
+        //                 title  : 'event2',
+        //                 start  : '2019-11-05',
+        //                 end    : '2019-11-07'
+        //                 },
+        //                 {
+        //                 title  : 'event3',
+        //                 start  : '2010-11-09T12:30:00',
+        //                 }
+        //             ],
+        //             color: 'yellow',     // an option!
+        //             textColor: 'black' // an option!
+        //             }
+        //             // any other event sources...
+        //         ]
+        //         }),
             
-            // dashStyle:{
-            //      color: "rgb(0,255,0)"
-            // }
+        //     // dashStyle:{
+        //     //      color: "rgb(0,255,0)"
+        //     // }
 
         }),
 
+        filters: {
+              moment: function(date){
+                return moment(date).format('YYYY-MM-DD');
+            },
+        },
+
 
         methods: {
+          
             reloadPage(){
                 window.location.reload();
             },          
-            
+
             convertDate(date, format) {
                 return moment(this.date).format(format)
             },
+
             convertToUtc(date, format) {
                 return moment(this.date).utc().format(format)
             },
@@ -549,6 +585,7 @@
                 axios.get("../assets/json-APIs/getLatestNotifications.json")
                     .then(response => {
                         this.getLatestNotifications = response.data;
+                        console.log(this.getLatestNotifications.taskList.taskTitle);
                         this.$localStorage.set('getLatestNotifications', JSON.stringify(this.getLatestNotifications))
                         // this.success = this.tLatestNotifications.notificationsList
                         // console.log(this.getLatestNotifications.notificationsList);
@@ -573,6 +610,32 @@
                     .then(response => {
                         this.getRecentDocuments = response.data;
                         this.$localStorage.set('getRecentDocuments', JSON.stringify(this.getRecentDocuments))
+                        // this.itemCreatedOn = parseInt(this.getRecentDocuments.recentDocumentsList.itemCreatedOn, 10);
+                        // this.itemCreatedOn = this.getRecentDocuments.recentDocumentsList;
+                        // this.itemCreatedOn = parseInt(this.itemCreatedOn, 10);
+                        // console.log(this.itemCreatedOn);
+                    })
+                    .catch(e => {
+                        console.log('Error', e);
+                    })
+            },
+
+            getCalendarEvents(){
+                axios.get("../assets/json-APIs/getCalendarEvents.json")
+                    .then(response => {
+                        this.getCalendarEvents = response.data;
+                        // this.eventBeginDate = this.getCalendarEvents.eventTitle.eventBeginDate;
+                        this.eventArray = this.getCalendarEvents.eventList;
+                        this.$localStorage.set('getCalendarEvents', JSON.stringify(this.getCalendarEvents));
+                        this.eventArray=this.eventArray.map((element)=>{                     
+                            return { 
+                                title:element.eventTitle, 
+                                date:moment(parseInt(element.eventBeginDate*1000, 10)).format('YYYY-MM-DD'),
+                                color:`rgb(element.eventColor)`, 
+                                textColor:'#fff' 
+                            }
+                        })
+                         console.log(this.eventArray);
                         // this.itemCreatedOn = parseInt(this.getRecentDocuments.recentDocumentsList.itemCreatedOn, 10);
                         // this.itemCreatedOn = this.getRecentDocuments.recentDocumentsList;
                         // this.itemCreatedOn = parseInt(this.itemCreatedOn, 10);
@@ -609,6 +672,7 @@
             this.getLatestNotifications();
             this.getEboardUpdates();
             this.getRecentDocuments();
+            this.getCalendarEvents();
         },
 
         mounted() {
