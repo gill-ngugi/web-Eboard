@@ -287,7 +287,7 @@
                                         {{ item.itemSize | prettyBytes }} 
                                     </td>
                                     <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
-                                        {{ parseInt(item.itemCreatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                        {{ parseInt(item.itemCreatedOn*1000, 10) |  moment('DD-MMM-YYYY') }}                                 
                                     </td>
                                     <td style="padding-right:10px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
                                         <button class="btn btn-danger">Remove</button>
@@ -357,7 +357,7 @@
                                         </div>
                                         <div class="right-buttons">    
                                             <p style="font-size:21.5px;">{{ notification.notificationTitle }}</p>
-                                            <p style="font-size:17px;">{{"Due on "}} {{ parseInt(notification.notificationDateTime, 10) | moment('DD-MMM-YYYY') }}</p>
+                                            <p style="font-size:17px;">{{"Due on "}} {{ parseInt(notification.notificationDateTime*1000, 10) | moment('DD-MMM-YYYY') }}</p>
                                             <p style="font-size:17px;">{{ notification.companyName }}</p>
                                         </div>
                                         <hr>
@@ -385,9 +385,9 @@
                                     </div>
                                     <div class="right-buttons">    
                                         <p style="font-size:21.5px;">{{ task.taskTitle }}</p>
-                                        <p style="font-size:17px;">{{"Due on "}} {{ parseInt(task.taskDateTime, 10) | moment('DD-MMM-YYYY') }}</p>
+                                        <p style="font-size:17px;">{{"Due on "}} {{ parseInt(task.taskDateTime*1000, 10) | moment('DD-MMM-YYYY') }}</p>
                                         <p style="font-size:17px;">{{ task.companyName }}</p>
-                                        <p style="font-size:17px;">{{"Test"}} {{ parseInt(1515456000, 10) | moment('YYYY-MM-DD') }}</p>
+                                        <p style="font-size:17px;">{{"Test"}} {{ parseInt(1515456000*1000, 10) | moment('YYYY-MM-DD') }}</p>
                                     </div>
                                     <hr>
                                 </div>

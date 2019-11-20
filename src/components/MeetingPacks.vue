@@ -2,6 +2,7 @@
     <div>
         <!-- NAV-MENU -->
         <div class = "nav-menu" style="height:45px; width:100%; padding:0px; padding-top:0.3%; text-align:center;">
+           
             <router-link to="/"><v-icon color="#fff" size="35" style="margin-left:10px;">mdi-home</v-icon></router-link>
             <p style="font-weight:bold; font-size:24px; margin-left:40%;">Meeting Packs</p>
         </div>
@@ -10,7 +11,7 @@
               <div style="height:850px; margin-top:0.5%; margin-bottom:0.5%; background-color:#f8f9f9; border-top:5px solid rgb(86,182,229); width:98%; margin-left:1%; margin-right:1%;">
                 <div class = "parent" style="height:45px; width:100%; margin-top: 7px; background-color:#fff;">
                     <div class="left-buttons">                
-                        <router-link to=""><v-icon style="float:left; margin-left:10px; background-color:rgb(86,182,229); color:#fff" size="30">mdi-chevron-left</v-icon></router-link> 
+                        <router-link to=""><v-icon v-on:click="loadItemFromHistory()" style="float:left; margin-left:10px; background-color:rgb(86,182,229); color:#fff" size="30">mdi-chevron-left</v-icon></router-link> 
                         <p style="float:left; font-weight:bold; font-size:24px; text-align:left; margin-left:10px; width:250px;">Meeting Packs</p>              
                     </div>
                         <div class="filler"></div>
@@ -62,14 +63,16 @@
                                 </v-menu>       
                             </div> 
                         
-                        <div style="display:inline;"><button class="btn btn-lg" text>Name</button></div>
-                        <div style="display:inline;"><button class="btn btn-lg" text>List</button></div>
-                        <div style="display:inline;"><button class="btn btn-lg" text>Grid</button></div>
+                        <div style="display:inline;"><button class="btn btn-lg" text
+                            v-on:click="doSort('itemName')" href="javascript:">Name
+                            </button></div>
+                        <!-- <div style="display:inline;"><button class="btn btn-lg" text>List</button></div>
+                        <div style="display:inline;"><button class="btn btn-lg" text>Grid</button></div> -->
                     </div> 
                 </div> 
             
                 <div class = "parent" style="height:55px; width:100%; background-color:#f1f1f1;">
-                    <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">{{itemName}}{{"/"}}{{itemName2}}</p>                
+                    <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">{{joinNames()}}</p>                
                 </div>
 
         <!--  VUE ARRAY SORTING EXAMPLE             
@@ -105,7 +108,8 @@
                                     <span class="input-group-addon"><v-icon color="rgb(86,182,229)" style="margin-right:5px;">mdi-folder-open</v-icon></span>
                                 </td>
                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:650px; max-width:650px;">
-                                    <a v-bind:href="item.itemUrl">
+                                    <!-- <a v-bind:href="item.itemUrl" v-on:click="loadItem(item.itemId)"> -->
+                                    <a href="#" v-on:click="loadItem(item.localUrl)">
                                         {{ item.itemName }}
                                     </a>
                                 </td>
@@ -140,6 +144,7 @@
 <script>
     var moment = require('moment');
     import axios from 'axios';
+import { basename } from 'path';
 
     export default{
         data: () => ({
@@ -150,9 +155,9 @@
             itemSubArray: [],
             itemSubArray2: [],
             itemSubArray3: [],
-            itemName: '',
-            itemName2: '',
-            itemName3: '',
+            navigationPath:[{"itemName":"...","localUrl":"0"}],
+            currentParent:"",
+           
 
             items2: [
                 { title: 'Name' },
@@ -179,7 +184,17 @@
                 { id: 2, name: 'John Smith', leave: 13.45 },
                 { id: 3, name: 'Bill Smith', leave: 23.45 },
                 { id: 4, name: 'John Doe', leave: 133.53 }
-            ]
+            ],
+
+            load:{
+                userId: '45',
+                companyCode: '010',
+                accessToken: '97f914eb1ceb1867e3824f647f7e589b',
+                model: 'getMeetingPackFolder',
+                companyId: '2',
+                itemId: '0'
+            }
+
         }),
 
         methods: {
@@ -200,14 +215,21 @@
             },
             
             getMeetingPackFolder(){
-                axios.get("../assets/json-APIs/0-getMeetingPackFolder.json")
+                let baseUrl="../assets/json-APIs/0-getMeetingPackFolder.json"
+                axios.get(baseUrl)
                     .then(response => {
                         this.getMeetingPackFolder = response.data;
                         this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray;
-                        this.itemName = this.getMeetingPackFolder.data.itemName;
+                        this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray.map((value)=>{
+                                 return  {...value,"localUrl":"../assets/json-APIs/1-getMeetingPackFolder-boardMeetings.json"}
+                                });
+                                this.parentUrl=baseUrl;
+                                
+                                this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"localUrl":"../assets/json-APIs/0-getMeetingPackFolder.json"})
+                       // this.itemName = this.getMeetingPackFolder.data.itemName;
                         // this.$localStorage.set('getMeetingPackFolder', JSON.stringify(this.getMeetingPackFolder))
                         // console.log(this.itemSubArray);
-                        console.log(this.itemName);
+                        //console.log(this.navigationPath);
                     })
                     .catch(e => {
                         console.log('Error', e);
@@ -219,7 +241,7 @@
                     .then(response => {
                         this.getSubMeetingPackFolder = response.data;
                         this.itemSubArray2 = this.getSubMeetingPackFolder.data.itemSubArray;
-                        this.itemName2 = this.getSubMeetingPackFolder.data.itemName;
+                        //this.itemName2 = this.getSubMeetingPackFolder.data.itemName;
                     })
                     .catch(e => {
                         console.log('Error', e);
@@ -256,6 +278,58 @@
                     this.sort.desc = true;
                 }
             },
+
+            loadItem(childrenUrl){                                      
+                //let newItemId={"itemId":itemdId}
+                    axios.get(childrenUrl).then(response => {
+                    this.getSubMeetingPackFolder = response.data;
+                    this.itemSubArray = this.getSubMeetingPackFolder.data.itemSubArray.map((value)=>{
+                    return  {...value,"localUrl":"../assets/json-APIs/1-getMeetingPackFolder-boardMeetings.json"}
+                    });
+                   
+                this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"localUrl":this.parentUrl})
+                        
+                    //console.log(this.response);
+                }, error => {
+                    console.error(error);
+                });
+            },
+
+            joinNames(){
+                return [...this.navigationPath.map((value)=>{
+                    return value.itemName
+                })].join("/")
+            },
+
+            loadItemFromHistory(){
+                
+                let currentTop=this.navigationPath.pop();
+                console.log(currentTop)
+               let currentParent=this.navigationPath.peek
+                  axios.get(currentTop.localUrl).then(response => {
+                        this.getSubMeetingPackFolder = response.data;
+                        this.itemSubArray = this.getSubMeetingPackFolder.data.itemSubArray.map((value)=>{
+                         return  {...value,"localUrl":"../assets/json-APIs/1-getMeetingPackFolder-boardMeetings.json"}
+                        });
+                       this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"localUrl":currentParent.localUrl})
+                            
+                        console.log(this.response);
+                    }, error => {
+                        console.error(error);
+                    });
+
+            }
+                        // loadItem(itemdId){
+            //     let newItemId={"itemId":itemdId}
+            //         axios.get("../assets/json-APIs/0-getMeetingPackFolder.json", {"data": {...this.load,...newItemId}}).then(result => {
+            //          this.getSubMeetingPackFolder = response.data;
+            //         this.itemSubArray2 = this.getSubMeetingPackFolder.data.itemSubArray;
+            //         this.itemName2 = this.getSubMeetingPackFolder.data.itemName;     
+            //         console.log(this.response);
+            //     }, error => {
+            //         console.error(error);
+            //     });
+            // }
         },
 
         computed: {
@@ -276,10 +350,10 @@
 
             sortedData2 () {
                 if(!this.sort.field){
-                    return this.itemSubArray2
+                    return this.itemSubArray
                 }
 
-                return this.itemSubArray2.concat().sort((a,b)=>{
+                return this.itemSubArray.concat().sort((a,b)=>{
                     if(this.sort.desc){
                         return a[this.sort.field] > b[this.sort.field] ? -1:1        
                     }

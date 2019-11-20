@@ -15,7 +15,7 @@
           <span class="image1"><img src="../img/eboard.png" style="width:40%; height:20%; margin-left:5%;"></span>
           <span class="image2"><img src="../img/stl.png" style="width:40%; height: 20%; margin-left:10%"></span>
 
-        <h4>Login to your account: {{ip}}</h4>
+        <h4>Login to your account: </h4>
         <hr>
         <p style="text-align:center; color:red; font-weight:bold;">{{error}}</p>
           <!-- <form class="form-login" @submit.prevent="sendData"> -->
@@ -102,20 +102,22 @@ import axios from 'axios';
       // axios.get('http://192.168.1.34:8000/api/country');
       // axios.get('http://ziptasticapi.com/')
          
-         // axios({ method: "POST", "url": "eserver1.stl-horizon.com/api_v9/frontend/web/user/create", "headers": { "content-type": "application/json" } }).then(result => {
+        //  axios({ method: "POST", "url": "eserver1.stl-horizon.com/api_v9/frontend/web/user/create", "headers": { "content-type": "application/json" } }).then(result => {
+        //  axios({ method: "POST", "url": "http://web_eboard.stl-horizon.com/frontend/web/user/create", "headers": { "content-type": "application/json" } }).then(result => {
+          
           //     this.response = result.data;
           //     console.log(this.response);
           //   }, error => {
           //       console.error(error);
           //   });
-    },
+      },
 
     methods: {
        sendData() {
-          axios.post("https://wachiaapp.com/wachia/api/user/login", {"data": this.input}  
+          axios.post("http://web_eboard.stl-horizon.com/frontend/web/index.php/user/create", this.input 
           ).then(result => {
               this.response = result.data;      
-              console.log(this.response);
+              console.log(this.input);
           }, error => {
               console.error(error);
           });
