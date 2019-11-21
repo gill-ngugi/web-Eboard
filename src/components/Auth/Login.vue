@@ -1,8 +1,15 @@
 <template>
   <div>
 
-      <div style="margin-left:10%; margin-right:10%; margin-top:2%;">
-        <img class="bgimg-1" src="../img/login-bg.jpg">
+      <div style="width:100%; height:100%">
+      <!-- <div style="margin-left:10%; margin-right:10%; margin-top:2%;"> -->
+        <img class="bgimg-1" src="../img/login-bg-new.png" 
+            style="
+              opacity: 1.0;
+              background-position: center;
+              background-repeat: no-repeat;
+              object-fit: cover;
+          ">
       
         <div class="quote">
             "MANAGEMENT IS DOING THINGS RIGHT,<br>
@@ -42,13 +49,13 @@
             </div>    
 
             <div class="form-group">
-                <button v-on:click="sendData()">Send</button>
-                <!-- <button type="submit" class="btn btn-danger" style="color:#fff">Log In</button><br> -->
+                <button type="submit" class="btn btn-danger" style="color:#fff; margin-bottom:15px;" v-on:click="sendData()">Log In</button>
+                <!-- <button v-on:click="sendData()">Send</button> -->
                 <!-- <button class="btn btn-danger" style="color:#fff" v-on:click="login()">Log In</button><br> -->
             </div>    
            
             <div class="forgot">
-                <p>Forgot Password?</p>
+                <!-- <p>Forgot Password?</p> -->
                 <!-- <p>{{stl.companyDetail.companyName}}</p>
                 <p>{{stl.userInfo.userEmail}}}</p> -->
             </div>
@@ -76,14 +83,9 @@ import axios from 'axios';
       return {
         ip: "",
         input:{
-          companyCode: "010",
-          model: "requestUserLogin",
-          mobileVersion: "11.4.1",
-          deviceName: "ipad air 2",
-          deviceToken: "b41dfaf1ba018196d5068a0ecc3bde33f83c94131ecf71d053260b944da14612",
-          userName : "gngugi",
-          userPassword : "gngugi",
-          eboardVersion: "2.5.7"  
+          companyCode: "",
+          userName : "",
+          userPassword : "",
         },
         error: "",        
         // stl: {},
@@ -114,13 +116,31 @@ import axios from 'axios';
 
     methods: {
        sendData() {
-          axios.post("http://web_eboard.stl-horizon.com/frontend/web/index.php/user/create", this.input 
-          ).then(result => {
-              this.response = result.data;      
-              console.log(this.input);
+         const formData = new FormData();
+         formData.append('companyCode', this.input.companyCode);
+         formData.append('model', "requestUserLogin");
+         formData.append('mobileVersion', "11.4.1");
+         formData.append('deviceName', "ipad air 2");
+         formData.append('deviceToken', "b41dfaf1ba018196d5068a0ecc3bde33f83c94131ecf71d053260b944da14612");
+         formData.append('userName', this.input.userName);
+         formData.append('userPassword', this.input.userPassword);
+         formData.append('eboardVersion', "2.5.7");          
+
+          axios.post("http://web_eboard.stl-horizon.com/frontend/web/index.php/user/create", formData)
+            .then(result => {
+              this.response = result.data;
+                if(this.response.success == 1){
+                  this.$router.push("/");
+                  console.log(this.response);
+                  console.log("SUCCESS MESSAGE");
+                  // this.reloadPage();
+                }
+                else{
+                  this.error = this.response.message;
+                }
           }, error => {
               console.error(error);
-          });
+          });    
       },
 
       login(){
@@ -213,7 +233,11 @@ import axios from 'axios';
             this.error = "Fill in all credentials";
             console.log("Fill in all credentials");
           }
-        }
+        },
+
+        reloadPage(){
+              window.location.reload();
+          }, 
       },             
     }
 </script>
@@ -229,23 +253,27 @@ import axios from 'axios';
     font: 400 15px/1.8 "Lato", sans-serif;
     color: #777;
     /* background-image: url("../img/login-bg.jpg"); */
-    height: 100%;
     position: relative;
-    opacity: 1.0;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
 }
 
-  .bgimg-1, .bgimg-2, .bgimg-3 {
-    position: relative;
-    opacity: 1.0;
-    background-position: center;
+/* body { 
+  background-image: url("./login-bg.jpg"); 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+} */
+
+  /* .bgimg-1, .bgimg-2, .bgimg-3 { */
+    /* position: relative; */
+    /* opacity: 1.0;
+    object-fit: fill; */
+    /* background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
-    height: 100%;
+    background-size: cover; */
+    /* height: 100%; */
     /* background-image: url("../img/login-bg.jpg"); */
-    }
+    /* } */
 
   .caption {
     position: absolute;

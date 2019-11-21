@@ -155,10 +155,10 @@ import { basename } from 'path';
             itemSubArray: [],
             itemSubArray2: [],
             itemSubArray3: [],
+
             navigationPath:[{"itemName":"...","localUrl":"0"}],
             currentParent:"",
            
-
             items2: [
                 { title: 'Name' },
                 { title: 'Size' },
@@ -221,15 +221,11 @@ import { basename } from 'path';
                         this.getMeetingPackFolder = response.data;
                         this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray;
                         this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray.map((value)=>{
-                                 return  {...value,"localUrl":"../assets/json-APIs/1-getMeetingPackFolder-boardMeetings.json"}
-                                });
-                                this.parentUrl=baseUrl;
-                                
-                                this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"localUrl":"../assets/json-APIs/0-getMeetingPackFolder.json"})
-                       // this.itemName = this.getMeetingPackFolder.data.itemName;
-                        // this.$localStorage.set('getMeetingPackFolder', JSON.stringify(this.getMeetingPackFolder))
-                        // console.log(this.itemSubArray);
-                        //console.log(this.navigationPath);
+                            return  {...value,"localUrl":"../assets/json-APIs/1-getMeetingPackFolder-boardMeetings.json"}
+                            });
+                            this.parentUrl=baseUrl;
+                            
+                            this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"localUrl":"../assets/json-APIs/0-getMeetingPackFolder.json"})
                     })
                     .catch(e => {
                         console.log('Error', e);
