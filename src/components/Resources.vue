@@ -19,7 +19,7 @@
                             v-for="(item, index) in itemSubArrayDynamicData"
                             :key="index"                                
                         >
-                        <v-list-item-title>{{ item.itemName }} <v-divider></v-divider></v-list-item-title>  
+                        <v-list-item-title><a href="#" v-on:click="loadDirectoriesAndFiles(item)"> {{item.itemName }}</a> <v-divider></v-divider></v-list-item-title>  
                         </v-list-item>
                     </v-list>
                 </div>
@@ -34,7 +34,7 @@
                             v-for="(item, index) in itemSubArrayStaticData"
                             :key="index"                                
                         >
-                        <v-list-item-title>{{ item.itemName }} <v-divider></v-divider></v-list-item-title>  
+                        <v-list-item-title><a href="#" v-on:click="loadDirectoriesAndFiles(item)"> {{item.itemName }}</a> <v-divider></v-divider></v-list-item-title>  
                         </v-list-item>
                     </v-list>
                 </div>
@@ -45,6 +45,7 @@
                 <div class = "parent" style="height:45px; width:100%; background-color:#fff;">
                     <div class="left-buttons">                
                         <!-- <router-link to=""><v-icon style="float:left; margin-top:7px; margin-left:10px; background-color:rgb(227,58,58); color:#fff" size="30">mdi-chevron-left</v-icon></router-link>  -->
+                        <router-link to=""><v-icon v-on:click="loadItemFromHistory()" style="float:left; margin-top:5px; margin-left:10px; background-color:rgb(227,58,58); color:#fff" size="30">mdi-chevron-left</v-icon></router-link> 
                         <p style="float:left; font-weight:bold; font-size:24px; text-align:left; margin-left:10px; width:250px;">Meeting Packs</p>              
                     </div>
                         <div class="filler"></div>
@@ -83,7 +84,8 @@
             
             <!-- Header 2 -->
                 <div class = "parent" style="height:55px; width:100%; background-color:#f1f1f1;">
-                    <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">Directors/</p>                
+                    <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">Directors/</p>    
+                    <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">{{joinNames()}}</p>            
                 </div>
 
             <!-- Table -->
@@ -106,9 +108,12 @@
                                 <span class="input-group-addon"><v-icon color="rgb(227,58,58)" style="margin-right:5px;">mdi-folder-open</v-icon></span>
                             </td>
                             <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:450px; max-width:450px;">
-                                <a v-bind:href="item.itemUrl">
+                                <!-- <a v-bind:href="item.itemUrl">
                                     {{ item.itemName }}
-                                </a>
+                                </a> -->
+                                 <a href="#"  v-on:click="getMeetingPack(item)">
+                                        {{ item.itemName }}
+                                    </a>
                             </td>
                             <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
                                 {{ item.itemSize | prettyBytes }} 
@@ -134,6 +139,7 @@
 <script>
     var moment = require('moment');
     import axios from 'axios';
+    import UserData from '../components/repository/UserData'
 
     export default{
         data: () => ({
@@ -151,44 +157,152 @@
                 { title: 'Submitted By' },
             ],
 
+            navigationPath:[{"itemName":"...","localUrl":"0"}],
+            currentParent:"",
+            parentItemId:"",
+
+            userdata:{                
+                rootUrl:"http://web_eboard.stl-horizon.com/frontend/web/index.php/user/create"
+           }
+
         }),
 
         methods: {
             reloadPage(){
                 window.location.reload();
             },    
+            
+            // getResourcePackFolder(){
+            //     axios.get("../assets/json-APIs/getResourcePackFolder.json")
+            //         .then(response => {
+            //             this.getResourcePackFolder = response.data;
+            //             this.$localStorage.set('getResourcePackFolder', JSON.stringify(this.getResourcePackFolder));
+            //             this.itemSubArrayStaticData = this.getResourcePackFolder.staticData.itemSubArray;
+            //             this.itemSubArrayDynamicData = this.getResourcePackFolder.dynamicData.itemSubArray;
+            //             console.log(this.getResourcePackFolder);
+            //         })
+            //         .catch(e => {
+            //             console.log('Error', e);
+            //         })
+            // },   
 
             getResourcePackFolder(){
-                axios.get("../assets/json-APIs/getResourcePackFolder.json")
+                
+                axios.post(UserData.getBaseUrl(),UserData.getUserDataWithModel(0,0,"getResourcePackFolder"))
                     .then(response => {
+
                         this.getResourcePackFolder = response.data;
                         this.$localStorage.set('getResourcePackFolder', JSON.stringify(this.getResourcePackFolder));
                         this.itemSubArrayStaticData = this.getResourcePackFolder.staticData.itemSubArray;
                         this.itemSubArrayDynamicData = this.getResourcePackFolder.dynamicData.itemSubArray;
-                        console.log(this.getResourcePackFolder);
-                    })
-                    .catch(e => {
-                        console.log('Error', e);
-                    })
-            },   
-              
-            getResourcePackFolderDirectors(){
-                  axios.get("../assets/json-APIs/getResourcePackFolder-directors.json")
-                    .then(response => {
-                        this.getResourcePackFolderDirectors = response.data;
-                        this.$localStorage.set('getResourcePackFolderDirectors', JSON.stringify(this.getResourcePackFolderDirectors));
-                        this.resourceDirectors = this.getResourcePackFolderDirectors.data.itemSubArray;
-                        console.log(this.resourceDirectors);
+                        //console.log(this.getResourcePackFolder);
                     })
                     .catch(e => {
                         console.log('Error', e);
                     })
             }, 
+
+            getUserData(itemId=0,parentItemId=0){
+                this.parentItemId=parentItemId;
+                const formData = new FormData();
+                formData.append('userId', "45");
+                formData.append('companyCode',"010");
+                formData.append('accessToken',"97f914eb1ceb1867e3824f647f7e589b");
+                formData.append('model', "getMeetingPackFolder");
+                formData.append('companyId', "2");
+                formData.append('itemId', itemId);
+                return formData;        
+            },
+
+              getMeetingPack(item){
+                   if(item.hasOwnProperty("itemExtension")){
+                       javascipt:window.open(item.itemUrl);
+                       //alert(item.itemUrl)
+                       return
+                   }
+                let baseUrl=this.userdata.rootUrl
+                axios.post(baseUrl,this.getUserData(item.itemId,item.itemParentId))
+                    .then(response => {         
+                        this.getMeetingPackFolder = response.data;
+                        this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray;
+                   
+                            this.parentUrl=baseUrl;
+                            this.getMeetingPackFolder.data.hasOwnProperty("itemSubArray")?
+                            (itemSubArray.length>0?this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"itemId":this.parentItemId}):null):
+                            null
+                            console.log(UserData.getAccessToken())
+                            console.log(this.getMeetingPackFolder);
+                     })
+                    .catch(e => {
+                        console.log('Error', e);
+                    })
+            },
+
+            joinNames(){
+                return [...this.navigationPath.map((value)=>{
+                    return value.itemName
+                })].join("/")
+            },
+
+
+            loadItemFromHistory(){
+                let baseUrl=this.userdata.rootUrl
+                let currentTop=this.navigationPath.pop();
+                console.log(currentTop)
+                let currentParent=this.navigationPath.peek
+                  axios.post(baseUrl,this.getUserData(currentTop.itemId)).then(response => {
+                        this.getSubMeetingPackFolder = response.data;
+                        this.itemSubArray = this.getSubMeetingPackFolder.data.itemSubArray
+                    }, error => {
+                        console.error(error);
+                    });
+            },
+
+            loadDirectoriesAndFiles(item){
+              axios.post(UserData.getBaseUrl(),UserData.getUserDataWithModel(item.itemId,0,"getResourcePackFolder"))
+                    .then(response => {
+
+                        this.getResourcePackFolder = response.data;
+                        this.resourceDirectors = this.getResourcePackFolder.data.itemSubArray;
+
+                        console.log(this.getResourcePackFolder);
+                    })
+                    .catch(e => {
+                        console.log('Error', e);
+                    })
+            }, 
+
+            // loadDirectoriesAndFilesgill(){
+            //     axios.post(UserData.getBaseUrl(),UserData.getUserDataWithModel(0,0,"getResourcePackFolder"))
+            //         .then(response => {
+
+            //             this.getResourcePackFolder = response.data;
+
+            //             console.log(this.getResourcePackFolder);
+            //         })
+            //         .catch(e => {
+            //             console.log('Error', e);
+            //         })
+            // },
+              
+            // getResourcePackFolderDirectors(){
+            //       axios.get("../assets/json-APIs/getResourcePackFolder-directors.json")
+            //         .then(response => {
+            //             this.getResourcePackFolderDirectors = response.data;
+            //             this.$localStorage.set('getResourcePackFolderDirectors', JSON.stringify(this.getResourcePackFolderDirectors));
+            //             this.resourceDirectors = this.getResourcePackFolderDirectors.data.itemSubArray;
+            //             console.log(this.resourceDirectors);
+            //         })
+            //         .catch(e => {
+            //             console.log('Error', e);
+            //         })
+            // }, 
         },
       
         beforeMount(){
             this.getResourcePackFolder();
-            this.getResourcePackFolderDirectors();
+            //this.loadDirectoriesAndFilesgill();
+            // this.getResourcePackFolderDirectors();
         },
 
         mounted() {

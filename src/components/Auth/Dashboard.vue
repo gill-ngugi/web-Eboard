@@ -279,7 +279,7 @@
                                         <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
                                     </td>
                                     <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:450px; max-width:450px;">
-                                        <a v-bind:href="item.itemUrl">
+                                        <a href="#" v-on:click="openPdf(item.itemUrl)">
                                             {{ item.itemName }}
                                         </a>
                                     </td>
@@ -526,6 +526,10 @@
 
 
         methods: {
+
+            openPdf(itemUrl){
+                javascipt:window.open(itemUrl);
+            },
           
             reloadPage(){
                 window.location.reload();

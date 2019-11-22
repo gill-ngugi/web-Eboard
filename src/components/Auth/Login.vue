@@ -75,6 +75,7 @@
 
 <script>
 import axios from 'axios';
+import UserData from '../repository/UserData';
 
   export default {
     name: 'Login',
@@ -130,8 +131,12 @@ import axios from 'axios';
             .then(result => {
               this.response = result.data;
                 if(this.response.success == 1){
+                    console.log(this.response.accessToken);
+                  let token=this.response.accessToken;
+                  alert(token)
+                 UserData.setAccessToken(token)
                   this.$router.push("/");
-                  console.log(this.response);
+                
                   console.log("SUCCESS MESSAGE");
                   // this.reloadPage();
                 }

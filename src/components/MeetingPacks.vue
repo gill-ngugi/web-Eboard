@@ -54,7 +54,7 @@
                                                 <span v-if="sort.field=='itemUploadedBy'">({{sort.desc?'desc':'asc'}})</span>
                                             </v-list-item-title>
 
-                                    <!--    <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortByName()">Name</v-list-item-title>
+                                        <!--    <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortByName()">Name</v-list-item-title>
                                             <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortBySize()">Size</v-list-item-title>
                                             <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortByModifiedOn()">Modified On</v-list-item-title>
                                             <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortBySubmittedBy()">Submitted By</v-list-item-title> -->
@@ -72,7 +72,7 @@
                 </div> 
             
                 <div class = "parent" style="height:55px; width:100%; background-color:#f1f1f1;">
-                    <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">{{joinNames()}}</p>                
+                    <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">{{joinNames()}}</p>            
                 </div>
 
         <!--  VUE ARRAY SORTING EXAMPLE             
@@ -109,9 +109,10 @@
                                 </td>
                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:650px; max-width:650px;">
                                     <!-- <a v-bind:href="item.itemUrl" v-on:click="loadItem(item.itemId)"> -->
-                                    <a href="#" v-on:click="loadItem(item.localUrl)">
+                                    <a href="#"  v-on:click="getMeetingPack(item)">
                                         {{ item.itemName }}
                                     </a>
+                                    
                                 </td>
                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
                                     {{ item.itemSize | prettyBytes }} 
@@ -144,7 +145,7 @@
 <script>
     var moment = require('moment');
     import axios from 'axios';
-import { basename } from 'path';
+    import { basename } from 'path';
 
     export default{
         data: () => ({
@@ -158,14 +159,15 @@ import { basename } from 'path';
 
             navigationPath:[{"itemName":"...","localUrl":"0"}],
             currentParent:"",
-           
+            parentItemId:"",
+
             items2: [
                 { title: 'Name' },
                 { title: 'Size' },
                 { title: 'Modified On' },
                 { title: 'Submitted By' },
             ],
-
+         
             currentComponent: null,
 
             componentsArray: ['comp1', 'comp2'],
@@ -193,8 +195,10 @@ import { basename } from 'path';
                 model: 'getMeetingPackFolder',
                 companyId: '2',
                 itemId: '0'
-            }
-
+            },
+            userdata:{                
+                rootUrl:"http://web_eboard.stl-horizon.com/frontend/web/index.php/user/create"
+           }
         }),
 
         methods: {
@@ -213,48 +217,95 @@ import { basename } from 'path';
                         console.log('Error', e);
                     })
             },
+
+            getUserData(itemId=0,parentItemId=0){
+                this.parentItemId=parentItemId;
+                const formData = new FormData();
+                formData.append('userId', "45");
+                formData.append('companyCode',"010");
+                formData.append('accessToken',"97f914eb1ceb1867e3824f647f7e589b");
+                formData.append('model', "getMeetingPackFolder");
+                formData.append('companyId', "2");
+                formData.append('itemId', itemId);
+                return formData;        
+            },
             
-            getMeetingPackFolder(){
-                let baseUrl="../assets/json-APIs/0-getMeetingPackFolder.json"
-                axios.get(baseUrl)
-                    .then(response => {
+              getMeetingPack(item){
+                   if(item.hasOwnProperty("itemExtension")){
+                       javascipt:window.open(item.itemUrl);
+                       //alert(item.itemUrl)
+                       return
+                   }
+                   
+                let baseUrl=this.userdata.rootUrl
+                axios.post(baseUrl,this.getUserData(item.itemId,item.itemParentId))
+                    .then(response => {  
+                             
                         this.getMeetingPackFolder = response.data;
                         this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray;
-                        this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray.map((value)=>{
-                            return  {...value,"localUrl":"../assets/json-APIs/1-getMeetingPackFolder-boardMeetings.json"}
-                            });
+                    
                             this.parentUrl=baseUrl;
                             
-                            this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"localUrl":"../assets/json-APIs/0-getMeetingPackFolder.json"})
-                    })
+                            this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"itemId":this.parentItemId})
+                            
+                     })
                     .catch(e => {
                         console.log('Error', e);
                     })
             },
 
-            getSubMeetingPackFolder(){
-                axios.get("../assets/json-APIs/1-getMeetingPackFolder-boardMeetings.json")
+            getMeetingPackFolder(){
+                let baseUrl=this.userdata.rootUrl
+                axios.post(baseUrl,this.getUserData())
                     .then(response => {
-                        this.getSubMeetingPackFolder = response.data;
-                        this.itemSubArray2 = this.getSubMeetingPackFolder.data.itemSubArray;
-                        //this.itemName2 = this.getSubMeetingPackFolder.data.itemName;
-                    })
+
+         
+                        this.getMeetingPackFolder = response.data;
+                        this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray;
+                    
+                            this.parentUrl=baseUrl;
+                            
+                                     
+                            this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"itemId":this.parentItemId})
+
+                       
+                        // this.getMeetingPackFolder = response.data;
+                        // this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray;
+                        // this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray.map((value)=>{
+                        //     return  {...value,"localUrl":"../assets/json-APIs/1-getMeetingPackFolder-boardMeetings.json"}
+                        //     });
+                        //     this.parentUrl=baseUrl;
+                            
+                        //     this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"localUrl":"../assets/json-APIs/0-getMeetingPackFolder.json"})
+                     })
                     .catch(e => {
                         console.log('Error', e);
                     })
             },
 
-            getSubSubMeetingPackFolder(){
-                axios.get("../assets/json-APIs/3-getMeetingPackFolder-boardMeetings-56thBM-pdfs.json")
-                    .then(response => {
-                        this.getSubSubMeetingPackFolder = response.data;
-                        this.itemSubArray3 = this.getSubSubMeetingPackFolder.data.itemSubArray;
-                        this.itemName3 = this.getSubSubMeetingPackFolder.data.itemName;
-                    })
-                    .catch(e => {
-                        console.log('Error', e);
-                    })
-            },
+            // getSubMeetingPackFolder(){
+            //     axios.get("../assets/json-APIs/1-getMeetingPackFolder-boardMeetings.json")
+            //         .then(response => {
+            //             this.getSubMeetingPackFolder = response.data;
+            //             this.itemSubArray2 = this.getSubMeetingPackFolder.data.itemSubArray;
+            //             //this.itemName2 = this.getSubMeetingPackFolder.data.itemName;
+            //         })
+            //         .catch(e => {
+            //             console.log('Error', e);
+            //         })
+            // },
+
+            // getSubSubMeetingPackFolder(){
+            //     axios.get("../assets/json-APIs/3-getMeetingPackFolder-boardMeetings-56thBM-pdfs.json")
+            //         .then(response => {
+            //             this.getSubSubMeetingPackFolder = response.data;
+            //             this.itemSubArray3 = this.getSubSubMeetingPackFolder.data.itemSubArray;
+            //             this.itemName3 = this.getSubSubMeetingPackFolder.data.itemName;
+            //         })
+            //         .catch(e => {
+            //             console.log('Error', e);
+            //         })
+            // },
 
             sortBySize(){
                 this.itemSubArray2.itemSize.sort(function (a,b) {
@@ -275,21 +326,21 @@ import { basename } from 'path';
                 }
             },
 
-            loadItem(childrenUrl){                                      
-                //let newItemId={"itemId":itemdId}
-                    axios.get(childrenUrl).then(response => {
-                    this.getSubMeetingPackFolder = response.data;
-                    this.itemSubArray = this.getSubMeetingPackFolder.data.itemSubArray.map((value)=>{
-                    return  {...value,"localUrl":"../assets/json-APIs/1-getMeetingPackFolder-boardMeetings.json"}
-                    });
+            // loadItem(childrenUrl){                                      
+            //     //let newItemId={"itemId":itemdId}
+            //         axios.get(childrenUrl).then(response => {
+            //         this.getSubMeetingPackFolder = response.data;
+            //         this.itemSubArray = this.getSubMeetingPackFolder.data.itemSubArray.map((value)=>{
+            //         return  {...value,"localUrl":"../assets/json-APIs/1-getMeetingPackFolder-boardMeetings.json"}
+            //         });
                    
-                this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"localUrl":this.parentUrl})
+            //     this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"localUrl":this.parentUrl})
                         
-                    //console.log(this.response);
-                }, error => {
-                    console.error(error);
-                });
-            },
+            //         //console.log(this.response);
+            //     }, error => {
+            //         console.error(error);
+            //     });
+            // },
 
             joinNames(){
                 return [...this.navigationPath.map((value)=>{
@@ -298,22 +349,16 @@ import { basename } from 'path';
             },
 
             loadItemFromHistory(){
-                
+                let baseUrl=this.userdata.rootUrl
                 let currentTop=this.navigationPath.pop();
                 console.log(currentTop)
-               let currentParent=this.navigationPath.peek
-                  axios.get(currentTop.localUrl).then(response => {
+                let currentParent=this.navigationPath.peek
+                  axios.post(baseUrl,this.getUserData(currentTop.itemId)).then(response => {
                         this.getSubMeetingPackFolder = response.data;
-                        this.itemSubArray = this.getSubMeetingPackFolder.data.itemSubArray.map((value)=>{
-                         return  {...value,"localUrl":"../assets/json-APIs/1-getMeetingPackFolder-boardMeetings.json"}
-                        });
-                       this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"localUrl":currentParent.localUrl})
-                            
-                        console.log(this.response);
+                        this.itemSubArray = this.getSubMeetingPackFolder.data.itemSubArray
                     }, error => {
                         console.error(error);
                     });
-
             }
                         // loadItem(itemdId){
             //     let newItemId={"itemId":itemdId}
