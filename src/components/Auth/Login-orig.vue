@@ -2,6 +2,7 @@
   <div>
 
       <div style="width:100%; height:100%">
+      <!-- <div style="margin-left:10%; margin-right:10%; margin-top:2%;"> -->
         <img class="bgimg-1" src="../img/login-bg-new.png" 
             style="
               opacity: 1.0;
@@ -24,6 +25,8 @@
         <h4>Login to your account: </h4>
         <hr>
         <p style="text-align:center; color:red; font-weight:bold;">{{error}}</p>
+          <!-- <form class="form-login" @submit.prevent="sendData"> -->
+          <!-- <form class="form-login"> -->
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
@@ -47,15 +50,22 @@
 
             <div class="form-group">
                 <button type="submit" class="btn btn-danger" style="color:#fff; margin-bottom:15px;" v-on:click="sendData()">Log In</button>
-           </div>    
+                <!-- <button v-on:click="sendData()">Send</button> -->
+                <!-- <button class="btn btn-danger" style="color:#fff" v-on:click="login()">Log In</button><br> -->
+            </div>    
            
             <div class="forgot">
                 <!-- <p>Forgot Password?</p> -->
+                <!-- <p>{{stl.companyDetail.companyName}}</p>
+                <p>{{stl.userInfo.userEmail}}}</p> -->
             </div>
 
+          <!-- </form> -->
         </div>
 
+      <!-- <div class="footer-text">Software Technologies Limited 2011-2019</div> -->
 
+      <!-- </div> -->
     </div>
 </template>
 
@@ -86,6 +96,20 @@ import UserData from '../repository/UserData';
             }, error => {
                 console.error(error);
             });
+      // axios.get("../assets/json-APIs/requestUserLogin.json");
+      // axios.get('http://mealbooking.stl-horizon.com/api/users');
+      // axios.get('http://tst-visitors.stl-horizon.com/api/user/login');
+      // axios.get('http://192.168.1.34:8000/api/country');
+      // axios.get('http://ziptasticapi.com/')
+         
+        //  axios({ method: "POST", "url": "eserver1.stl-horizon.com/api_v9/frontend/web/user/create", "headers": { "content-type": "application/json" } }).then(result => {
+        //  axios({ method: "POST", "url": "http://web_eboard.stl-horizon.com/frontend/web/user/create", "headers": { "content-type": "application/json" } }).then(result => {
+          
+          //     this.response = result.data;
+          //     console.log(this.response);
+          //   }, error => {
+          //       console.error(error);
+          //   });
       },
 
     methods: {
@@ -109,10 +133,12 @@ import UserData from '../repository/UserData';
           let companyCode = this.input.companyCode;
           UserData.setCompanyCode(companyCode);
 
+          // axios.post("http://web_eboard.stl-horizon.com/frontend/web/index.php/user/create", formData)
           axios.post(UserData.getBaseUrl(), formData)
             .then(result => {
               this.response = result.data;
                 if(this.response.success == 1){
+                  // console.log(this.response.accessToken);
                   this.$store.commit("setAuthentication", true);
                     let token = this.response.accessToken;
                     UserData.setAccessToken(token); 
@@ -121,8 +147,10 @@ import UserData from '../repository/UserData';
                         let companyId = this.response.companyDetail.companyId;
                         UserData.setCompanyId(companyId);
                           this.$router.replace({ name: "dashboard" });
-                          this.$router.push("/dashboard");  
-              }
+                          this.$router.push("/dashboard");                
+                    // console.log("SUCCESS MESSAGE");
+                    // this.reloadPage();
+                }
                 else{
                   this.error = this.response.message;
                 }
@@ -132,20 +160,89 @@ import UserData from '../repository/UserData';
       },
 
       login(){
+          // axios.post('http://eserver1.stl-horizon.com/api_tst_v12/frontend/web/user/create',{
+          // axios.get('http://mealbooking.stl-horizon.com/api/users',{
+          // axios.get('http://localhost/web-Eboard-APIs/requestUserLogin.json')
+          // axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
           if(this.input.userName != "" && this.input.userPassword != "" && this.input.companyCode != " "){
           axios.get("../assets/json-APIs/requestUserLogin.json", this.input)
-         
+          // axios.get('http://tst-visitors.stl-horizon.com/api/student',{
+          // axios.post('http://tst-visitors.stl-horizon.com/api/user/login',{
+          // axios.get('http://ziptasticapi.com/')
+          // axios.get('http://192.168.1.167/apps/mealbooking/public/api/users',{
+          // axios.get('http://192.168.1.34:8000/api/country',{
+          // axios.post('http://192.168.1.34:8000/api/country',{
+            // headers: {
+              // 'Access-Control-Allow-Origin': '*',
+              // 'Content-Type': 'application/json',
+              // 'Accept': 'application/json',
+              // 'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+              // 'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+              // crossdomain:true,
+            //   'Access-Control-Allow-Origin': 'http://localhost:8080/login',
+            //   'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+            //   'Access-Control-Allow-Headers': 'X-PINGOTHER, Content-Type',
+            //   'Access-Control-Max-Age': '86400'
+            // },
+            // proxy: {
+              // host: '192.168.1.150',
+              // port: 9191
+            // }  
+            // mode: 'no-cors',
+            // withCredentials: true,
+            // credentials: 'same-origin',
+            // auth: {
+              // userName : 'anand1', 
+              // userPassword : 'anand1',
+              // companyCode : '010',
+              // model : 'requestUserLogin'
+              // email: 'david.macharia@stl-horizon.com',
+              // password: '@Dakima1993',
+              // company_code: '100'
+              // country_name: 'Lebanon',
+              // currency: '87666',
+              // phone_code:'ytrf'
+            // }
+    // })
+            // method: 'POST',
+            // mode: 'no-cors',
+            //   headers: {
+            //   'Access-Control-Allow-Origin': '*',
+            //   'Content-Type': 'application/json',
+            // },
+            // withCredentials: true,
+            // credentials: 'same-origin',
+            // userName : this.userName, 
+            // userPassword : this.userPassword,
+            // companyCode : this.companyCode,
+            // model : this.model
+               
           .then(response => {
               console.log(this.input.userName),
               console.log(this.input.userPassword),
               console.log(this.input.companyCode),
+              // console.log(this.model),
+              // console.log(this.response);
+              // this.stl = response.data;
+              // console.log(this.stl);
               console.log(response);
+              // console.log(this.stl.companyDetail.companyName);
+              // this.$router.push('/');
           })
           .catch(error => {
+          // .catch(function(error){
               console.log(error);
+              // this.stl = 'An error occured';
               }) 
 
-
+          //.then(() => this.$router.push('/'))
+          //  .then(
+          //       console.log(this.userName),
+          //       console.log(this.userPassword),
+          //       console.log(this.companyCode),
+          //       console.log(this.model)
+          //       )
+          //   .catch(err => console.log(err)) 
          }
           else{
             this.error = "Fill in all credentials";
@@ -170,8 +267,28 @@ import UserData from '../repository/UserData';
     margin: 0;
     font: 400 15px/1.8 "Lato", sans-serif;
     color: #777;
+    /* background-image: url("../img/login-bg.jpg"); */
     position: relative;
 }
+
+/* body { 
+  background-image: url("./login-bg.jpg"); 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+} */
+
+  /* .bgimg-1, .bgimg-2, .bgimg-3 { */
+    /* position: relative; */
+    /* opacity: 1.0;
+    object-fit: fill; */
+    /* background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; */
+    /* height: 100%; */
+    /* background-image: url("../img/login-bg.jpg"); */
+    /* } */
 
   .caption {
     position: absolute;
@@ -192,6 +309,7 @@ import UserData from '../repository/UserData';
       margin-right:2%;
       font-size:28px;
       font-family: Arial, Helvetica, sans-serif;
+      /* letter-spacing: 2px; */
   }
 
   .footer-text{
@@ -223,10 +341,13 @@ import UserData from '../repository/UserData';
 
  .login-form{
       position: absolute;
+      /* width:30%; */
+      /* min-width:270px; */
       height:auto;
       background: #fff;
       border-radius: 5px;
       top:29%;
+      /* margin-left: 65%; */
   }
    .login-form h4{
       text-align: center;

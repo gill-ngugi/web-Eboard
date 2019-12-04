@@ -4,7 +4,6 @@ import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 import axios from 'axios';
 import App from "./App.vue";
-import store from './stores/store';
 import Slider from '@jeremyhamm/vue-slider';
 // import vueFilterPrettyBytes from 'vue-filter-pretty-bytes';
 import vueFilterPrettyBytes from 'vue-filter-pretty-bytes';
@@ -72,39 +71,81 @@ Vue.component('Gillian', {
 
 const routes = [
   {
-    path: '/login',
+    path: '/',
     component: Login,
-    name: 'login'
+    name: 'login',
   },
   {
-    path: '/',
+    path: '/dashboard',
     component: Dashboard,
-    name: 'dashboard'
+    name: 'dashboard',
+      beforeEnter: (to, from, next) => {
+        if(store.state.authenticated == false) {
+            next('/');
+        } else {
+            next();
+        }
+    }
   },
   {
     path: '/Briefcase',
     component: Briefcase,
-    name: 'Briefcase'
+    name: 'Briefcase',
+      beforeEnter: (to, from, next) => {
+        if(store.state.authenticated == false) {
+            next('/');
+        } else {
+            next();
+        }
+    }
   },  
   {
     path: '/Meeting Packs',
     component: MeetingPacks,
-    name: 'Meeting Packs'
+    name: 'Meeting Packs',
+      beforeEnter: (to, from, next) => {
+        if(store.state.authenticated == false) {
+            next('/');
+        } else {
+            next();
+        }
+    }
   },  
   {
     path: '/Meetings',
     component: Meetings,
-    name: 'Meetings'
+    name: 'Meetings',
+      beforeEnter: (to, from, next) => {
+        if(store.state.authenticated == false) {
+            next('/');
+        } else {
+            next();
+        }
+    }
   },  
   {
     path: '/Resources',
     component: Resources,
-    name: 'Resources'
+    name: 'Resources',
+      beforeEnter: (to, from, next) => {
+        if(store.state.authenticated == false) {
+            next('/');
+        } else {
+            next();
+        }
+    }
   },  
   {
     path: '/Approvals',
     component: Approvals,
-    name: 'Approvals'
+    name: 'Approvals',
+      beforeEnter: (to, from, next) => {
+        if(store.state.authenticated == false) {
+            next('/');
+        } else {
+            next();
+        }
+    }
   },  
   {
     path: '/Compliance',
@@ -133,6 +174,19 @@ const routes = [
   },
 ];
 
+const store = new Vuex.Store(
+  {
+    state: {
+        authenticated: false
+    },
+    mutations: {
+        setAuthentication(state, status) {
+            state.authenticated = status;
+        }
+    }
+  }
+);
+
 const router = new VueRouter({
   mode: 'history',
   routes,
@@ -141,7 +195,7 @@ const router = new VueRouter({
 
 new Vue({
   vuetify,
-  router,
-  store,
+  router: router,
+  store: store,
   render: h => h(App)
 }).$mount("#app");

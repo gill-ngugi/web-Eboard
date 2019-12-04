@@ -16,7 +16,7 @@
                             Dynamic Resources
                         </v-list-item-title>
                         <v-list-item
-                            v-for="(item, index) in itemSubArrayDynamicData.itemSubArray"
+                            v-for="(item, index) in itemSubArrayDynamicData"
                             :key="index"                                
                         >
                         <v-list-item-title><a href="#" v-on:click="loadDirectoriesAndFiles(item)"> {{item.itemName }}</a> <v-divider></v-divider></v-list-item-title>  
@@ -31,7 +31,7 @@
                             Static Resources
                         </v-list-item-title>
                         <v-list-item
-                            v-for="(item, index) in itemSubArrayStaticData.itemSubArray"
+                            v-for="(item, index) in itemSubArrayStaticData"
                             :key="index"                                
                         >
                         <v-list-item-title><a href="#" v-on:click="loadDirectoriesAndFiles(item)"> {{item.itemName }}</a> <v-divider></v-divider></v-list-item-title>  
@@ -44,12 +44,14 @@
                 <!-- Header 1 -->
                 <div class = "parent" style="height:45px; width:100%; background-color:#fff;">
                     <div class="left-buttons">                
+                        <!-- <router-link to=""><v-icon style="float:left; margin-top:7px; margin-left:10px; background-color:rgb(227,58,58); color:#fff" size="30">mdi-chevron-left</v-icon></router-link>  -->
                         <router-link to=""><v-icon v-on:click="loadItemFromHistory()" style="float:left; margin-top:5px; margin-left:10px; background-color:rgb(227,58,58); color:#fff" size="30">mdi-chevron-left</v-icon></router-link> 
-                        <p style="float:left; font-weight:bold; font-size:24px; text-align:left; margin-left:10px; width:250px;">Resources</p>              
+                        <p style="float:left; font-weight:bold; font-size:24px; text-align:left; margin-left:10px; width:250px;">Meeting Packs</p>              
                     </div>
                         <div class="filler"></div>
-                            <div class="right-buttons" style="display:inline;"> 
-                                <div class="dropdown-table" style="display:inline;">
+                    <div class="right-buttons" style="display:inline;">                
+                        
+                        <div class="dropdown-table" style="display:inline;">
                                 <v-menu>
                                     <template v-slot:activator="{ on }">
                                         <v-btn
@@ -62,38 +64,21 @@
                                         </v-btn>
                                     </template>
                                     <v-list>
+                                        <!-- <v-list-item v-for="(item, index) in items" :key="index"> -->
                                         <v-list-item style="display:block;">    
- 
-                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                                v-on:click="doSort('itemName')" href="javascript:">Name
-                                                <span v-if="sort.field=='itemName'">({{sort.desc?'desc':'asc'}})</span>
-                                            </v-list-item-title>
-
-                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                                v-on:click="doSort('itemSize')" href="javascript:">Size
-                                                <span v-if="sort.field=='itemSize'">({{sort.desc?'desc':'asc'}})</span>
-                                            </v-list-item-title>
-
-                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                                v-on:click="doSort('itemLastUpdatedOn')" href="javascript:">Modified On
-                                                <span v-if="sort.field=='itemLastUpdatedOn'">({{sort.desc?'desc':'asc'}})</span>
-                                            </v-list-item-title>
-
-                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                                v-on:click="doSort('itemUploadedBy')" href="javascript:">Submitted By
-                                                <span v-if="sort.field=='itemUploadedBy'">({{sort.desc?'desc':'asc'}})</span>
-                                            </v-list-item-title>
-
+                                            <!-- <v-list-item-title>{{ item.title }}</v-list-item-title> -->
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortByName()">Name</v-list-item-title>
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortBySize()">Size</v-list-item-title>
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortByModifiedOn()">Modified On</v-list-item-title>
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" v-on:click="sortBySubmittedBy()">Submitted By</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>       
                             </div> 
                         
-                        <div style="display:inline;">
-                            <button class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">
-                                Name
-                            </button>
-                        </div>
+                        <div style="display:inline;"><button class="btn btn-lg" text>Name</button></div>
+                        <div style="display:inline;"><button class="btn btn-lg" text>List</button></div>
+                        <div style="display:inline;"><button class="btn btn-lg" text>Grid</button></div>
                     </div> 
                 </div> 
             
@@ -123,6 +108,9 @@
                                 <span class="input-group-addon"><v-icon color="rgb(227,58,58)" style="margin-right:5px;">mdi-folder-open</v-icon></span>
                             </td>
                             <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:450px; max-width:450px;">
+                                <!-- <a v-bind:href="item.itemUrl">
+                                    {{ item.itemName }}
+                                </a> -->
                                  <a href="#"  v-on:click="getMeetingPack(item)">
                                         {{ item.itemName }}
                                     </a>
@@ -161,6 +149,7 @@
             itemSubArrayDynamicData: [],
             resourceDirectors: [],
             itemName: '',
+            itemSubArray: [],
 
             items: [
                 { title: 'Name' },
@@ -169,17 +158,12 @@
                 { title: 'Submitted By' },
             ],
 
-            sort: {
-                field: '',
-                desc: true        
-            },
-
             navigationPath:[{"itemName":"...","localUrl":"0"}],
             currentParent:"",
             parentItemId:"",
 
             userdata:{                
-                rootUrl:"https://eserver1.stl-horizon.com/api_v13/frontend/web/index.php/user/create"
+                rootUrl:"http://web_eboard.stl-horizon.com/frontend/web/index.php/user/create"
            }
 
         }),
@@ -187,17 +171,33 @@
         methods: {
             reloadPage(){
                 window.location.reload();
-            },    
-            
-            getResourcePackFolder(){                
-                axios.post(UserData.getBaseUrl(), this.getUserData())
+            },     
+
+            // getResourcePackFolder(){                
+            //     axios.post(UserData.getBaseUrl(), UserData.getUserDataWithModel(0,0,"getResourcePackFolder"))
+            //         .then(response => {
+            //             this.getResourcePackFolder = response.data;
+            //             this.$localStorage.set('getResourcePackFolder', JSON.stringify(this.getResourcePackFolder));
+            //             this.itemSubArrayStaticData = this.getResourcePackFolder.staticData.itemSubArray;
+            //             this.itemSubArrayDynamicData = this.getResourcePackFolder.dynamicData.itemSubArray;
+            //             //console.log(this.getResourcePackFolder);
+            //         })
+            //         .catch(e => {
+            //             console.log('Error', e);
+            //         })
+            // }, 
+
+            getResourcePackFolder(){
+                let baseUrl = UserData.getBaseUrl();
+                axios.post(baseUrl, this.getUserData())
                     .then(response => {
                         this.getResourcePackFolder = response.data;
                         this.$localStorage.set('getResourcePackFolder', JSON.stringify(this.getResourcePackFolder));
-                        this.itemSubArrayStaticData = this.getResourcePackFolder.staticData;
-                        this.itemSubArrayDynamicData = this.getResourcePackFolder.dynamicData;
-                        console.log(this.itemSubArrayStaticData);
-                        console.log(this.itemSubArrayDynamicData);
+                        this.itemSubArrayStaticData = this.getResourcePackFolder.staticData.itemSubArray;
+                        this.itemSubArrayDynamicData = this.getResourcePackFolder.dynamicData.itemSubArray;
+                        this.parentUrl=baseUrl;                          
+                        this.navigationPath.push({"itemName":this.getResourcePackFolder.data.itemName,"itemId":this.parentItemId})
+                        console.log(this.getResourcePackFolder);
                     })
                     .catch(e => {
                         console.log('Error', e);
@@ -216,9 +216,10 @@
                 return formData;        
             },
 
-              getMeetingPack(item){
+              getResourcePack(item){
                    if(item.hasOwnProperty("itemExtension")){
                        javascipt:window.open(item.itemUrl);
+                    //    alert(item.itemUrl)
                        return
                    }
                 let baseUrl=this.userdata.rootUrl
@@ -226,13 +227,10 @@
                     .then(response => {         
                         this.getResourcePackFolder = response.data;
                         this.itemSubArray = this.getResourcePackFolder.data.itemSubArray;
-                   
                             this.parentUrl=baseUrl;
                             this.getResourcePackFolder.data.hasOwnProperty("itemSubArray")?
-                            (itemSubArray.length>0?this.navigationPath.push({"itemName":this.getResourcePackFolder.data.itemName,"itemId":this.parentItemId}):null):
+                            (this.itemSubArray.length>0?this.navigationPath.push({"itemName":this.getResourcePackFolder.data.itemName,"itemId":this.parentItemId}):null):
                             null
-                            console.log(UserData.getAccessToken())
-                            console.log(this.getResourcePackFolder);
                      })
                     .catch(e => {
                         console.log('Error', e);
@@ -246,61 +244,65 @@
             },
 
 
-            loadItemFromHistory(){
-                let baseUrl=this.userdata.rootUrl
-                let currentTop=this.navigationPath.pop();
-                console.log(currentTop)
-                let currentParent=this.navigationPath.peek
-                  axios.post(baseUrl,this.getUserData(currentTop.itemId)).then(response => {
-                        this.getSubMeetingPackFolder = response.data;
-                        this.itemSubArray = this.getSubMeetingPackFolder.data.itemSubArray
-                    }, error => {
-                        console.error(error);
-                    });
-            },
+            // loadItemFromHistory(){
+            //     let baseUrl=this.userdata.rootUrl
+            //     let currentTop=this.navigationPath.pop();
+            //     console.log(currentTop)
+            //     let currentParent=this.navigationPath.peek
+            //       axios.post(baseUrl,this.getUserData(currentTop.itemId)).then(response => {
+            //             this.getSubMeetingPackFolder = response.data;
+            //             this.itemSubArray = this.getSubMeetingPackFolder.data.itemSubArray
+            //         }, error => {
+            //             console.error(error);
+            //         });
+            // },
 
-            loadDirectoriesAndFiles(item){
-                axios.post(UserData.getBaseUrl(), this.getUserData(item.itemId,item.itemParentId))
-                    .then(response => {
-                        this.getResourcePackFolder = response.data;
-                        this.resourceDirectors = this.getResourcePackFolder.data.itemSubArray;
-                        console.log(this.getResourcePackFolder);
-                    })
-                    .catch(e => {
-                        console.log('Error', e);
-                    })
-            }, 
+            // loadDirectoriesAndFiles(item){
+            //   axios.post(UserData.getBaseUrl(),UserData.getUserDataWithModel(item.itemId,0,"getResourcePackFolder"))
+            //         .then(response => {
+            //             this.getResourcePackFolder = response.data;
+            //             this.resourceDirectors = this.getResourcePackFolder.data.itemSubArray;
+            //         })
+            //         .catch(e => {
+            //             console.log('Error', e);
+            //         })
+            // }, 
 
-            doSort (field) {
-                if(field == this.sort.field){
-                    this.sort.desc = !this.sort.desc
-                }else{
-                    this.sort.field = field;
-                    this.sort.desc = true;
-                }
-            },
-           
-        },
 
-        computed: {
-            sortedData2 () {
-                if(!this.sort.field){
-                    return this.getResourcePackFolder
-                }
 
-                return this.getResourcePackFolder.concat().sort((a,b)=>{
-                    if(this.sort.desc){
-                        return a[this.sort.field] > b[this.sort.field] ? -1:1        
-                    }
-                    else{
-                        return a[this.sort.field] > b[this.sort.field] ? 1:-1                  
-                    }
-                })
-            }
+
+
+            // loadDirectoriesAndFilesgill(){
+            //     axios.post(UserData.getBaseUrl(),UserData.getUserDataWithModel(0,0,"getResourcePackFolder"))
+            //         .then(response => {
+
+            //             this.getResourcePackFolder = response.data;
+
+            //             console.log(this.getResourcePackFolder);
+            //         })
+            //         .catch(e => {
+            //             console.log('Error', e);
+            //         })
+            // },
+              
+            // getResourcePackFolderDirectors(){
+            //       axios.get("../assets/json-APIs/getResourcePackFolder-directors.json")
+            //         .then(response => {
+            //             this.getResourcePackFolderDirectors = response.data;
+            //             this.$localStorage.set('getResourcePackFolderDirectors', JSON.stringify(this.getResourcePackFolderDirectors));
+            //             this.resourceDirectors = this.getResourcePackFolderDirectors.data.itemSubArray;
+            //             console.log(this.resourceDirectors);
+            //         })
+            //         .catch(e => {
+            //             console.log('Error', e);
+            //         })
+            // }, 
         },
       
         beforeMount(){
             this.getResourcePackFolder();
+            //this.loadDirectoriesAndFilesgill();
+            // this.getResourcePackFolderDirectors();
         },
 
         mounted() {
@@ -342,6 +344,7 @@
         width: 100%;
         height: 49%;
         margin-bottom: 4%;
+        /* background-color:lightgoldenrodyellow; */
         background-color:#f8f9f9;
         border-top: 5px solid rgb(227,58,58);
     }
@@ -349,6 +352,7 @@
     .left-bottom{
         width: 100%;
         height: 49%;
+        /* background-color:rgb(240, 229, 233); */
         background-color:#f8f9f9;
         border-top: 5px solid rgb(227,58,58);
     }
@@ -356,6 +360,7 @@
     .right{
         width: 79%;
         float: left;
+        /* background-color:lightcyan; */
         background-color:#f8f9f9;
         height: 100%;
         border-top: 5px solid rgb(227,58,58);

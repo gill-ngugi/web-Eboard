@@ -3,7 +3,7 @@
         <div class = "nav-menu parent" style=" height:45px; width:98%; padding:0px; padding-top:0.3%; margin-left:1%; margin-right:1%;">
             <div class="left-buttons" style="margin-left:10px;">
                 <button class="btn btn-lg" text v-on:click="seen1 = !seen1">
-                    STL Vision
+                    {{companyDetail.companyName}}
                     <span class="input-group-addon"><i class="fa fa-chevron-down"></i></span>                            
                 </button>
             </div>    
@@ -11,7 +11,7 @@
                 <img class="bgimg-1" src="../img/eboard_Logo_new@2x.png" style="height:75%; width:auto; padding-top:5px">
             <div class="filler"></div>
             <div class="right-buttons">
-                <button class="btn btn-lg" text v-on:click="seen2 = !seen2; ">English</button>
+                <button class="btn btn-lg" text v-on:click="seen2 = !seen2;">{{userLanguage.language}}</button>
                 <button class="btn btn-lg" @click="reloadPage"><v-icon color="#ffffff">mdi-refresh</v-icon></button>
                 <button class="btn btn-lg" text v-on:click="seen4 = !seen4;"><v-icon color="#ffffff">mdi-magnify</v-icon></button>
                 <button class="btn btn-lg" text v-on:click="seen5 = !seen5"><v-icon color="#ffffff">mdi-contact-mail</v-icon></button>
@@ -24,7 +24,7 @@
                 <v-list>
                     <v-list-item-title style="color:#e33333; padding:15px;">Company List</v-list-item-title>
                     <v-list-item
-                        v-for="(item, index) in getCompanyList.companyList"
+                        v-for="(item, index) in companyList"
                         :key="index"                                
                     >
                     <v-list-item-title>{{ item.companyName }} <v-divider></v-divider></v-list-item-title>  
@@ -38,7 +38,7 @@
                  <v-list style="position">
                     <v-list-item-title style="color:#e33333; padding:15px;">Select Language</v-list-item-title>
                     <v-list-item
-                        v-for="(item, index) in getEboardUpdates.allLanguages" 
+                        v-for="(item, index) in allLanguages" 
                         :key="index"                        
                     >
                     <v-list-item-title> {{item.language}} <v-divider></v-divider></v-list-item-title>  
@@ -63,12 +63,11 @@
                 <v-card style="padding:1%; color:#e33333; height:auto;">
                     <v-card-actions>
                     <div style="float:left; margin:0px;">
-                        <!-- <v-icon size="55">mdi-contact-mail</v-icon> -->
                         <img src="../img/male-icon.png" style="height:85px; width:95px; background-color:cyan; border:1px solid black;">
                     </div>
                     <div style="float:left; position:relative; margin:0px;">    
                         <v-card-text>
-                            <p style="font-size:21px; margin:0px;">{{userInfo.userDesignation}}</p>
+                            <p style="font-size:21px; margin:0px;">{{userInfo.userFullName}}</p>
                             <p style="font-size:13px; margin:0px;">{{userInfo.userPhone}}</p>
                             <p style="font-size:13px; margin:0px;">{{userInfo.userEmail}}</p> 
                         </v-card-text>
@@ -220,7 +219,7 @@
 
                     <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
                         <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">                        
-                            Logout
+                            <p style="cursor:pointer" v-on:click="logout()">Logout</p>
                         </div>                       
                     </div>
                     <v-divider style="margin:0px; padding:0px;"></v-divider>
@@ -228,7 +227,6 @@
                 </v-list>
             </div>
   
-            <!-- <div style="min-width:1200px; overflow:auto;"> -->
                 <div class="col-left" style="width:20%; height:900px; overflow:auto; margin-left:1%; margin-right:1%; margin-top:1%; float:left; position:relative;">
                     <div v-for="(item, index) in even(dashboardMenuList)" :key="index">
                         <router-link :to="{name : item.menuTitle}" style="text-decoration:none;" :style="{color:'rgb(' + item.menuColor + ')'}"> 
@@ -236,8 +234,6 @@
                                 <div class="input-group" >
                                     <span class="input-group-addon">
                                         <img v-bind:src="item.menuImageUrl"  v-bind:alt="item.menuTitle" v-bind:style="{width:'60px', height:'50px' }">
-                                        <!-- <img v-bind:src="{ 'background-image': 'url(' + item.menuImageUrl + ')' }" v-bind:alt="item.menuTitle"> -->
-                                        <!-- <i class="fa fa-briefcase" style="font-size:48px;"></i> -->
                                         </span>
                                     <v-spacer></v-spacer>       
                                     <p> {{item.menuTitle}}</p>
@@ -259,7 +255,6 @@
 
                     <div style="width:100%;">
                         <table class="table-striped" style="width:100%; display:block; overflow-y:auto; overflow-x:auto;">
-                            <!-- <thead style="width:500px; "> -->
                                 <tr style="background-color:#27ae60; width:100%; height:auto; display:block; line-height:30px; overflow-y:hidden; overflow-x:hidden; color:#ffffff;">
                                     <th style="padding:7px; min-width:100px;">No.</th>
                                     <th style="padding:7px; min-width:100px;"></th>
@@ -268,9 +263,7 @@
                                     <th style="padding:7px; min-width:200px;" >Created On</th>
                                     <th style="padding:7px; min-width:200px;">Briefcase</th>
                                 </tr>
-                            <!-- </thead> -->
 
-                            <!-- <tbody style="width:100%; height:190px; display:block; overflow-y:auto; overflow-x:hidden;"> -->
                             <tbody style="overflow-y:auto; overflow-x:auto; height:190px; display:block;">
                                 <tr v-for="(item, index) in getRecentDocuments.recentDocumentsList" :key="index" 
                                     style="width:100%;">
@@ -297,42 +290,6 @@
                         </table>
                     </div>
 
-
-                    <!-- <table class="table table-striped scroll" style="width:100%;">
-                        <thead>
-                            <tr style="background-color:#27ae60; color:#ffffff;">
-                                <th style="">No.</th>
-                                <th style="padding-right:10px;"></th>
-                                <th style="padding-right:415px;">Name</th>
-                                <th style="padding-right:45px;">Size</th>
-                                <th style="padding-right:10px;">Created On</th>
-                                <th style="padding-right:40px;">Briefcase</th>
-                            </tr>
-                        </thead>
-
-                        <tbody style="width:100%">                            
-                            <tr v-for="(item, index) in getRecentDocuments.recentDocumentsList" :key="index">
-                                <td>{{ index + 1 + "." }}</td>
-                                <td>    
-                                    <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
-                                </td>
-                                <td style="">
-                                     <a v-bind:href="item.itemUrl">
-                                        {{ item.itemName }}
-                                    </a>
-                                </td>
-                                <td style="">
-                                    {{ item.itemSize | prettyBytes }} 
-                                </td>
-                                <td style="" >
-                                    {{ parseInt(item.itemCreatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                </td>
-                                <td style="padding-right:10px;">
-                                    <button class="btn btn-danger">Remove</button>
-                                </td>
-                            </tr>                           
-                        </tbody>
-                    </table> -->                   
                 </div>
 
                 <div class="right-bottom" style="width:100%; height:64%; margin-top:1%;">
@@ -385,16 +342,13 @@
                                     </div>
                                     <div class="right-buttons">    
                                         <p style="font-size:21.5px;">{{ task.taskTitle }}</p>
-                                        <p style="font-size:17px;">{{"Due on "}} {{ parseInt(task.taskDateTime*1000, 10) | moment('DD-MMM-YYYY') }}</p>
                                         <p style="font-size:17px;">{{ task.companyName }}</p>
-                                        <p style="font-size:17px;">{{"Test"}} {{ parseInt(1515456000*1000, 10) | moment('YYYY-MM-DD') }}</p>
                                     </div>
                                     <hr>
                                 </div>
                             </div>                                                              
                         </div>
                     </div>
-                    <!-- { title:eventArray.eventTitle, date:parseInt(eventArray.eventBeginDate, 10), textColor:'#000', color:'cyan' } -->
 
                     <div class="col-right-bottom-right" style="padding:1%; width:64%; height:100%; float:left; position:relative; overflow:auto;">
                         <FullCalendar                             
@@ -406,24 +360,17 @@
                 </div>
             </div>      
         </div>       
-    <!-- </div> -->
 </template>
 
 <script>
     var moment = require('moment');
-    // import Slider from '@jeremyhamm/vue-slider';
     import axios from 'axios';
     import FullCalendar from '@fullcalendar/vue';
     import dayGridPlugin from '@fullcalendar/daygrid';
-    // Vue.use(require('vue-moment'));
-    // import vueFilterPrettyBytes from 'vue-filter-pretty-bytes'
-    // import requestUserLogin from "../../assets/requestUserLogin.json";
+    import UserData from '../repository/UserData';
 
-
-    export default{
-            
+    export default{            
         data: () => ({
-
             items: [
                 { title: 'Computer Warehouse Group' },
                 { title: 'STL Vision Botswana' },
@@ -473,48 +420,14 @@
             userInfo : [],
             dashboardMenuList : [],
             eventArray: [],
-            // eventBeginDate: [],
-
-            // getRecentDocuments: [],
-            // getLatestNotifications: [],
-            // getCompanyList: [],
-            // getEboardUpdates: [],
-
-            // itemCreatedOn: [],
+            companyDetail: [],
+            userLanguage: [],
+            allLanguages: [],
+            companyList: [],
 
             moment: moment,
 
             date: 1570064727,
-
-        //     calendar: new Calendar(calendarEl, {
-        //         eventSources: [
-        //             // your event source
-        //             {
-        //             events: [ // put the array in the `events` property
-        //                 {
-        //                 title  : 'event1',
-        //                 start  : '2019-11-01'
-        //                 },
-        //                 {
-        //                 title  : 'event2',
-        //                 start  : '2019-11-05',
-        //                 end    : '2019-11-07'
-        //                 },
-        //                 {
-        //                 title  : 'event3',
-        //                 start  : '2010-11-09T12:30:00',
-        //                 }
-        //             ],
-        //             color: 'yellow',     // an option!
-        //             textColor: 'black' // an option!
-        //             }
-        //             // any other event sources...
-        //         ]
-        //         }),
-            
-        //     // dashStyle:{
-        //     //      color: "rgb(0,255,0)"
-        //     // }
 
         }),
 
@@ -526,9 +439,8 @@
 
 
         methods: {
-
             openPdf(itemUrl){
-                javascipt:window.open(itemUrl);
+                javascript:window.open(itemUrl);
             },
           
             reloadPage(){
@@ -542,42 +454,50 @@
             convertToUtc(date, format) {
                 return moment(this.date).utc().format(format)
             },
+
+            logout(){
+                this.$store.commit("setAuthentication", false)
+                this.$router.replace('/')
+            },
           
             getRequestUserLogin(){
-                // fetch("../assets/json-APIs/requestUserLogin.json")
-                // .then(response => response.json())
-                // .then(data => (this.requestUserLogin = data))
+                const formData = new FormData();
+                    formData.append('userName', UserData.getUserName());
+                    formData.append('userPassword', UserData.getUserPassword());
+                    formData.append('companyCode', UserData.getCompanyCode()); 
+                    formData.append('model', "requestUserLogin");
+                    formData.append('mobileVersion', "11.4.1");
+                    formData.append('deviceName', "ipad air 2");
+                    formData.append('deviceToken', "b41dfaf1ba018196d5068a0ecc3bde33f83c94131ecf71d053260b944da14612"); 
+                    formData.append('eboardVersion', "2.5.7"); 
 
-                axios.get("../assets/json-APIs/requestUserLogin.json")
+                axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
-                        this.requestUserLogin = response.data;
-                        this.userInfo = (JSON.parse(JSON.stringify(this.requestUserLogin.userInfo)));
+                        this.requestUserLogin = response.data;  
                         this.dashboardMenuList = this.requestUserLogin.dashboardMenuList;
-                        // this.dashStyle={
-                        //     // color: "rgb("+ this.dashboardMenuList.menuColor +")"    
-                        //     color: "blue"                          
-                        // };
-                        // console.log(JSON.parse(JSON.stringify(this.requestUserLogin.userInfo)));
-                        //userInfo=JSON.parse();
+                        this.allLanguages = this.requestUserLogin.allLanguages;
+                        this.userInfo = (JSON.parse(JSON.stringify(this.requestUserLogin.userInfo)));
+                        this.companyDetail = (JSON.parse(JSON.stringify(this.requestUserLogin.companyDetail)));
+                        this.userLanguage = (JSON.parse(JSON.stringify(this.requestUserLogin.userLanguage)));
                     })
-
                     .catch(error => {
                         console.log(error);
-                    })
-
-                // this.$http.get("../assets/json-APIs/requestUserLogin.json", {responseType: 'json'}).then(response => {
-                //     return response.json();
-                // }).then(jsonData => {
-                //     this.data = JSON.parse(jsonData);
-                // }).catch(e => {
-                //     console.log('Error', e);
-                // });
+                    });
             },
 
             getCompanyList(){
-                axios.get("../assets/json-APIs/getCompanyList.json")
+                const formData = new FormData();
+                formData.append('userId', UserData.getUserId());
+                formData.append('companyCode', UserData.getCompanyCode());
+                formData.append('accessToken', UserData.getAccessToken());
+                formData.append('model', "getCompanyList");
+                formData.append('companyId', UserData.getCompanyId());
+
+                axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
                         this.getCompanyList = response.data;
+                        this.companyList = this.getCompanyList.companyList;
+                        this.$localStorage.set('getCompanyList', JSON.stringify(this.getCompanyList))
                     })
                     .catch(e => {
                         console.log('Error', e);
@@ -585,13 +505,17 @@
             },
 
             getLatestNotifications(){
-                axios.get("../assets/json-APIs/getLatestNotifications.json")
+                const formData = new FormData();
+                formData.append('userId', UserData.getUserId());
+                formData.append('companyCode', UserData.getCompanyCode());
+                formData.append('accessToken', UserData.getAccessToken());
+                formData.append('model', "getLatestNotifications");
+                formData.append('companyId', UserData.getCompanyId());
+
+                axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
                         this.getLatestNotifications = response.data;
-                        console.log(this.getLatestNotifications.taskList.taskTitle);
                         this.$localStorage.set('getLatestNotifications', JSON.stringify(this.getLatestNotifications))
-                        // this.success = this.tLatestNotifications.notificationsList
-                        // console.log(this.getLatestNotifications.notificationsList);
                     })
                     .catch(e => {
                         console.log('Error', e);
@@ -609,25 +533,34 @@
             },
 
             getRecentDocuments(){
-                axios.get("../assets/json-APIs/getRecentDocuments.json")
+                const formData = new FormData();
+                formData.append('userId', UserData.getUserId());
+                formData.append('companyCode', UserData.getCompanyCode());
+                formData.append('accessToken', UserData.getAccessToken());
+                formData.append('model', "getRecentDocuments");
+                formData.append('companyId', UserData.getCompanyId());
+
+                axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
                         this.getRecentDocuments = response.data;
                         this.$localStorage.set('getRecentDocuments', JSON.stringify(this.getRecentDocuments))
-                        // this.itemCreatedOn = parseInt(this.getRecentDocuments.recentDocumentsList.itemCreatedOn, 10);
-                        // this.itemCreatedOn = this.getRecentDocuments.recentDocumentsList;
-                        // this.itemCreatedOn = parseInt(this.itemCreatedOn, 10);
-                        // console.log(this.itemCreatedOn);
-                    })
+                        })
                     .catch(e => {
                         console.log('Error', e);
                     })
             },
 
             getCalendarEvents(){
-                axios.get("../assets/json-APIs/getCalendarEvents.json")
+                const formData = new FormData();
+                formData.append('userId', UserData.getUserId());
+                formData.append('companyCode', UserData.getCompanyCode());
+                formData.append('accessToken', UserData.getAccessToken());
+                formData.append('model', "getCalendarEvents");  
+                formData.append('companyId', UserData.getCompanyId());
+
+                axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
                         this.getCalendarEvents = response.data;
-                        // this.eventBeginDate = this.getCalendarEvents.eventTitle.eventBeginDate;
                         this.eventArray = this.getCalendarEvents.eventList;
                         this.$localStorage.set('getCalendarEvents', JSON.stringify(this.getCalendarEvents));
                         this.eventArray=this.eventArray.map((element)=>{                     
@@ -638,11 +571,6 @@
                                 textColor:'#fff' 
                             }
                         })
-                         console.log(this.eventArray);
-                        // this.itemCreatedOn = parseInt(this.getRecentDocuments.recentDocumentsList.itemCreatedOn, 10);
-                        // this.itemCreatedOn = this.getRecentDocuments.recentDocumentsList;
-                        // this.itemCreatedOn = parseInt(this.itemCreatedOn, 10);
-                        // console.log(this.itemCreatedOn);
                     })
                     .catch(e => {
                         console.log('Error', e);
@@ -693,7 +621,6 @@
 
         components: {
             FullCalendar // make the <FullCalendar> tag available
-            // 'slider': Slider
         },
     }
 
@@ -706,8 +633,6 @@
     .nav-menu{
         margin-top:0px; 
         background-color: #e33333;
-        /* height: 45px; */
-        /* padding-left:10px; */
     }
 
     .nav-menu .btn{
@@ -727,7 +652,6 @@
     .col-left .left-menu{
         background-color: #f5f5f5 ;
         align-content: center;
-        /* padding: 3%; */
         margin-bottom:10px;
         font-size:20px;
     }
@@ -764,12 +688,7 @@
     }
 
     .col-right-bottom-left{
-        /* width: 40%;
-        height: 430px; */
         background-color: #f5f5f5;
-        /* margin-right:1%;
-        float:left; */
-        /* padding:1%; */
     }
 
     .col-right-bottom-right{
@@ -795,34 +714,10 @@
         border-spacing: 0;
     }
 
-    /* table.scroll tbody,
-    table.scroll thead {  */
-        /* display: block;  */
-    /* } */
-
-    /* table.scroll tbody { */
-        /* height: 190px;
-        overflow-y: auto;
-        overflow-x: hidden; */
-    /* } */
-
-    /* thead tr th {  */
-        /* height: 30px;
-        line-height: 30px; */
-
-        /* width: 180px; */
-        /*text-align: left;*/
-    /* } */
-
     tbody tr td {
-        /* width: 20%; Optional */
-        /* border-right: 1px solid black; */
-        /* overflow: hidden; */
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        /* width: 180px; */
-        /* max-width: 230px; */
     }
 
     tbody td:last-child, thead th:last-child {
@@ -846,25 +741,13 @@
 
     .parent {
         display: flex;
-        /* border: 1px solid red; */
         width:100%;
         height: auto;
         padding:2%;
     }
 
-    /* .left-buttons { */
-    /* width: 50px; */
-    /* background: pink; */
-    /* } */
-
     .filler {
     flex-grow: 1;
-    /* background: lightgreen; */
     }
-
-    /* .right-buttons { */
-    /* width: 50px; */
-    /* background: lightblue; */
-    /* } */
 
    </style>
