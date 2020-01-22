@@ -1,4 +1,5 @@
 import Vue from 'vue'
+// import Read from './App.vue'
 import vuetify from '@/plugins/vuetify' // path to vuetify export
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';

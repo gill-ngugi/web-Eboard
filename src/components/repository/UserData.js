@@ -1,8 +1,9 @@
     class UserData{
+        
         static userFullName="";
         static accessToken="";   
             constructor(){       
-            
+                
             }
          
         static setAccessToken=(accessToken)=>{
@@ -52,6 +53,14 @@
         static getCompanyId=()=>{
             return UserData.companyId;
         }
+
+        static setCompanyListId=(companyId)=>{
+            UserData.companyId = companyId;
+        }
+
+        static getCompanyListId=()=>{
+            return UserData.companyId;
+        }
     
         static getUserData(itemId=0,parentItemId=0){   
            this.parentItemId=parentItemId;
@@ -66,13 +75,14 @@
         }
     
         static getBaseUrl=()=>{
-            // return "http://web_eboard.stl-horizon.com/frontend/web/index.php/user/create" 
-            return "https://eserver1.stl-horizon.com/api_v13/frontend/web/index.php/user/create" 
+            return "http://web_eboard.stl-horizon.com/frontend/web/index.php/user/create" 
+            // return "https://eserver1.stl-horizon.com/api_v13/frontend/web/index.php/user/create" 
+            // return "http://eserver1.stl-horizon.com/api_tst_v13/frontend/web/user/create" 
+            // return "https://eserver1.stl-horizon.com/api_v9/frontend/web/user/create" 
         }
     }
+
     export default UserData;
-
-
 
     // static getUserDataWithModel=(itemId=0,parentItemId=0,model="getMeetingPackFolder",
     //     userId="45",companyCode="010",accessToken="97f914eb1ceb1867e3824f647f7e589b",companyId="010")=>{

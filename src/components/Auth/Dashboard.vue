@@ -19,7 +19,7 @@
             </div>
         </div>
 
-         <!-- STL Vision -->
+         <!-- Companies -->
             <div style="height: auto; width: auto; position: absolute; z-index: 1; margin-left:1%;" v-if="seen1">
                 <v-list>
                     <v-list-item-title style="color:#e33333; padding:15px;">Company List</v-list-item-title>
@@ -27,7 +27,8 @@
                         v-for="(item, index) in companyList"
                         :key="index"                                
                     >
-                    <v-list-item-title>{{ item.companyName }} <v-divider></v-divider></v-list-item-title>  
+                        <!-- START HERE!!! -->
+                    <v-list-item-title v-on:click="changeCompanyDetails(); UserData.setCompanyId(item.companyId);" style="cursor:pointer;">{{ item.companyName }} <v-divider></v-divider></v-list-item-title>  
                     </v-list-item>
                 </v-list>
             </div>
@@ -63,7 +64,8 @@
                 <v-card style="padding:1%; color:#e33333; height:auto;">
                     <v-card-actions>
                     <div style="float:left; margin:0px;">
-                        <img src="../img/male-icon.png" style="height:85px; width:95px; background-color:cyan; border:1px solid black;">
+                        <img v-bind:src="userInfo.imageUrl" style="height:85px; width:95px; background-color:#fff; border:1px solid black;">
+                        <!-- <img src="../img/male-icon.png" style="height:85px; width:95px; background-color:cyan; border:1px solid black;"> -->
                     </div>
                     <div style="float:left; position:relative; margin:0px;">    
                         <v-card-text>
@@ -227,25 +229,24 @@
                 </v-list>
             </div>
   
-                <div class="col-left" style="width:20%; height:900px; overflow:auto; margin-left:1%; margin-right:1%; margin-top:1%; float:left; position:relative;">
-                    <div v-for="(item, index) in even(dashboardMenuList)" :key="index">
-                        <router-link :to="{name : item.menuTitle}" style="text-decoration:none;" :style="{color:'rgb(' + item.menuColor + ')'}"> 
-                            <div class="left-menu" style="border-top: 5px solid; padding:3.3%;">
-                                <div class="input-group" >
-                                    <span class="input-group-addon">
-                                        <img v-bind:src="item.menuImageUrl"  v-bind:alt="item.menuTitle" v-bind:style="{width:'60px', height:'50px' }">
-                                        </span>
-                                    <v-spacer></v-spacer>       
-                                    <p> {{item.menuTitle}}</p>
-                                </div>                        
-                            </div>  
-                        </router-link>
-                    </div>
+            <div class="col-left" style="width:20%; height:900px; overflow:auto; margin-left:1%; margin-right:1%; margin-top:1%; float:left; position:relative;">
+                <div v-for="(item, index) in even(dashboardMenuList)" :key="index">
+                    <router-link :to="{name : item.menuTitle}" style="text-decoration:none;" :style="{color:'rgb(' + item.menuColor + ')'}"> 
+                        <div class="left-menu" style="border-top: 5px solid; padding:3.3%;">
+                            <div class="input-group" >
+                                <span class="input-group-addon">
+                                    <img v-bind:src="item.menuImageUrl"  v-bind:alt="item.menuTitle" v-bind:style="{width:'60px', height:'50px' }">
+                                    </span>
+                                <v-spacer></v-spacer>       
+                                <p> {{item.menuTitle}}</p>
+                            </div>                        
+                        </div>  
+                    </router-link>
                 </div>
+            </div>
 
             <div class="right" style="width:77%; height:900px; overflow:hidden; margin-right:1%; margin-top:1%; float:left; position:relative; z-index:-1">
                 <div class="col-right-top" style="padding:1%; width:100%; height:35%;">
-                   
                     <div class="input-group" style="color: #27ae60; font-weight:bold;">
                         <span class="input-group-addon"><v-icon color="#27ae60">mdi-file-document</v-icon></span>
                         <p style="margin-left:20px; margin-right:20px;">My Inbox</p> 
@@ -253,7 +254,108 @@
                         <button class="btn btn-lg" text @click="reloadPage"><v-icon color="#27ae60">mdi-refresh</v-icon></button>
                     </div>
 
-                    <div style="width:100%;">
+                <!-- <div style="width:100%;">
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <table border="1" width="100%">
+                                    <tr style="color:white; background-color:grey">
+                                        <th style="width:10%">Header 1</th>
+                                        <th style="width:10%">Header 2</th>
+                                        <th style="width:60%">Header 3</th>
+                                        <th style="width:10%">Header 4</th>
+                                        <th style="width:10%">Header 5</th>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td>
+                            <div style="width:100%; height:190px; overflow:auto;">
+                                <table border="1" width="100%" >
+                                    <tr>
+                                        <td style="width:10%">new item</td>
+                                        <td style="width:10%">new item</td>
+                                        <td style="width:60%">new item</td>
+                                        <td style="width:10%">new item</td>
+                                        <td style="width:10%">new item</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:10%">new item</td>
+                                        <td style="width:10%">new item</td>
+                                        <td style="width:60%">new item</td>
+                                        <td style="width:10%">new item</td>
+                                        <td style="width:10%">new item</td>
+                                    </tr>   
+                                        <tr>
+                                        <td style="width:10%">new item</td>
+                                        <td style="width:10%">new item</td>
+                                        <td style="width:60%">new item</td>
+                                        <td style="width:10%">new item</td>
+                                        <td style="width:10%">new item</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:10%">new item</td>
+                                        <td style="width:10%">new item</td>
+                                        <td style="width:60%">new item</td>
+                                        <td style="width:10%">new item</td>
+                                        <td style="width:10%">new item</td>
+                                    </tr>
+                                </table>  
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div> -->
+
+                <div style="width:100%;">
+                    <table width="100%" style="overflow-y:auto; overflow-x:auto;">
+                        <tr>
+                            <td>
+                                <div style="width:100%;">
+                                    <table width="100%">
+                                        <tr style="color:#fff; background-color:#27ae60;">
+                                            <th style="width:5%; padding:7px;">No.</th>
+                                            <th style="width:5%;"></th>
+                                            <th style="width:60%;">Name</th>
+                                            <th style="width:15%;">Size</th>
+                                            <th style="width:15%;">Created_on</th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="width:100%; height:190px; overflow:auto;">
+                                    <table class="table-striped" width="100%">
+                                        <tbody>
+                                            <tr v-for="(item, index) in getRecentDocuments.recentDocumentsList" :key="index">
+                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:5%; padding:7px;">{{ index + 1 + "." }}</td>
+                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:5%">    
+                                                    <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
+                                                </td>
+                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:60%">
+                                                    <a href="#" v-on:click="openPdf(item.itemUrl)">
+                                                        {{ item.itemName }}
+                                                    </a>
+                                                </td>
+                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%">
+                                                    {{ item.itemSize | prettyBytes }} 
+                                                </td>
+                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%">
+                                                    {{ parseInt(item.itemCreatedOn*1000, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>  
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                    <!-- <div style="width:100%;">
                         <table class="table-striped" style="width:100%; display:block; overflow-y:auto; overflow-x:auto;">
                                 <tr style="background-color:#27ae60; width:100%; height:auto; display:block; line-height:30px; overflow-y:hidden; overflow-x:hidden; color:#ffffff;">
                                     <th style="padding:7px; min-width:100px;">No.</th>
@@ -288,9 +390,9 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-
+                    </div> -->
                 </div>
+
 
                 <div class="right-bottom" style="width:100%; height:64%; margin-top:1%;">
                     <div class="col-right-bottom-left" style="width:35%; height:100%; margin-right:1%; float:left; position:relative;">
@@ -307,7 +409,7 @@
                                     </div>
                                 </div>
 
-                                <div style = "height:500px; overflow:auto;">
+                                <div style = "height:500px; overflow:auto; width:100%;">
                                     <div class="parent" style="padding:4%; padding-bottom:1%;" v-for="(notification, index) in getLatestNotifications.notificationsList" :key="index">
                                         <div class="left-buttons">
                                             <v-icon color="#E74343" style="margin-top:25px; margin-right:70px; ">mdi-square</v-icon>
@@ -335,7 +437,7 @@
                                 </div>
                             </div>
 
-                            <div style = "height:500px; overflow:auto;">
+                            <div style = "height:500px; overflow:auto; width:100%;">
                                 <div class="parent" style="padding:4%; padding-bottom:1%;" v-for="(task, index) in getLatestNotifications.taskList" :key="index">
                                     <div class="left-buttons">
                                         <v-icon color="#E74343" style="margin-top:25px; margin-right:70px; ">mdi-radiobox-marked</v-icon>
@@ -344,7 +446,7 @@
                                         <p style="font-size:21.5px;">{{ task.taskTitle }}</p>
                                         <p style="font-size:17px;">{{ task.companyName }}</p>
                                     </div>
-                                    <hr>
+                                    <hr>    
                                 </div>
                             </div>                                                              
                         </div>
@@ -368,6 +470,8 @@
     import FullCalendar from '@fullcalendar/vue';
     import dayGridPlugin from '@fullcalendar/daygrid';
     import UserData from '../repository/UserData';
+    import JQuery from 'jquery'
+    window.$ = JQuery
 
     export default{            
         data: () => ({
@@ -424,6 +528,7 @@
             userLanguage: [],
             allLanguages: [],
             companyList: [],
+            companyListId: "",
 
             moment: moment,
 
@@ -440,7 +545,7 @@
 
         methods: {
             openPdf(itemUrl){
-                javascript:window.open(itemUrl);
+                window.open(itemUrl);
             },
           
             reloadPage(){
@@ -486,6 +591,17 @@
             },
 
             getCompanyList(){
+                //check response
+                //check if there is data inside the response object
+                //remove console logging
+                //error handling using user friendly language
+                //sync, async
+                //fd
+                //axios interceptors
+                //Vuex, redux
+                //es6
+                //developer edition of firefox
+
                 const formData = new FormData();
                 formData.append('userId', UserData.getUserId());
                 formData.append('companyCode', UserData.getCompanyCode());
@@ -497,6 +613,7 @@
                     .then(response => {
                         this.getCompanyList = response.data;
                         this.companyList = this.getCompanyList.companyList;
+                        // let companyId = this.companyList.companyId;
                         this.$localStorage.set('getCompanyList', JSON.stringify(this.getCompanyList))
                     })
                     .catch(e => {
@@ -529,16 +646,18 @@
                     })
                     .catch(e => {
                         console.log('Error', e);
-                    })
+                })
             },
 
             getRecentDocuments(){
+                // this.setCompanyId(companyId);
                 const formData = new FormData();
                 formData.append('userId', UserData.getUserId());
                 formData.append('companyCode', UserData.getCompanyCode());
                 formData.append('accessToken', UserData.getAccessToken());
                 formData.append('model', "getRecentDocuments");
                 formData.append('companyId', UserData.getCompanyId());
+                // formData.append('companyId', UserData.getCompanyListId());
 
                 axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
@@ -574,7 +693,19 @@
                     })
                     .catch(e => {
                         console.log('Error', e);
-                    })
+                })
+            },
+
+            changeCompanyDetails(){
+                // alert (UserData.getCompanyListId());
+                // let companyId = this.companyList;
+                // alert(this.companyListId);
+            },
+
+            setCompanyId(companyId){
+                UserData.setCompanyId(companyId);
+                // window.location.reload();
+                // alert (UserData.getCompanyId());
             },
           
             getLink(){
@@ -607,6 +738,8 @@
         },
 
         mounted() {
+            $("#makingit").width($(window).width());
+
             const getRecentDocuments = JSON.parse(this.$localStorage.get('getRecentDocuments'));
             const getLatestNotifications = JSON.parse(this.$localStorage.get('getLatestNotifications'))
             
@@ -629,6 +762,43 @@
 <style scoped>
 @import '~@fullcalendar/core/main.css';
 @import '~@fullcalendar/daygrid/main.css';
+
+
+    body{
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .fixed_header{
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+    }
+
+    .fixed_header tbody{
+        display:block;
+        width: 100%;
+        /* overflow: auto; */
+        height: 190px;
+        overflow-y: scroll;  
+        overflow-x: hidden; 
+    }
+
+    .fixed_header thead tr {
+        display: block;
+    }
+
+    .fixed_header thead {
+        background: black;
+        color:#fff;
+    }
+
+    .fixed_header th, .fixed_header td {
+        /* padding: 5px; */
+        text-align: left;
+        height:40px;
+        /* width: 200px; */
+    }
 
     .nav-menu{
         margin-top:0px; 
@@ -709,7 +879,7 @@
         color:#e33333;
     }
 
-    table.scroll {
+    /* table.scroll {
         width: 100%; 
         border-spacing: 0;
     }
@@ -722,7 +892,7 @@
 
     tbody td:last-child, thead th:last-child {
         border-right: none;
-    }
+    } */
 
     button:focus {
         outline: 0 !important;

@@ -183,15 +183,15 @@ import UserData from '../repository/UserData';
   }
 
   .quote {
-      position: absolute;
-      left: 0;
-      top: 34%;
-      width: 50%;
-      color: #fff;
-      margin-left: 11%;
-      margin-right:2%;
-      font-size:28px;
-      font-family: Arial, Helvetica, sans-serif;
+    position: absolute;
+    left: 0;
+    top: 34%;
+    width: 50%;
+    color: #fff;
+    margin-left: 11%;
+    margin-right:2%;
+    font-size:28px;
+    font-family: Arial, Helvetica, sans-serif;
   }
 
   .footer-text{
@@ -222,32 +222,36 @@ import UserData from '../repository/UserData';
   }
 
  .login-form{
-      position: absolute;
-      height:auto;
-      background: #fff;
-      border-radius: 5px;
-      top:29%;
+    position: absolute;
+    height:auto;
+    background: #fff;
+    border-radius: 5px;
+    top:29%;
   }
-   .login-form h4{
-      text-align: center;
+
+  .login-form h4{
+    text-align: center;
   }
-   .login-form .form-group{
-      width:80%;
-      margin-left:10%;
-      margin-top:7%;
+
+  .login-form .form-group{
+    width:80%;
+    margin-left:10%;
+    margin-top:7%;
   }
 
    .login-form .form-group .btn{
     float: right;
     width: 100%;
+  }
 
-}
- .login-form .fa-paper-plane {
+  .login-form .fa-paper-plane {
     width:18px;
-}
- .login-form .fa-lock{
+  }
+
+  .login-form .fa-lock{
     width: 18px;
-}
+  }
+
  .login-form .forgot{
     float: right;
     color: red;

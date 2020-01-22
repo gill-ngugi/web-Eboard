@@ -18,7 +18,7 @@
     "jquery": "^3.4.1",
     "moment-timezone": "^0.5.26",
     "popper.js": "^1.15.0",
-    "vue": "^2.6.10",
+    "vue": "^2.6.11",
     "vue-filter-pretty-bytes": "^0.1.3",
     "vue-localstorage": "^0.6.2",
     "vue-moment": "^4.0.0",
@@ -39,6 +39,6 @@
     "node-sass": "^4.9.0",
     "prettier": "^1.18.2",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.11"
   }
 }

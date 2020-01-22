@@ -5,5 +5,7 @@ module.exports = {
         // proxy: 'http://backend.test/',
         proxy: 'http://eserver1.stl-horizon.com/',
         // disableHostCheck: true
-    }
+    },
+
+    runtimeCompiler: true
   }

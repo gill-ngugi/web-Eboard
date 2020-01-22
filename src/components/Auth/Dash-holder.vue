@@ -944,11 +944,10 @@
         },
 
     }
-
 </script>
 
-<style scoped>
 
+<style scoped>
 @import '~@fullcalendar/core/main.css';
 @import '~@fullcalendar/daygrid/main.css';
  
@@ -1138,6 +1137,4 @@
     .col-11 {width: 91.66%;}
     .col-12 {width: 100%;}
     }
-
-
 </style>
