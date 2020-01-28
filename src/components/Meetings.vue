@@ -132,38 +132,6 @@
                     </div>
                 </div>
 
-                <!-- <div style="width:98%; margin:1%; background-color:#fff; border:1px solid #f2f2f2; height:auto; border-left:5px solid #27ae60; display:flex; padding:1%; padding-bottom:0px;">
-                    <span style="display:inline">
-                        <p style="font-size:19px;">Board Meeting</p>
-                        <p style="color:grey;">Board Room::West Point::Nairobi</p>
-                        <p style="color:grey;"><span style="color:green; font-weight:bold;">Upcoming</span> - 30 Jan 2020, 03:00 AM </p>
-                    </span>
-                    <span style="flex-grow:1"></span>
-                    <span style="display:inline">
-                        <table style="margin-top:30px; font-size:17px;">
-                            <tr>
-                                <td style="padding-right:20px;">
-                                    <v-icon size="35" style="color:rgb(86,182,229);">mdi-home</v-icon> 
-                                    Briefcase
-                                </td>
-                                <td style="padding-right:20px;">
-                                    <v-icon size="35" style="color:rgb(86,182,229);">mdi-home</v-icon> 
-                                    Participants
-                                </td>
-                                <td style="padding-right:20px;">
-                                    <v-icon size="35" style="color:rgb(86,182,229);">mdi-home</v-icon> 
-                                    RSVP
-                                </td>
-                                <td style="padding-right:20px;">
-                                    <v-icon size="35" style="color:rgb(86,182,229);">mdi-home</v-icon> 
-                                    RCI
-                                </td> 
-                            </tr>
-                        </table>
-                    </span>
-                </div> -->
-
-
                 <!-- <div> -->
                     <!-- TOP -->
                     <!-- <div style="width:98%; margin:1%; background-color:#fff; border:1px solid #f2f2f2; height:auto; border-left:5px solid #27ae60; display:flex; padding:1%; padding-bottom:0px;">
@@ -268,7 +236,7 @@
 
                 <div style="background-color:rgb(86,182,229); color:#fff; width:100%; padding:10px; position:absolute; bottom:0; display:flex;">
                     <div style="flex-grow:1"></div> 
-                        <span><v-icon style="color:#fff;">mdi-file-pdf-outline</v-icon>
+                        <span @click="alertMe()"><v-icon style="color:#fff;">mdi-file-pdf-outline</v-icon>
                         Matters Arising Report</span>
                     <div style="flex-grow:1"></div> 
                 </div>
@@ -308,8 +276,9 @@
         // template: `<button id="view1" @click="swapComponent('view-02')" type="submit">NEXT VIEW</button>`,
         props: ['swapComponent'],
         template: `
-        <div @click="swapComponent('view-02')" style="cursor:pointer; width:98%; margin:1%; background-color:#fff; border:1px solid #f2f2f2; height:auto; border-left:5px solid #27ae60; display:flex; padding:1%; padding-bottom:0px;">
-                <span style="display:inline">
+            <div style="width:98%; margin:1%; background-color:#fff; border:1px solid #f2f2f2; height:auto; border-left:5px solid #27ae60; display:flex; padding:1%; padding-bottom:0px;"> 
+            <!-- <div style="cursor:pointer; width:98%; margin:1%; background-color:#fff; border:1px solid #f2f2f2; height:auto; border-left:5px solid #27ae60; display:flex; padding:1%; padding-bottom:0px;"> -->
+                <span @click="swapComponent('view-02')" style="display:inline; cursor:pointer;">
                     <p style="font-size:19px;">Board Meeting</p>
                     <p style="color:grey;">Board Room::West Point::Nairobi</p>
                     <p style="color:grey;"><span style="color:green; font-weight:bold;">Upcoming</span> - 30 Jan 2020, 03:00 AM </p>
@@ -318,11 +287,7 @@
                 <span style="display:inline">
                     <table style="margin-top:30px; font-size:17px;">
                         <tr>
-                            <!-- <td style="padding-right:20px;">
-                                <v-icon size="35" style="color:rgb(86,182,229);">mdi-home</v-icon> 
-                                Briefcase
-                            </td> -->
-                            <td style="padding-right:20px;">
+                            <td @click="alertMe()" style="padding-right:20px; cursor:pointer;">
                                 <v-icon size="35" style="color:rgb(86,182,229);">mdi-account-group</v-icon> 
                                 Participants
                             </td>
@@ -449,10 +414,15 @@
         },
 
         methods: {
+            alertMe: function(){
+                alert("GILLIAN IS SO DARN COOL!!!");
+            },
+
             doSort (field) {
                 if(field == this.sort.field){
                     this.sort.desc = !this.sort.desc
-                }else{
+                }
+                else{
                     this.sort.field = field;
                     this.sort.desc = true;
                 }
