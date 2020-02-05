@@ -1,6 +1,5 @@
 <template>
   <div>
-
       <div style="width:100%; height:100%">
         <img class="bgimg-1" src="../img/login-bg-new.png" 
             style="
@@ -52,10 +51,7 @@
             <div class="forgot">
                 <!-- <p>Forgot Password?</p> -->
             </div>
-
         </div>
-
-
     </div>
 </template>
 

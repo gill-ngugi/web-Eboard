@@ -27,6 +27,10 @@ import Discussion from './components/Discussion';
 import Plans from './components/Plans';
 import Conference from './components/Conference';
 
+import PSPDFKit from "pspdfkit";
+
+PSPDFKit.load({ });
+
 
 // axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded'
 // axios.defaults.headers.common["Authorization"] = result;
@@ -61,8 +65,9 @@ Vue.component('Gillian', {
         this.name = 'San Fransisco';
     }
   }
-
 });
+
+
 // Vue.prototype.$http = Axios;
 // const accessToken = localStorage.getItem('access_token')
 // if (accessToken) {
@@ -147,28 +152,40 @@ const routes = [
             next();
         }
     }
+  },
+  {
+    path: '/Discussion',
+    component: Discussion,
+    name: 'Discussion',
+      beforeEnter: (to, from, next) => {
+        if(store.state.authenticated == false) {
+            next('/');
+        } else {
+            next();
+        }
+    }
   },  
   {
     path: '/Compliance',
     component: Compliance,
     name: 'Compliance'
-  },  {
+  },  
+  {
     path: '/Evaluation',
     component: Evaluation,
     name: 'Evaluation'
-  },  {
-    path: '/Discussion',
-    component: Discussion,
-    name: 'Discussion'
-  },{
+  },
+  {
     path: '/Plans',
     component: Plans,
     name: 'Plans'
-  },{
+  },
+  {
     path: '/Conference',
     component: Conference,
     name: 'Conference'
-  },{
+  },
+  {
     path: '/TestLayout',
     component: TestLayout,
     name: 'TestLayout'
@@ -192,7 +209,7 @@ const router = new VueRouter({
   mode: 'history',
   routes,
   base:'/'
-})
+});
 
 new Vue({
   vuetify,

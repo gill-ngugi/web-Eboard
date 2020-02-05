@@ -1,5 +1,6 @@
 <template>
     <div>
+        <v-app>
         <!-- NAV-MENU -->
         <div class = "nav-menu" style="height:45px; width:100%; padding:0px; padding-top:0.3%; text-align:center;">
             <router-link to="/dashboard" style="text-decoration:none;"><v-icon color="#fff" size="35" style="margin-left:10px;">mdi-home</v-icon></router-link>
@@ -198,6 +199,7 @@
             </div>
         </div>
         <!-- END OF COMPONENT -->
+        </v-app>
     </div>
 </template>
 

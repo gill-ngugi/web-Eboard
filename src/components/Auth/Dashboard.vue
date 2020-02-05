@@ -1,5 +1,6 @@
 <template>    
     <div>
+        <!-- <v-app> -->
         <div class = "nav-menu parent" style=" height:45px; width:98%; padding:0px; padding-top:0.3%; margin-left:1%; margin-right:1%;">
             <div class="left-buttons" style="margin-left:10px;">
                 <button class="btn btn-lg" text v-on:click="seen1 = !seen1">
@@ -251,6 +252,7 @@
                         <span class="input-group-addon"><v-icon color="#27ae60">mdi-file-document</v-icon></span>
                         <p style="margin-left:20px; margin-right:20px;">My Inbox</p> 
                         <v-spacer></v-spacer>                        
+                        <!-- <button class="btn btn-lg" text v-on:click="closePDF = !closePDF;" style="color:green">PSPDFK</button> -->
                         <button class="btn btn-lg" text @click="reloadPage"><v-icon color="#27ae60">mdi-refresh</v-icon></button>
                     </div>
 
@@ -337,8 +339,9 @@
                                                 </td>
                                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:60%">
                                                     <a href="#" v-on:click="openPdf(item.itemUrl)">
+                                                    <!-- <a href="#" v-on:click="closePDF = !closePDF">-->
                                                         {{ item.itemName }}
-                                                    </a>
+                                                    </a> 
                                                 </td>
                                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%">
                                                     {{ item.itemSize | prettyBytes }} 
@@ -452,7 +455,7 @@
                         </div>
                     </div>
 
-                    <div class="col-right-bottom-right" style="padding:1%; width:64%; height:100%; float:left; position:relative; overflow:auto;">
+                    <div class="col-right-bottom-right" style="padding:1%; width:64%; height:100%; float:left; position:relative; overflow:auto;">                        
                         <FullCalendar                             
                             defaultView="dayGridMonth" 
                             :plugins="calendarPlugins"  
@@ -460,8 +463,21 @@
                         />                      
                     </div>
                 </div>
-            </div>      
-        </div>       
+            </div> 
+        
+        <!-- <div v-if="closePDF" 
+        style="position:absolute; background-color:#f5f5f5; width:77%; height:900px; padding:1%; overflow:hidden; margin-top:1%; margin-right:1%; margin-left:22%; z-index:-1" 
+        :is="currentComponent" :swap-component="swapComponent">
+        </div> -->
+        
+        <div v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:77%; height:900px; padding:1%; overflow:hidden; margin-top:1%; margin-right:1%; margin-left:22%; z-index:-1">
+            <button class="btn btn-lg" v-on:click="closePDF = !closePDF;" style="background-color:red; float:right; margin-right:10px;">
+                <v-icon>mdi-close-outline</v-icon>
+            </button>               
+            <pspdfkit :pdf-url="pdf" :license-key="LICENSE_KEY" :base-url="baseUrl">
+            </pspdfkit>
+        </div>
+    </div>       
 </template>
 
 <script>
@@ -471,7 +487,80 @@
     import dayGridPlugin from '@fullcalendar/daygrid';
     import UserData from '../repository/UserData';
     import JQuery from 'jquery'
-    window.$ = JQuery
+    window.$ = JQuery;
+    import Vue from 'vue';
+    import PSPDFKit from "pspdfkit";
+
+    // var pspdfkitComponent = {
+    //     props: ['swapComponent'],
+    //     data: () => ({
+    //         closePDF: true,
+    //     }),
+    //     methods: {},
+    //     template: `
+    //         <div v-if="closePDF">
+    //             <div>
+    //                 PSPDFKIT SUCKERS!!!
+    //                 <button class="btn btn-lg" text v-on:click="closePDF = !closePDF;" style="color:green; float:right; margin-right:10px;">CLOSE</button>
+    //             </div>
+    //         </div>
+    //     `,
+    // };
+
+     const LICENSE_KEY = "H8E3jzmVoQoKTpdmwIL-fp3l4tIXnqDrMQX2iyEpWQDWkgbJ1xho58ylym0MVf1AVcCkze3LIlMvZ7SjQwo9wrkaIq8CtOP2_jKSiXyms44dQq9CXTicGr1nPn8gZrAb4_C9pikBx8K6Vn90vswIM9cxHReanwhwx6np0W9bvQwgj0mgqWrgm_ay96va6pYgPNSz6f-V-XlCdiCm8V1m3xKLN-Iu7Fw5dSGFO7jaFVKMzxmPuqXAbmmsV6RHcuqv6mKVbC_zgT-9FmJsp-ppBiRKWTefb9Shk_7-a-PmUXf4ZbTC_9c5g-n0ExH-e6h8PbHrLiOSOkkxMHK288aRHT2EwTleY1RnULGKXmc2dmpgWkSarBsfVFV6_FAHO5FE57AfGDDlCgyYqaFz5hOcNOBR178CBBBhjGvxrYwmL-0R3KsOq_5Q5VHAcYB1k-z6";
+
+  const pspdfkit = Vue.component('pspdfkit', {
+  template: `
+            <div class="container" style="height:100%; width:97%;">
+                <!--<button class="btn btn-lg" text v-on:click="closePDF = !closePDF;" style="color:green; ">CLOSE</button> -->               
+            </div>
+            `,
+  name: 'pspdfkit',
+  props: ['pdfUrl', 'licenseKey', 'baseUrl'],
+  _instance: null,
+
+  mounted: function mounted() {
+    this.load()
+  },
+
+  methods: {
+    load: function load() {
+      const that = this;
+      PSPDFKit.load({
+        pdf: this.pdfUrl,
+        container: '.container',
+        licenseKey: this.licenseKey,
+        baseUrl: this.baseUrl,
+      })
+        .then(function (instance) {
+          that._instance = instance;
+          that.$parent.errorMsg = ''
+        })
+        .catch(function (err) {
+          PSPDFKit.unload('.container')
+          that.$parent.errorMsg = err.message
+        });
+    },
+
+    unload: function unload() {
+      if (this._instance) {
+        PSPDFKit.unload(this._instance || '.container')
+        this._instance = null
+      }
+    }
+  },
+  
+  watch: {
+    pdfUrl: function pdfUrl() {
+      this.unload()
+      this.load()
+    }
+  },
+
+  beforeDestroy: function beforeDestroy() {
+    this.unload()
+  }
+})
 
     export default{            
         data: () => ({
@@ -515,6 +604,7 @@
             seen5: false,
             seen6: false,
             test: true,
+            closePDF: false,
             
             showMessages: false,
 
@@ -531,9 +621,15 @@
             companyListId: "",
 
             moment: moment,
-
+         
             date: 1570064727,
 
+            // currentComponent: 'pspdfkitComponent',
+
+             pdf:'example.pdf',
+            LICENSE_KEY: LICENSE_KEY,
+            baseUrl: '',
+            errorMsg: '',
         }),
 
         filters: {
@@ -545,7 +641,9 @@
 
         methods: {
             openPdf(itemUrl){
-                window.open(itemUrl);
+                this.closePDF = !this.closePDF
+                this.pdf=itemUrl;
+                //window.open(itemUrl);
             },
           
             reloadPage(){
@@ -725,7 +823,14 @@
                 const request = axios.post("../assets/json-APIs/requestUserLogin.json", dt);
                 console.log(request);
             },
-        
+
+            openPDF: function openPDF(e) {
+                this.pdf = window.URL.createObjectURL(e.target.files[0])
+            },
+
+            swapComponent: function(component) {
+                this.currentComponent = component;
+            }        
         },
       
         beforeMount(){
@@ -738,8 +843,6 @@
         },
 
         mounted() {
-            $("#makingit").width($(window).width());
-
             const getRecentDocuments = JSON.parse(this.$localStorage.get('getRecentDocuments'));
             const getLatestNotifications = JSON.parse(this.$localStorage.get('getLatestNotifications'))
             
@@ -753,7 +856,9 @@
         },
 
         components: {
-            FullCalendar // make the <FullCalendar> tag available
+            FullCalendar, // make the <FullCalendar> tag available
+            // 'pspdfkitComponent': pspdfkitComponent,
+            pspdfkit: pspdfkit
         },
     }
 

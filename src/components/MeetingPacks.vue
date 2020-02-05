@@ -1,5 +1,6 @@
 <template>    
     <div>
+        <v-app>
         <!-- NAV-MENU -->
         <div class = "nav-menu" style="height:45px; width:100%; padding:0px; padding-top:0.3%; text-align:center;">           
             <router-link to="/dashboard" style="text-decoration:none;"><v-icon color="#fff" size="35" style="margin-left:10px;">mdi-home</v-icon></router-link>
@@ -29,8 +30,7 @@
                                         </v-btn>
                                     </template>
                                     <v-list>
-                                        <v-list-item style="display:block;">    
- 
+                                        <v-list-item style="display:block;">     
                                             <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
                                                 v-on:click="doSort('itemName')" href="javascript:">Name
                                                 <span v-if="sort.field=='itemName'">({{sort.desc?'desc':'asc'}})</span>
@@ -50,7 +50,6 @@
                                                 v-on:click="doSort('itemUploadedBy')" href="javascript:">Submitted By
                                                 <span v-if="sort.field=='itemUploadedBy'">({{sort.desc?'desc':'asc'}})</span>
                                             </v-list-item-title>
-
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>       
@@ -97,8 +96,7 @@
                                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:60%;">
                                                     <a href="#"  v-on:click="getMeetingPack(item)">
                                                         {{ item.itemName }}
-                                                    </a>
-                                                    
+                                                    </a>                                                    
                                                 </td>
                                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
                                                     {{ item.itemSize | prettyBytes }} 
@@ -254,6 +252,7 @@
             <v-icon color="#fff" style="margin-right:5px;">mdi-file-pdf-outline</v-icon>
             <p style="font-weight:bold; font-size:19px;">Matters Arising Report</p>
         </div>
+        </v-app>
     </div>       
 </template>
 

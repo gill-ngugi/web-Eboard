@@ -1,5 +1,6 @@
 <template>
     <div>
+        <v-app>
         <!-- NAV-MENU -->
         <div class = "nav-menu" style="height:45px; width:100%; padding:0px; padding-top:0.3%; text-align:center;">
             <router-link to="/dashboard" style="text-decoration:none;"><v-icon color="#fff" size="35" style="margin-left:10px;">mdi-home</v-icon></router-link>
@@ -82,48 +83,44 @@
                         All
                     </div>
                         <div class="filler"></div>
-                    <div class="right-buttons">
-                        <div class="dropdown-table" style="display:inline;">
-                            <v-menu>
-                                <template v-slot:activator="{ on }">
-                                    <v-btn
-                                        color="primary" 
-                                    
-                                        text
-                                        v-on="on"
-                                        style="color:rgb(86,182,229);"
-                                    >
-                                        Ascending
-                                        <v-icon>mdi-swap-vertical-bold</v-icon>
-                                    </v-btn>
-                                </template>
-                                <v-list>
-                                    <v-list-item style="display:block;">    
+                    <div class="right-buttons" style="display:inline;">
+                                <div class="dropdown-table" style="display:inline;">
+                                <v-menu>
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn
+                                            color="rgb(86,182,229)" 
+                                            text
+                                            v-on="on"
+                                        >
+                                            Ascending
+                                            <v-icon>mdi-swap-vertical-bold</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <v-list>
+                                        <v-list-item style="display:block;">     
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
+                                                v-on:click="doSort('itemName')" href="javascript:">Name
+                                                <span v-if="sort.field=='itemName'">({{sort.desc?'desc':'asc'}})</span>
+                                            </v-list-item-title>
 
-                                        <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                            v-on:click="doSort('itemName')" href="javascript:">Name
-                                            <span v-if="sort.field=='itemName'">({{sort.desc?'desc':'asc'}})</span>
-                                        </v-list-item-title> 
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
+                                                v-on:click="doSort('itemSize')" href="javascript:">Size
+                                                <span v-if="sort.field=='itemSize'">({{sort.desc?'desc':'asc'}})</span>
+                                            </v-list-item-title>
 
-                                        <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                            v-on:click="doSort('itemSize')" href="javascript:">Size
-                                            <span v-if="sort.field=='itemSize'">({{sort.desc?'desc':'asc'}})</span>
-                                        </v-list-item-title>
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
+                                                v-on:click="doSort('itemLastUpdatedOn')" href="javascript:">Modified On
+                                                <span v-if="sort.field=='itemLastUpdatedOn'">({{sort.desc?'desc':'asc'}})</span>
+                                            </v-list-item-title>
 
-                                        <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                            v-on:click="doSort('itemLastUpdatedOn')" href="javascript:">Modified On
-                                            <span v-if="sort.field=='itemLastUpdatedOn'">({{sort.desc?'desc':'asc'}})</span>
-                                        </v-list-item-title>
-
-                                        <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                            v-on:click="doSort('itemUploadedBy')" href="javascript:">Submitted By
-                                            <span v-if="sort.field=='itemUploadedBy'">({{sort.desc?'desc':'asc'}})</span>
-                                        </v-list-item-title>
-
-                                    </v-list-item>
-                                </v-list>
-                            </v-menu>       
-                        </div> 
+                                            <v-list-item-title style="padding: 12px; font-size:16px; cursor:pointer" 
+                                                v-on:click="doSort('itemUploadedBy')" href="javascript:">Submitted By
+                                                <span v-if="sort.field=='itemUploadedBy'">({{sort.desc?'desc':'asc'}})</span>
+                                            </v-list-item-title>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-menu>       
+                            </div> 
                     </div>
                     <div style="display:inline; ">
                         <button class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:" style="padding-top:0px; color:rgb(86,182,229);">
@@ -234,16 +231,104 @@
                     <div :is="currentComponent" :swap-component="swapComponent"></div> 
                 <!-- End of components switch -->
 
+                <!-- RSVP DIV -->
+                <div class="text-center" style="margin-bottom:50px;">
+                    <v-menu offset-y>
+                        <template v-slot:activator="{on}">
+                            <v-btn color="primary" v-on="on">RSVP</v-btn>
+                        </template>
+                        <v-list style="display:block;">
+                            <v-list-item style="display:block;">
+                                <v-list-item-title class="tile" style="padding:12px; font-size:16px; cursor:pointer">Going</v-list-item-title>
+                                <v-list-item-title class="tile" style="padding:12px; font-size:16px; cursor:pointer">Not</v-list-item-title>
+                                <v-list-item-title class="tile" style="padding:12px; font-size:16px; cursor:pointer">Maybe</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </div>
+                <!-- END OF RSVP DIV -->
+
+                <!-- RCI DIV -->
+                    <div class="text-center" style="margin-top: 50px;">
+                        <v-dialog v-model="dialog" width="550">
+                            <template v-slot:activator="{on}">
+                                <v-btn color="red lighten" v-on="on">Modal</v-btn>
+                            </template>
+                            <v-card>
+                                <v-card-title class="headline grey lighten-2" primary-title>
+                                    Register conflict of interest for meeting
+                                </v-card-title>
+                                <v-card-text style="padding-bottom:0;">
+                                    <div style="margin-top:25px; display:block;">
+                                        <v-textarea 
+                                            solo
+                                            name="input-7-1"
+                                            label="Interest disclosed"
+                                            hint="Interest disclosed"
+                                        ></v-textarea>
+
+                                        <v-textarea
+                                            solo
+                                            name="input-7-4"
+                                            label="Nature of potential conflict and estimated value if known"
+                                            hint="Nature of potential conflict and estimated value if known"
+                                        ></v-textarea>
+
+                                        <v-checkbox
+                                            v-model="checkbox"
+                                            :label="`Confirm accuracy of the information: ${checkbox.toString()}`"
+                                            :color="`blue`"
+                                        ></v-checkbox>
+
+                                    </div>
+                                </v-card-text>
+                                <v-divider style="margin:0;"></v-divider>
+                                <v-card-actions>
+                                    <v-btn style="margin-left:25px" color="primary" text @click="dialog = false">Cancel</v-btn>
+                                    <v-spacer></v-spacer>
+                                    <v-btn style="margin-right:25px" color="primary" text @click="dialog = false">Submit</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </div>
+                <!-- END OF RCI DIV -->
+
+                <div>
+                    <button v-on:click="participants = !participants" style="margin-right:30px; background-color:cyan; border-radius:10px; padding:10px;">Participants</button>
+                    <button v-on:click="alertMe()" style="margin-right:30px; background-color:red; border-radius:10px; padding:10px;">RSVP</button>
+                    <button v-on:click="alertMe()" style="margin-right:30px; background-color:cyan; border-radius:10px; padding:10px;">RCI</button>
+                </div>
+
+                <!-- FOOTER -->
                 <div style="background-color:rgb(86,182,229); color:#fff; width:100%; padding:10px; position:absolute; bottom:0; display:flex;">
                     <div style="flex-grow:1"></div> 
                         <span @click="alertMe()"><v-icon style="color:#fff;">mdi-file-pdf-outline</v-icon>
                         Matters Arising Report</span>
                     <div style="flex-grow:1"></div> 
                 </div>
+                <!-- END OF FOOTER -->
 
-            </div>   
-        </div>
-        <!-- END OF COMPONENT --> 
+            </div> 
+            <!-- END OF RIGHT DIV-->  
+
+            <!-- Participants Div -->
+            <div v-show="participants" style="cursor:default; display:flex; width:100%; height:auto; position:absolute;">
+                <div style="flex-grow:1"></div>
+                <div style="display:inline; position:relative;" class="participants">
+                    jkljkkjk
+                    <span style="left:0; width:100%; text-align:center; background-color:rgb(243,243,243); position:absolute; bottom:0;">
+                        <button v-on:click="participants = !participants" 
+                            style="color:rgb(86,182,229); font-size:22px; padding:10px; border-radius:10px;">
+                            Close
+                        </button>
+                    </span>
+                </div>
+                <div style="flex-grow:1"></div>
+            </div>
+            <!-- Participants Div -->
+
+        </div> <!-- END OF COMPONENT --> 
+        </v-app>
     </div>
 </template>
 
@@ -275,34 +360,158 @@
     var View01 = {
         // template: `<button id="view1" @click="swapComponent('view-02')" type="submit">NEXT VIEW</button>`,
         props: ['swapComponent'],
+        data: () => ({
+            participants: false,
+
+            dialog: false, 
+
+            checkbox: true,
+
+            tileA:{
+                color:"rgb(86,182,229)",
+                fontWeight:"bold"
+            },
+             tileB:{
+                color:"#000",
+                fontWeight:"bold"
+            },
+             tileC:{
+                color:"rgb(86,182,229)",
+                fontWeight:"bold"
+            }
+        }),
+        methods: {
+            alerty(){
+                alert("GILLIAN IS SOOO DARN CCOL!!!");
+            },
+            changeColorA(){
+                this.tileA.color="blue",
+                this.tileA.fontWeight= "bold"
+            },
+            changeColorB(){
+                this.tileB.color="blue",
+                this.tileB.fontWeight= "bold"
+            },
+            changeColorC(){
+                this.tileC.color="blue",
+                this.tileC.fontWeight= "bold"
+            },
+            initialColorA(){
+                this.tileA.color="rgb(86,182,229)",
+                this.tileA.fontWeight= "normal"
+            },
+            initialColorB(){
+                this.tileB.color="#000",
+                this.tileB.fontWeight= "normal"
+            },
+            initialColorC(){
+                this.tileC.color="rgb(86,182,229)",
+                this.tileC.fontWeight= "normal"
+            }
+        },
         template: `
-            <div style="width:98%; margin:1%; background-color:#fff; border:1px solid #f2f2f2; height:auto; border-left:5px solid #27ae60; display:flex; padding:1%; padding-bottom:0px;"> 
-            <!-- <div style="cursor:pointer; width:98%; margin:1%; background-color:#fff; border:1px solid #f2f2f2; height:auto; border-left:5px solid #27ae60; display:flex; padding:1%; padding-bottom:0px;"> -->
-                <span @click="swapComponent('view-02')" style="display:inline; cursor:pointer;">
-                    <p style="font-size:19px;">Board Meeting</p>
-                    <p style="color:grey;">Board Room::West Point::Nairobi</p>
-                    <p style="color:grey;"><span style="color:green; font-weight:bold;">Upcoming</span> - 30 Jan 2020, 03:00 AM </p>
-                </span>
-                <span style="flex-grow:1"></span>
-                <span style="display:inline">
-                    <table style="margin-top:30px; font-size:17px;">
-                        <tr>
-                            <td @click="alertMe()" style="padding-right:20px; cursor:pointer;">
-                                <v-icon size="35" style="color:rgb(86,182,229);">mdi-account-group</v-icon> 
-                                Participants
-                            </td>
-                            <td style="padding-right:20px;">
-                                <v-icon size="35" style="color:rgb(86,182,229);">mdi-email</v-icon> 
-                                RSVP
-                            </td>
-                            <td style="padding-right:20px;">
-                                <v-icon size="35" style="color:rgb(86,182,229);">mdi-message-text</v-icon> 
-                                RCI
-                            </td>
-                        </tr>
-                    </table>
-                </span>
-            </div>
+            <div style="position:relative; height:auto; width:auto;">
+                <div style="width:98%; margin:1%; background-color:#fff; border:1px solid #f2f2f2; height:auto; border-left:5px solid #27ae60; display:flex; padding:1%; padding-bottom:0px;"> 
+                <!-- <div style="cursor:pointer; width:98%; margin:1%; background-color:#fff; border:1px solid #f2f2f2; height:auto; border-left:5px solid #27ae60; display:flex; padding:1%; padding-bottom:0px;"> -->
+                    <span @click="swapComponent('view-02')" style="display:inline; cursor:pointer;">
+                        <p style="font-size:19px;">Board Meeting</p>
+                        <p style="color:grey;">Board Room::West Point::Nairobi</p>
+                        <p style="color:grey;"><span style="color:green; font-weight:bold;">Upcoming</span> - 30 Jan 2020, 03:00 AM </p>
+                    </span>
+                    <span style="flex-grow:1"></span>
+                    <span style="display:inline">
+                        <table style="margin-top:30px; font-size:17px;">
+                            <tr>
+                                <td v-on:click="participants = !participants" style="padding-right:20px; cursor:pointer;">
+                                    <v-icon size="35" style="color:rgb(86,182,229);">mdi-account-group</v-icon> 
+                                    Participants
+                                </td>
+                                <td style="padding-right:20px; cursor:pointer;">
+                                    <div class="text-center" style="">
+                                        <v-menu offset-y>
+                                            <template v-slot:activator="{on}">
+                                                <v-btn text color="primary" v-on="on">
+                                                    <v-icon size="35" style="color:rgb(86,182,229);">mdi-email</v-icon> 
+                                                    RSVP
+                                                </v-btn>
+                                            </template>
+                                            <v-list>
+                                                <v-list-item style="display:block;">
+                                                    <v-list-item-title v-bind:style="tileA" v-on:mouseover="changeColorA" v-on:mouseout="initialColorA" style="padding:12px; font-size:16px; cursor:pointer">Going</v-list-item-title>
+                                                    <v-list-item-title v-bind:style="tileB" v-on:mouseover="changeColorB" v-on:mouseout="initialColorB" style="padding:12px; font-size:16px; cursor:pointer">Not</v-list-item-title>
+                                                    <v-list-item-title v-bind:style="tileC" v-on:mouseover="changeColorC" v-on:mouseout="initialColorC" style="padding:12px; font-size:16px; cursor:pointer">Maybe</v-list-item-title>
+                                                </v-list-item>
+                                            </v-list>
+                                        </v-menu>
+                                    </div>
+                                </td>
+                                <td style="padding-right:20px; cursor:pointer;">
+                                    <div class="text-center" style="">
+                                        <v-dialog v-model="dialog" width="550">
+                                            <template v-slot:activator="{on}">
+                                                <v-btn text color="primary" v-on="on">
+                                                    <v-icon size="35" style="color:rgb(86,182,229);">mdi-message-text</v-icon> 
+                                                    Modal
+                                                </v-btn>
+                                            </template>
+                                            <v-card>
+                                                <v-card-title class="headline grey lighten-2" primary-title>
+                                                    Register conflict of interest for meeting
+                                                </v-card-title>
+                                                <v-card-text style="padding-bottom:0;">
+                                                    <div style="margin-top:25px; display:block;">
+                                                        <v-textarea 
+                                                            solo
+                                                            name="input-7-1"
+                                                            label="Interest disclosed"
+                                                            hint="Interest disclosed"
+                                                        ></v-textarea>
+
+                                                        <v-textarea
+                                                            solo
+                                                            name="input-7-4"
+                                                            label="Nature of potential conflict and estimated value if known"
+                                                            hint="Nature of potential conflict and estimated value if known"
+                                                        ></v-textarea>
+
+                                                        <v-checkbox
+                                                            v-model="checkbox"
+                                                            label="Confirm accuracy of the information"
+                                                            color="blue"
+                                                        ></v-checkbox>
+
+                                                    </div>
+                                                </v-card-text>
+                                                <v-divider style="margin:0;"></v-divider>
+                                                <v-card-actions>
+                                                    <v-btn style="margin-left:25px" color="primary" text @click="dialog = false">Cancel</v-btn>
+                                                    <v-spacer></v-spacer>
+                                                    <v-btn style="margin-right:25px" color="primary" text @click="dialog = false">Submit</v-btn>
+                                                </v-card-actions>
+                                            </v-card>
+                                        </v-dialog>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </span>
+                </div>
+
+                <div v-show="participants" style="cursor:default; display:flex; width:100%; height:auto; position:absolute;">
+                    <div style="flex-grow:1"></div>
+                        <div style="display:inline; position:relative; height:850px; width:25%; background-color:#fff;" class="participants">
+                            jkljkkjk
+                            <span style="left:0; width:100%; text-align:center; background-color:rgb(243,243,243); position:absolute; bottom:0;">
+                                <button v-on:click="participants = !participants" 
+                                    style="color:rgb(86,182,229); font-size:22px; padding:10px; border-radius:10px;">
+                                    Close
+                                </button>
+                            </span>
+                        </div>
+                    <div style="flex-grow:1"></div>
+                </div>
+
+            </div>    
         `       
     }
     var View02 = {
@@ -322,15 +531,15 @@
                         <span style="display:inline">
                             <table style="margin-top:30px; font-size:17px;">
                                 <tr>
-                                    <td style="padding-right:20px;">
+                                    <td style="padding-right:20px; cursor:pointer;">
                                         <v-icon size="35" style="color:rgb(86,182,229);">mdi-account-group</v-icon> 
                                         Participants
                                     </td>
-                                    <td style="padding-right:20px;">
+                                    <td style="padding-right:20px; cursor:pointer;">
                                         <v-icon size="35" style="color:rgb(86,182,229);">mdi-email</v-icon> 
                                         RSVP
                                     </td>
-                                    <td style="padding-right:20px;">
+                                    <td style="padding-right:20px; cursor:pointer;">
                                         <v-icon size="35" style="color:rgb(86,182,229);">mdi-message-text</v-icon> 
                                         RCI
                                     </td> 
@@ -399,7 +608,22 @@
             currentComponent: 'view-01',
 
             currentTab: 'Home',
-            tabs: ['Home', 'Posts', 'Archive']
+            tabs: ['Home', 'Posts', 'Archive'],
+
+            participants: false,
+
+            logName: "Gillian is SOOO DARN COOL!!!",
+
+            items: [
+                { title: 'Click Me' },
+                { title: 'Click Me' },
+                { title: 'Click Me' },
+                { title: 'Click Me 2' },
+            ],
+
+            dialog: false, 
+
+            checkbox: true,
         }),
 
         components: {
@@ -416,6 +640,15 @@
         methods: {
             alertMe: function(){
                 alert("GILLIAN IS SO DARN COOL!!!");
+            },
+
+            alerty(e){
+                console.log("GILLIAN IS SO DARN COOL!!!");
+            },
+
+            display: function(logname){
+                this.logName = logname;
+                console.log(this.logName);
             },
 
             doSort (field) {
@@ -450,6 +683,7 @@
         margin-left: 0.5%;
         margin-right: 0.5%;
         height: 900px;
+        overflow:auto;
     }
 
     .left{
@@ -520,6 +754,7 @@
     }
     .tab-button:hover {
         background: #e0e0e0;
+        /* font-weight:  */
     }
     .tab-button.active {
         background: #e0e0e0;
@@ -529,5 +764,22 @@
         padding: 10px;
     }
     /* END OF TCS */
+
+    .participants{
+        height:850px;
+        width:25%;
+        background-color:#fff;
+        /* position: absolute; */
+    }
+    .drop v-list-item-title:nth-child(even){
+        background-color: rgb(86,182,229);
+    }
+    .tile:hover{
+        color:rgb(86,182,229);
+        font-weight: bold;
+    }
+    .tile:active {
+        background: rgb(86,182,229);
+  }
 
 </style>
