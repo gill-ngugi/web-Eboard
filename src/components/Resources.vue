@@ -98,6 +98,8 @@
                         </div>
                     </div> 
                 </div> 
+
+               
             
             <!-- Header 2 -->
                 <div class = "parent" style="height:55px; width:100%; background-color:#f1f1f1;">
@@ -197,6 +199,14 @@
                     </tbody>
                 </table> -->
             </div>
+
+             <div v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:100%; height:100%; padding:1%; overflow:hidden; margin-right:0; ">
+                    <button class="btn btn-lg" v-on:click="closePDF = !closePDF;" style="background-color:red; float:right; margin-right:10px;">
+                        <v-icon>mdi-close-outline</v-icon>
+                    </button>               
+                    <pspdfkit :pdf-url="pdf" :license-key="LICENSE_KEY" :base-url="baseUrl">
+                    </pspdfkit>
+                </div>
         </div>
         <!-- END OF COMPONENT -->
         </v-app>
@@ -207,6 +217,65 @@
     var moment = require('moment');
     import axios from 'axios';
     import UserData from '../components/repository/UserData'
+    import Vue from 'vue';
+    import PSPDFKit from "pspdfkit";
+
+    const LICENSE_KEY = "H8E3jzmVoQoKTpdmwIL-fp3l4tIXnqDrMQX2iyEpWQDWkgbJ1xho58ylym0MVf1AVcCkze3LIlMvZ7SjQwo9wrkaIq8CtOP2_jKSiXyms44dQq9CXTicGr1nPn8gZrAb4_C9pikBx8K6Vn90vswIM9cxHReanwhwx6np0W9bvQwgj0mgqWrgm_ay96va6pYgPNSz6f-V-XlCdiCm8V1m3xKLN-Iu7Fw5dSGFO7jaFVKMzxmPuqXAbmmsV6RHcuqv6mKVbC_zgT-9FmJsp-ppBiRKWTefb9Shk_7-a-PmUXf4ZbTC_9c5g-n0ExH-e6h8PbHrLiOSOkkxMHK288aRHT2EwTleY1RnULGKXmc2dmpgWkSarBsfVFV6_FAHO5FE57AfGDDlCgyYqaFz5hOcNOBR178CBBBhjGvxrYwmL-0R3KsOq_5Q5VHAcYB1k-z6";
+
+    const pspdfkit = Vue.component('pspdfkit', {
+    template: 
+        `
+        <div class="container" style="height:100%; width:97%;">
+            <!--<button class="btn btn-lg" text v-on:click="closePDF = !closePDF;" style="color:green; ">CLOSE</button> -->               
+        </div>
+        `,
+    name: 'pspdfkit',
+    props: ['pdfUrl', 'licenseKey', 'baseUrl'],
+    _instance: null,
+
+    mounted: function mounted() {
+        this.load()
+    },
+
+    methods: {
+        load: function load() {
+            const that = this;
+            PSPDFKit.load({
+                pdf: this.pdfUrl,
+                container: '.container',
+                licenseKey: this.licenseKey,
+                baseUrl: this.baseUrl,
+            })
+            .then(function (instance) {
+                that._instance = instance;
+                that.$parent.errorMsg = ''
+            })
+            .catch(function (err) {
+                PSPDFKit.unload('.container')
+                that.$parent.errorMsg = err.message
+            });
+        },
+
+        unload: function unload() {
+            if (this._instance) {
+                PSPDFKit.unload(this._instance || '.container')
+                this._instance = null
+            }
+        }
+    },
+    
+    watch: {
+        pdfUrl: function pdfUrl() {
+            this.unload()
+            this.load()
+        }
+    },
+
+    beforeDestroy: function beforeDestroy() {
+        this.unload()
+    }
+    })
+
 
     export default{
         data: () => ({
@@ -241,7 +310,13 @@
 
             userdata:{                
                 rootUrl:"https://eserver1.stl-horizon.com/api_v13/frontend/web/index.php/user/create"
-           }
+            },
+
+            closePDF: true,
+            pdf:'example.pdf',
+            LICENSE_KEY: LICENSE_KEY,
+            baseUrl: '',
+            errorMsg: '',   
         }),
 
 
@@ -287,8 +362,8 @@
                             "itemName": this.getResourcePackFolder.data.itemName,
                             "itemId": this.itemParentId
                         });
-                        console.log(item.itemId);
-                        console.log(item.itemParentId);
+                        // console.log(item.itemId);
+                        // console.log(item.itemParentId);
                     })
                     .catch(e => {
                         console.log('Error', e);
@@ -334,7 +409,10 @@
 
             getResources(item){
                 if(item.hasOwnProperty("itemExtension")){
-                    window.open(item.itemUrl);
+                    this.closePDF = !this.closePDF;
+                    this.pdf=item.itemUrl;
+                    // alert(item.itemUrl);
+                    //window.open(item.itemUrl);
                     return
                 }
                 axios.post(UserData.getBaseUrl(), this.getUserData(item.itemId, item.itemParentId))
@@ -373,6 +451,10 @@
                     this.sort.desc = true;
                 }
             },
+
+            swapComponent: function(component) {
+                this.currentComponent = component;
+            }    
            
         },
 
@@ -402,7 +484,11 @@
             if (getResourcePackFolder) {  
                 this.getResourcePackFolder = getResourcePackFolder;
             }
-        }
+        },
+
+        components: {
+            pspdfkit: pspdfkit
+        },
     }
 
 </script>

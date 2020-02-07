@@ -27,9 +27,10 @@ import Discussion from './components/Discussion';
 import Plans from './components/Plans';
 import Conference from './components/Conference';
 
-import PSPDFKit from "pspdfkit";
 
-PSPDFKit.load({ });
+// import PSPDFKit from "pspdfkit";
+
+// PSPDFKit.load({ });
 
 
 // axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -61,7 +62,7 @@ Vue.component('Gillian', {
   },
 
   methods: {
-    changeName:function(){
+    changeName:function(){ 
         this.name = 'San Fransisco';
     }
   }

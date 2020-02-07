@@ -507,60 +507,61 @@
     //     `,
     // };
 
-     const LICENSE_KEY = "H8E3jzmVoQoKTpdmwIL-fp3l4tIXnqDrMQX2iyEpWQDWkgbJ1xho58ylym0MVf1AVcCkze3LIlMvZ7SjQwo9wrkaIq8CtOP2_jKSiXyms44dQq9CXTicGr1nPn8gZrAb4_C9pikBx8K6Vn90vswIM9cxHReanwhwx6np0W9bvQwgj0mgqWrgm_ay96va6pYgPNSz6f-V-XlCdiCm8V1m3xKLN-Iu7Fw5dSGFO7jaFVKMzxmPuqXAbmmsV6RHcuqv6mKVbC_zgT-9FmJsp-ppBiRKWTefb9Shk_7-a-PmUXf4ZbTC_9c5g-n0ExH-e6h8PbHrLiOSOkkxMHK288aRHT2EwTleY1RnULGKXmc2dmpgWkSarBsfVFV6_FAHO5FE57AfGDDlCgyYqaFz5hOcNOBR178CBBBhjGvxrYwmL-0R3KsOq_5Q5VHAcYB1k-z6";
+    const LICENSE_KEY = "H8E3jzmVoQoKTpdmwIL-fp3l4tIXnqDrMQX2iyEpWQDWkgbJ1xho58ylym0MVf1AVcCkze3LIlMvZ7SjQwo9wrkaIq8CtOP2_jKSiXyms44dQq9CXTicGr1nPn8gZrAb4_C9pikBx8K6Vn90vswIM9cxHReanwhwx6np0W9bvQwgj0mgqWrgm_ay96va6pYgPNSz6f-V-XlCdiCm8V1m3xKLN-Iu7Fw5dSGFO7jaFVKMzxmPuqXAbmmsV6RHcuqv6mKVbC_zgT-9FmJsp-ppBiRKWTefb9Shk_7-a-PmUXf4ZbTC_9c5g-n0ExH-e6h8PbHrLiOSOkkxMHK288aRHT2EwTleY1RnULGKXmc2dmpgWkSarBsfVFV6_FAHO5FE57AfGDDlCgyYqaFz5hOcNOBR178CBBBhjGvxrYwmL-0R3KsOq_5Q5VHAcYB1k-z6";
 
-  const pspdfkit = Vue.component('pspdfkit', {
-  template: `
-            <div class="container" style="height:100%; width:97%;">
-                <!--<button class="btn btn-lg" text v-on:click="closePDF = !closePDF;" style="color:green; ">CLOSE</button> -->               
-            </div>
-            `,
-  name: 'pspdfkit',
-  props: ['pdfUrl', 'licenseKey', 'baseUrl'],
-  _instance: null,
+    const pspdfkit = Vue.component('pspdfkit', {
+    template: 
+        `
+        <div class="container" style="height:100%; width:97%;">
+            <!--<button class="btn btn-lg" text v-on:click="closePDF = !closePDF;" style="color:green; ">CLOSE</button> -->               
+        </div>
+        `,
+    name: 'pspdfkit',
+    props: ['pdfUrl', 'licenseKey', 'baseUrl'],
+    _instance: null,
 
-  mounted: function mounted() {
-    this.load()
-  },
-
-  methods: {
-    load: function load() {
-      const that = this;
-      PSPDFKit.load({
-        pdf: this.pdfUrl,
-        container: '.container',
-        licenseKey: this.licenseKey,
-        baseUrl: this.baseUrl,
-      })
-        .then(function (instance) {
-          that._instance = instance;
-          that.$parent.errorMsg = ''
-        })
-        .catch(function (err) {
-          PSPDFKit.unload('.container')
-          that.$parent.errorMsg = err.message
-        });
+    mounted: function mounted() {
+        this.load()
     },
 
-    unload: function unload() {
-      if (this._instance) {
-        PSPDFKit.unload(this._instance || '.container')
-        this._instance = null
-      }
-    }
-  },
-  
-  watch: {
-    pdfUrl: function pdfUrl() {
-      this.unload()
-      this.load()
-    }
-  },
+    methods: {
+        load: function load() {
+            const that = this;
+            PSPDFKit.load({
+                pdf: this.pdfUrl,
+                container: '.container',
+                licenseKey: this.licenseKey,
+                baseUrl: this.baseUrl,
+            })
+            .then(function (instance) {
+                that._instance = instance;
+                that.$parent.errorMsg = ''
+            })
+            .catch(function (err) {
+                PSPDFKit.unload('.container')
+                that.$parent.errorMsg = err.message
+            });
+        },
 
-  beforeDestroy: function beforeDestroy() {
-    this.unload()
-  }
-})
+        unload: function unload() {
+            if (this._instance) {
+                PSPDFKit.unload(this._instance || '.container')
+                this._instance = null
+            }
+        }
+    },
+    
+    watch: {
+        pdfUrl: function pdfUrl() {
+            this.unload()
+            this.load()
+        }
+    },
+
+    beforeDestroy: function beforeDestroy() {
+        this.unload()
+    }
+    })
 
     export default{            
         data: () => ({
@@ -572,13 +573,13 @@
                 { title: 'Finserve Africa' },
                 { title: 'Deloite' },
             ],
-             languages: [
+            languages: [
                 { title: 'English' },
                 { title: 'French' },
                 { title: 'Amharic' },
                 { title: 'Portugese' }
             ],
-             navDrawer: [
+            navDrawer: [
                 { title: 'Home', icon: 'mdi-home-city' },
                 { title: 'My Account', icon: 'mdi-account' },
                 { title: 'Users', icon: 'mdi-account-group-outline' },
@@ -626,7 +627,7 @@
 
             // currentComponent: 'pspdfkitComponent',
 
-             pdf:'example.pdf',
+            pdf:'example.pdf',
             LICENSE_KEY: LICENSE_KEY,
             baseUrl: '',
             errorMsg: '',
