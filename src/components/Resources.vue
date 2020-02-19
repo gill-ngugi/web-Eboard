@@ -312,8 +312,8 @@
                 rootUrl:"https://eserver1.stl-horizon.com/api_v13/frontend/web/index.php/user/create"
             },
 
-            closePDF: true,
-            pdf:'example.pdf',
+            closePDF: false,
+            pdf:'',
             LICENSE_KEY: LICENSE_KEY,
             baseUrl: '',
             errorMsg: '',   

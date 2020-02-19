@@ -26,6 +26,8 @@ import Evaluation from './components/Evaluation';
 import Discussion from './components/Discussion';
 import Plans from './components/Plans';
 import Conference from './components/Conference';
+import Elections from './components/Elections';
+import RiskManagement from './components/RiskManagement';
 
 
 // import PSPDFKit from "pspdfkit";
@@ -185,6 +187,16 @@ const routes = [
     path: '/Conference',
     component: Conference,
     name: 'Conference'
+  },
+  {
+    path: '/Elections',
+    component: Elections,
+    name: 'Elections'
+  },
+  {
+    path: '/Risk Management',
+    component: RiskManagement,
+    name: 'Risk Management'
   },
   {
     path: '/TestLayout',

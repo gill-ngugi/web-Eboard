@@ -29,12 +29,12 @@
                         :key="index"                                
                     >
                         <!-- START HERE!!! -->
-                    <v-list-item-title v-on:click="changeCompanyDetails(); UserData.setCompanyId(item.companyId);" style="cursor:pointer;">{{ item.companyName }} <v-divider></v-divider></v-list-item-title>  
+                    <v-list-item-title v-on:click="changeCompanyDetails(item);" style="cursor:pointer;">{{ item.companyName }} <v-divider></v-divider></v-list-item-title>  
                     </v-list-item>
                 </v-list>
             </div>
 
-        <!-- English -->
+        <!-- English -->  
             <div style="margin-left:80%; height:auto; width:19%; position:absolute; z-index:1; margin-right:1%;" 
                 v-if="seen2">
                  <v-list style="position">
@@ -85,7 +85,7 @@
                  
                     <div><p style="color:#e33333;">Options<span style="float:right;">v3.0.1</span></p></div>
                     
-                    <div class="row" style="margin:0px; padding:0px;">
+                    <!-- <div class="row" style="margin:0px; padding:0px;">
                         <div class="col-md-8 col-sm-8" style="margin:0px; padding:0px;">
                             Notifications
                         </div>
@@ -164,7 +164,7 @@
                             Change Applock PIN
                         </div>                       
                     </div>
-                    <v-divider style="margin:0px; padding:0px;"></v-divider>
+                    <v-divider style="margin:0px; padding:0px;"></v-divider> -->
 
                     <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
                         <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">
@@ -173,7 +173,7 @@
                     </div>
                     <v-divider style="margin:0px; padding:0px;"></v-divider>
 
-                    <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
+                    <!-- <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
                         <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">
                             Manage Briefcase
                         </div>                       
@@ -218,7 +218,7 @@
                             Feedback
                         </div>                       
                     </div>
-                    <v-divider style="margin:0px; padding:0px;"></v-divider>
+                    <v-divider style="margin:0px; padding:0px;"></v-divider> -->
 
                     <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
                         <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">                        
@@ -231,10 +231,11 @@
             </div>
   
             <div class="col-left" style="width:20%; height:900px; overflow:auto; margin-left:1%; margin-right:1%; margin-top:1%; float:left; position:relative;">
+                <!-- <div v-for="(item, index) in dashboardMenuList" :key="index"> -->
                 <div v-for="(item, index) in even(dashboardMenuList)" :key="index">
                     <router-link :to="{name : item.menuTitle}" style="text-decoration:none;" :style="{color:'rgb(' + item.menuColor + ')'}"> 
                         <div class="left-menu" style="border-top: 5px solid; padding:3.3%;">
-                            <div class="input-group" >
+                            <div class="input-group">
                                 <span class="input-group-addon">
                                     <img v-bind:src="item.menuImageUrl"  v-bind:alt="item.menuTitle" v-bind:style="{width:'60px', height:'50px' }">
                                     </span>
@@ -508,6 +509,7 @@
     // };
 
     const LICENSE_KEY = "H8E3jzmVoQoKTpdmwIL-fp3l4tIXnqDrMQX2iyEpWQDWkgbJ1xho58ylym0MVf1AVcCkze3LIlMvZ7SjQwo9wrkaIq8CtOP2_jKSiXyms44dQq9CXTicGr1nPn8gZrAb4_C9pikBx8K6Vn90vswIM9cxHReanwhwx6np0W9bvQwgj0mgqWrgm_ay96va6pYgPNSz6f-V-XlCdiCm8V1m3xKLN-Iu7Fw5dSGFO7jaFVKMzxmPuqXAbmmsV6RHcuqv6mKVbC_zgT-9FmJsp-ppBiRKWTefb9Shk_7-a-PmUXf4ZbTC_9c5g-n0ExH-e6h8PbHrLiOSOkkxMHK288aRHT2EwTleY1RnULGKXmc2dmpgWkSarBsfVFV6_FAHO5FE57AfGDDlCgyYqaFz5hOcNOBR178CBBBhjGvxrYwmL-0R3KsOq_5Q5VHAcYB1k-z6";
+    // const LICENSE_KEY = "vuF0E1oK-8zmH0-rz6t6lt5x3AowOhR0kRILumR6xH5T9Ctre9Fo8gkBb404wT0dORhQliyk5XuSMMayurmNTJi4GRIuHL92DKOflXw04fv1UWthdwqHGQ0wM-E_0xTt4sk1jk9pWSkN5im3J_XmU8frGN2NYiSu-LP2BF_SFitDv9E-TSJWExDAZJVh4x3djWVg0bKVI-Pv2uS7fTh8ynEe4_7ivc-SoqEldi7evAfvas4X1EPse0VhJYWtgzhIjNs4RoXAazz4j4xPRgAQEYSL4JG6ZnT2fwCNq8uTqsnxi77aP0NvM69CmaOm_h-4yL3xCpVWV0k6HEiwO-fgn0fFQeHHRemKeXlGWnjrCBob4s1bDgjh0VWkTHRmZIbEA3jt6Ehh1VZQrlVusPOJggRF63X3sTowcQM5dPae-bHLMhdOB6pov8PKEOaWoR1pRw64NheynDAaA5elyCbP_xnG5cCuzDekt6U5K9KZ-wdc3kQFgS4kgbA1Ox1n3k2zbag_mqPkNOhzQ9AzDehO8H6W8L49hvQCQtmGAcm6nuA=";
 
     const pspdfkit = Vue.component('pspdfkit', {
     template: 
@@ -795,10 +797,99 @@
                 })
             },
 
-            changeCompanyDetails(){
-                // alert (UserData.getCompanyListId());
+            changeCompanyDetails(item){
+                // console.log(item);
                 // let companyId = this.companyList;
-                // alert(this.companyListId);
+                alert(item.companyId);
+                // alert(this.dashboardMenuList.length);
+                this.dashboardMenuList = 0;
+                // this.dashboardMenuList = this.dashboardMenuList.splice(0, this.dashboardMenuList.length);
+                // alert(this.dashboardMenuList.length);
+                this.dashboardMenuList = item.dashboardMenuList;
+                // alert(this.dashboardMenuList.length);
+
+                //Recent Documents
+                UserData.setCompanyId(item.companyId);
+                
+                // COMPANY LIST
+                const formData1 = new FormData();
+                formData1.append('userId', UserData.getUserId());
+                formData1.append('companyCode', UserData.getCompanyCode());
+                formData1.append('accessToken', UserData.getAccessToken());
+                formData1.append('model', "getCompanyList");
+                formData1.append('companyId', UserData.getCompanyId());
+
+                axios.post(UserData.getBaseUrl(), formData1)
+                    .then(response => {
+                        this.getCompanyList = response.data;
+                        this.companyList = this.getCompanyList.companyList;
+                        // let companyId = this.companyList.companyId;
+                        this.$localStorage.set('getCompanyList', JSON.stringify(this.getCompanyList))
+                    })
+                    .catch(e => {
+                        console.log('Error', e);
+                    })
+
+                //NOTIFICATIONS AND TASKS
+                const formData2 = new FormData();
+                formData2.append('userId', UserData.getUserId());
+                formData2.append('companyCode', UserData.getCompanyCode());
+                formData2.append('accessToken', UserData.getAccessToken());
+                formData2.append('model', "getLatestNotifications");
+                formData2.append('companyId', UserData.getCompanyId());
+
+                axios.post(UserData.getBaseUrl(), formData2)
+                    .then(response => {
+                        this.getLatestNotifications = response.data;
+                        this.$localStorage.set('getLatestNotifications', JSON.stringify(this.getLatestNotifications))
+                    })
+                    .catch(e => {
+                        console.log('Error', e);
+                    }) 
+
+                //RECENT DOCUMENTS
+                const formData3 = new FormData();
+                formData3.append('userId', UserData.getUserId());
+                formData3.append('companyCode', UserData.getCompanyCode());
+                formData3.append('accessToken', UserData.getAccessToken());
+                formData3.append('model', "getRecentDocuments");
+                formData3.append('companyId', UserData.getCompanyId());
+                // formData3.append('companyId', UserData.getCompanyListId());
+
+                axios.post(UserData.getBaseUrl(), formData3)
+                    .then(response => {
+                        this.getRecentDocuments = response.data;
+                        this.$localStorage.set('getRecentDocuments', JSON.stringify(this.getRecentDocuments))
+                        })
+                    .catch(e => {
+                        console.log('Error', e);
+                    })    
+
+                //CALENDAR
+                const formData4 = new FormData();
+                formData4.append('userId', UserData.getUserId());
+                formData4.append('companyCode', UserData.getCompanyCode());
+                formData4.append('accessToken', UserData.getAccessToken());
+                formData4.append('model', "getCalendarEvents");  
+                formData4.append('companyId', UserData.getCompanyId());
+
+                axios.post(UserData.getBaseUrl(), formData4)
+                    .then(response => {
+                        this.getCalendarEvents = response.data;
+                        this.eventArray = this.getCalendarEvents.eventList;
+                        this.$localStorage.set('getCalendarEvents', JSON.stringify(this.getCalendarEvents));
+                        this.eventArray=this.eventArray.map((element)=>{                     
+                            return { 
+                                title:element.eventTitle, 
+                                date:moment(parseInt(element.eventBeginDate*1000, 10)).format('YYYY-MM-DD'),
+                                color:`rgb(element.eventColor)`, 
+                                textColor:'#fff' 
+                            }
+                        })
+                    })
+                    .catch(e => {
+                        console.log('Error', e);
+                })    
             },
 
             setCompanyId(companyId){
