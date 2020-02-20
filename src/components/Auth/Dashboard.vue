@@ -255,6 +255,8 @@
                         <v-spacer></v-spacer>                        
                         <!-- <button class="btn btn-lg" text v-on:click="closePDF = !closePDF;" style="color:green">PSPDFK</button> -->
                         <button class="btn btn-lg" text @click="reloadPage"><v-icon color="#27ae60">mdi-refresh</v-icon></button>
+                        <button class="btn btn-lg" color="primary" @click="postMe()">POST ME</button>
+                        <button class="btn btn-lg" color="primary" @click="getMe()">GET ME</button>
                     </div>
 
                 <!-- <div style="width:100%;">
@@ -339,7 +341,7 @@
                                                     <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
                                                 </td>
                                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:60%">
-                                                    <a href="#" v-on:click="openPdf(item.itemUrl)">
+                                                    <a href="#" v-on:click="openPdf(item)">
                                                     <!-- <a href="#" v-on:click="closePDF = !closePDF">-->
                                                         {{ item.itemName }}
                                                     </a> 
@@ -521,6 +523,7 @@
     name: 'pspdfkit',
     props: ['pdfUrl', 'licenseKey', 'baseUrl'],
     _instance: null,
+    
 
     mounted: function mounted() {
         this.load()
@@ -529,15 +532,72 @@
     methods: {
         load: function load() {
             const that = this;
+            // instant: true,
+            // pspdfkit.addEventListener("annotations.didSave", async () => {
+            //     const instantJSON = await pspdfkit.exportInstantJSON();
+            //     await fetch("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", {
+            //         method: "POST",
+            //         headers: {
+            //         "Content-Type": "application/json"
+            //         },
+            //         body: JSON.stringify(instantJSON)
+            //     }).then(
+            //         (response)=>{
+            //            console.log(response)
+            //        }
+            //     );
+            // });
+
+            // pspdfkit.exportInstantJSON().then(function (instantJSON) {
+            //     fetch("https://example.com/annotations", {
+            //         "Content-Type": "application/json",
+            //         method: "POST",
+            //         body: JSON.stringify(instantJSON)
+            //     }).then(
+            //         console.log(body)
+            //     );
+            // });
+
             PSPDFKit.load({
                 pdf: this.pdfUrl,
                 container: '.container',
                 licenseKey: this.licenseKey,
                 baseUrl: this.baseUrl,
+                // instant: true,
+                // autoSaveMode: PSPDFKit.AutoSaveMode.IMMEDIATE
             })
             .then(function (instance) {
-                that._instance = instance;
-                that.$parent.errorMsg = ''
+                instance.addEventListener("annotations.create", async (createdAnnotations) => {
+                instance.exportInstantJSON().then(function (instantJSON) {
+                // Persist it to a server
+                const form = new FormData();
+                form.append("payload", JSON.stringify(instantJSON));
+                form.append("document_id", UserData.getDocumentId());
+                form.append("user_id", UserData.getUserId());
+                form.append("company_code", UserData.getCompanyCode());
+
+                    axios.post("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", form)
+                    .then(response=>{
+                        console.log(response);
+                        // console.log(JSON.stringify(instantJSON));
+                    });
+                });
+         })
+
+            //     instance.addEventListener("annotations.didSave", async () => {
+            //     const instantJSON = await instance.exportInstantJSON();
+            //     await fetch("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", {
+            //         method: "POST",
+            //         headers: {
+            //         "Content-Type": "application/json"
+            //         },
+            //         body: JSON.stringify(instantJSON)
+            //     }).then(
+            //         (response)=>{
+            //            console.log(response)
+            //        }
+            //     );
+            // });
             })
             .catch(function (err) {
                 PSPDFKit.unload('.container')
@@ -643,10 +703,21 @@
 
 
         methods: {
-            openPdf(itemUrl){
+            openPdf(item){
                 this.closePDF = !this.closePDF
-                this.pdf=itemUrl;
+                this.pdf = item.itemUrl;
+                UserData.setDocumentId(item.itemId);
                 //window.open(itemUrl);
+            //       instance.addEventListener("annotations.didSave", async () => {
+            //     const instantJSON = await instance.exportInstantJSON();
+            //     await fetch("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", {
+            //         method: "POST",
+            //         headers: {
+            //         "Content-Type": "application/json"
+            //         },
+            //         body: JSON.stringify(instantJSON)
+            //     });
+            // });
             },
           
             reloadPage(){
@@ -664,6 +735,27 @@
             logout(){
                 this.$store.commit("setAuthentication", false)
                 this.$router.replace('/')
+            },
+
+            postMe(){
+                const formData = new FormData();
+                    formData.append('name', 'STL');
+                    formData.append('location', 'Parklands');
+
+                axios.post("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", formData)
+                    .then(response => {
+                        console.log(response);
+                    })   
+                    .catch(error => {
+                        console.log(error);
+                    }); 
+            },
+
+            getMe(){
+                axios.get("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php")
+                    .then(response => {
+                        console.log(response);
+                    })
             },
           
             getRequestUserLogin(){
@@ -763,6 +855,7 @@
                 axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
                         this.getRecentDocuments = response.data;
+                        console.log(this.getRecentDocuments);
                         this.$localStorage.set('getRecentDocuments', JSON.stringify(this.getRecentDocuments))
                         })
                     .catch(e => {
@@ -800,7 +893,7 @@
             changeCompanyDetails(item){
                 // console.log(item);
                 // let companyId = this.companyList;
-                alert(item.companyId);
+                // alert(item.companyId);
                 // alert(this.dashboardMenuList.length);
                 this.dashboardMenuList = 0;
                 // this.dashboardMenuList = this.dashboardMenuList.splice(0, this.dashboardMenuList.length);
