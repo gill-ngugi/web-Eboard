@@ -1,6 +1,5 @@
 <template>    
     <div>
-        <!-- <v-app> -->
         <div class = "nav-menu parent" style=" height:45px; width:98%; padding:0px; padding-top:0.3%; margin-left:1%; margin-right:1%;">
             <div class="left-buttons" style="margin-left:10px;">
                 <button class="btn btn-lg" text v-on:click="seen1 = !seen1">
@@ -34,7 +33,7 @@
                 </v-list>
             </div>
 
-        <!-- English -->  
+        <!-- English -->
             <div style="margin-left:80%; height:auto; width:19%; position:absolute; z-index:1; margin-right:1%;" 
                 v-if="seen2">
                  <v-list style="position">
@@ -66,7 +65,6 @@
                     <v-card-actions>
                     <div style="float:left; margin:0px;">
                         <img v-bind:src="userInfo.imageUrl" style="height:85px; width:95px; background-color:#fff; border:1px solid black;">
-                        <!-- <img src="../img/male-icon.png" style="height:85px; width:95px; background-color:cyan; border:1px solid black;"> -->
                     </div>
                     <div style="float:left; position:relative; margin:0px;">    
                         <v-card-text>
@@ -172,8 +170,8 @@
                         </div>                       
                     </div>
                     <v-divider style="margin:0px; padding:0px;"></v-divider>
-
-                    <!-- <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
+<!-- 
+                    <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
                         <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">
                             Manage Briefcase
                         </div>                       
@@ -231,11 +229,10 @@
             </div>
   
             <div class="col-left" style="width:20%; height:900px; overflow:auto; margin-left:1%; margin-right:1%; margin-top:1%; float:left; position:relative;">
-                <!-- <div v-for="(item, index) in dashboardMenuList" :key="index"> -->
                 <div v-for="(item, index) in even(dashboardMenuList)" :key="index">
                     <router-link :to="{name : item.menuTitle}" style="text-decoration:none;" :style="{color:'rgb(' + item.menuColor + ')'}"> 
                         <div class="left-menu" style="border-top: 5px solid; padding:3.3%;">
-                            <div class="input-group">
+                            <div class="input-group" >
                                 <span class="input-group-addon">
                                     <img v-bind:src="item.menuImageUrl"  v-bind:alt="item.menuTitle" v-bind:style="{width:'60px', height:'50px' }">
                                     </span>
@@ -253,65 +250,8 @@
                         <span class="input-group-addon"><v-icon color="#27ae60">mdi-file-document</v-icon></span>
                         <p style="margin-left:20px; margin-right:20px;">My Inbox</p> 
                         <v-spacer></v-spacer>                        
-                        <!-- <button class="btn btn-lg" text v-on:click="closePDF = !closePDF;" style="color:green">PSPDFK</button> -->
                         <button class="btn btn-lg" text @click="reloadPage"><v-icon color="#27ae60">mdi-refresh</v-icon></button>
-                        <button class="btn btn-lg" color="primary" @click="postMe()">POST ME</button>
-                        <button class="btn btn-lg" color="primary" @click="getMe()">GET ME</button>
                     </div>
-
-                <!-- <div style="width:100%;">
-                    <table width="100%">
-                        <tr>
-                            <td>
-                                <table border="1" width="100%">
-                                    <tr style="color:white; background-color:grey">
-                                        <th style="width:10%">Header 1</th>
-                                        <th style="width:10%">Header 2</th>
-                                        <th style="width:60%">Header 3</th>
-                                        <th style="width:10%">Header 4</th>
-                                        <th style="width:10%">Header 5</th>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    <tr>
-                        <td>
-                            <div style="width:100%; height:190px; overflow:auto;">
-                                <table border="1" width="100%" >
-                                    <tr>
-                                        <td style="width:10%">new item</td>
-                                        <td style="width:10%">new item</td>
-                                        <td style="width:60%">new item</td>
-                                        <td style="width:10%">new item</td>
-                                        <td style="width:10%">new item</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:10%">new item</td>
-                                        <td style="width:10%">new item</td>
-                                        <td style="width:60%">new item</td>
-                                        <td style="width:10%">new item</td>
-                                        <td style="width:10%">new item</td>
-                                    </tr>   
-                                        <tr>
-                                        <td style="width:10%">new item</td>
-                                        <td style="width:10%">new item</td>
-                                        <td style="width:60%">new item</td>
-                                        <td style="width:10%">new item</td>
-                                        <td style="width:10%">new item</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:10%">new item</td>
-                                        <td style="width:10%">new item</td>
-                                        <td style="width:60%">new item</td>
-                                        <td style="width:10%">new item</td>
-                                        <td style="width:10%">new item</td>
-                                    </tr>
-                                </table>  
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div> -->
 
                 <div style="width:100%;">
                     <table width="100%" style="overflow-y:auto; overflow-x:auto;">
@@ -325,6 +265,7 @@
                                             <th style="width:60%;">Name</th>
                                             <th style="width:15%;">Size</th>
                                             <th style="width:15%;">Created_on</th>
+                                            <!-- <th style="width:10%;">Annotated</th> -->
                                         </tr>
                                     </table>
                                 </div>
@@ -341,7 +282,7 @@
                                                     <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
                                                 </td>
                                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:60%">
-                                                    <a href="#" v-on:click="openPdf(item)">
+                                                    <a href="#" v-on:click="openPdfAnnotated(item)">
                                                     <!-- <a href="#" v-on:click="closePDF = !closePDF">-->
                                                         {{ item.itemName }}
                                                     </a> 
@@ -352,6 +293,11 @@
                                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%">
                                                     {{ parseInt(item.itemCreatedOn*1000, 10) |  moment('DD-MMM-YYYY') }}                                 
                                                 </td>
+                                                <!-- <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%">
+                                                    <v-btn style="background-color:#27ae60" v-on:click="openPdfAnnotated(item)">
+                                                        Open
+                                                    </v-btn> 
+                                                </td> -->
                                             </tr>
                                         </tbody>
                                     </table>  
@@ -360,44 +306,7 @@
                         </tr>
                     </table>
                 </div>
-
-                    <!-- <div style="width:100%;">
-                        <table class="table-striped" style="width:100%; display:block; overflow-y:auto; overflow-x:auto;">
-                                <tr style="background-color:#27ae60; width:100%; height:auto; display:block; line-height:30px; overflow-y:hidden; overflow-x:hidden; color:#ffffff;">
-                                    <th style="padding:7px; min-width:100px;">No.</th>
-                                    <th style="padding:7px; min-width:100px;"></th>
-                                    <th style="padding:7px; min-width:450px;">Name</th>
-                                    <th style="padding:7px; min-width:200px;">Size</th>
-                                    <th style="padding:7px; min-width:200px;" >Created On</th>
-                                    <th style="padding:7px; min-width:200px;">Briefcase</th>
-                                </tr>
-
-                            <tbody style="overflow-y:auto; overflow-x:auto; height:190px; display:block;">
-                                <tr v-for="(item, index) in getRecentDocuments.recentDocumentsList" :key="index" 
-                                    style="width:100%;">
-                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:100px; max-width:100px;">{{ index + 1 + "." }}</td>
-                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:100px; max-width:100px;">    
-                                        <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
-                                    </td>
-                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:450px; max-width:450px;">
-                                        <a href="#" v-on:click="openPdf(item.itemUrl)">
-                                            {{ item.itemName }}
-                                        </a>
-                                    </td>
-                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
-                                        {{ item.itemSize | prettyBytes }} 
-                                    </td>
-                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
-                                        {{ parseInt(item.itemCreatedOn*1000, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                    </td>
-                                    <td style="padding-right:10px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
-                                        <button class="btn btn-danger">Remove</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div> -->
-                </div>
+            </div>
 
 
                 <div class="right-bottom" style="width:100%; height:64%; margin-top:1%;">
@@ -468,11 +377,6 @@
                 </div>
             </div> 
         
-        <!-- <div v-if="closePDF" 
-        style="position:absolute; background-color:#f5f5f5; width:77%; height:900px; padding:1%; overflow:hidden; margin-top:1%; margin-right:1%; margin-left:22%; z-index:-1" 
-        :is="currentComponent" :swap-component="swapComponent">
-        </div> -->
-        
         <div v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:77%; height:900px; padding:1%; overflow:hidden; margin-top:1%; margin-right:1%; margin-left:22%; z-index:-1">
             <button class="btn btn-lg" v-on:click="closePDF = !closePDF;" style="background-color:red; float:right; margin-right:10px;">
                 <v-icon>mdi-close-outline</v-icon>
@@ -494,23 +398,7 @@
     import Vue from 'vue';
     import PSPDFKit from "pspdfkit";
 
-    // var pspdfkitComponent = {
-    //     props: ['swapComponent'],
-    //     data: () => ({
-    //         closePDF: true,
-    //     }),
-    //     methods: {},
-    //     template: `
-    //         <div v-if="closePDF">
-    //             <div>
-    //                 PSPDFKIT SUCKERS!!!
-    //                 <button class="btn btn-lg" text v-on:click="closePDF = !closePDF;" style="color:green; float:right; margin-right:10px;">CLOSE</button>
-    //             </div>
-    //         </div>
-    //     `,
-    // };
-
-    const LICENSE_KEY = "H8E3jzmVoQoKTpdmwIL-fp3l4tIXnqDrMQX2iyEpWQDWkgbJ1xho58ylym0MVf1AVcCkze3LIlMvZ7SjQwo9wrkaIq8CtOP2_jKSiXyms44dQq9CXTicGr1nPn8gZrAb4_C9pikBx8K6Vn90vswIM9cxHReanwhwx6np0W9bvQwgj0mgqWrgm_ay96va6pYgPNSz6f-V-XlCdiCm8V1m3xKLN-Iu7Fw5dSGFO7jaFVKMzxmPuqXAbmmsV6RHcuqv6mKVbC_zgT-9FmJsp-ppBiRKWTefb9Shk_7-a-PmUXf4ZbTC_9c5g-n0ExH-e6h8PbHrLiOSOkkxMHK288aRHT2EwTleY1RnULGKXmc2dmpgWkSarBsfVFV6_FAHO5FE57AfGDDlCgyYqaFz5hOcNOBR178CBBBhjGvxrYwmL-0R3KsOq_5Q5VHAcYB1k-z6";
+    const LICENSE_KEY = "Ni5LCTkSzrHKL3GnUlgVXV-Nt0-8cc5vbAlHmT6bRZZsheHGsPidBAsVHH7EbGm6krygVYe1_nAyLUlRZ4OUN9xBGmFpOiLJbNNvfnzJFkg3HwNvhVr0pNcug-kq6qFZMefIjdFy6-51sEWAD6nFfaRAFr0ihgzQ_Qf7o43DSWakOaAFFk6THvYiEAiwlDeTR-ggbcRf3orhW58EWXjqc8d1Ez1iy3SJtFsy0ReQcWBlkV2r_0HzjWzc1mvO4fDFSmYJvZ7DiL9MAtoEXyy14hpwaGW4uliBV6-JeCdjz64pzuEqhYql2EgzbG0r2eLGHIeDyrYtkA20c_Zyd_zbf4Vtbd31PPuPymL-75ZIcXtoIhlUcKLxMTEUcL8KiXgx7zEHWU4ajjtH2uPXNHkBnxyUL4K9OH7WxmV5k2nxAjqHLOf9bPIf0q61OJyejnmO";
     // const LICENSE_KEY = "vuF0E1oK-8zmH0-rz6t6lt5x3AowOhR0kRILumR6xH5T9Ctre9Fo8gkBb404wT0dORhQliyk5XuSMMayurmNTJi4GRIuHL92DKOflXw04fv1UWthdwqHGQ0wM-E_0xTt4sk1jk9pWSkN5im3J_XmU8frGN2NYiSu-LP2BF_SFitDv9E-TSJWExDAZJVh4x3djWVg0bKVI-Pv2uS7fTh8ynEe4_7ivc-SoqEldi7evAfvas4X1EPse0VhJYWtgzhIjNs4RoXAazz4j4xPRgAQEYSL4JG6ZnT2fwCNq8uTqsnxi77aP0NvM69CmaOm_h-4yL3xCpVWV0k6HEiwO-fgn0fFQeHHRemKeXlGWnjrCBob4s1bDgjh0VWkTHRmZIbEA3jt6Ehh1VZQrlVusPOJggRF63X3sTowcQM5dPae-bHLMhdOB6pov8PKEOaWoR1pRw64NheynDAaA5elyCbP_xnG5cCuzDekt6U5K9KZ-wdc3kQFgS4kgbA1Ox1n3k2zbag_mqPkNOhzQ9AzDehO8H6W8L49hvQCQtmGAcm6nuA=";
 
     const pspdfkit = Vue.component('pspdfkit', {
@@ -523,54 +411,87 @@
     name: 'pspdfkit',
     props: ['pdfUrl', 'licenseKey', 'baseUrl'],
     _instance: null,
-    
 
     mounted: function mounted() {
-        this.load()
+        // this.load();
+        this.getImportedData((annotations)=>{
+            // console.log(annotations.length)
+            //annotations= annotations.length>0?annotations:null;
+            try{
+            // if(annotations.length > 0){
+                this.load(JSON.parse(annotations))
+            }
+            catch(error){
+            // else{
+                this.load(JSON.parse(null))
+            }
+        }); 
     },
 
     methods: {
-        load: function load() {
+        load: function load(annotations) {
             const that = this;
-            // instant: true,
-            // pspdfkit.addEventListener("annotations.didSave", async () => {
-            //     const instantJSON = await pspdfkit.exportInstantJSON();
-            //     await fetch("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", {
-            //         method: "POST",
-            //         headers: {
-            //         "Content-Type": "application/json"
-            //         },
-            //         body: JSON.stringify(instantJSON)
-            //     }).then(
-            //         (response)=>{
-            //            console.log(response)
-            //        }
-            //     );
-            // });
-
-            // pspdfkit.exportInstantJSON().then(function (instantJSON) {
-            //     fetch("https://example.com/annotations", {
-            //         "Content-Type": "application/json",
-            //         method: "POST",
-            //         body: JSON.stringify(instantJSON)
-            //     }).then(
-            //         console.log(body)
-            //     );
-            // });
-
             PSPDFKit.load({
+                // if(){
+                    
+                // }
+                disableWebAssemblyStreaming: true,
                 pdf: this.pdfUrl,
+                pdf2: "example.pdf",
                 container: '.container',
                 licenseKey: this.licenseKey,
                 baseUrl: this.baseUrl,
-                // instant: true,
-                // autoSaveMode: PSPDFKit.AutoSaveMode.IMMEDIATE
+                instantJSON:annotations,
+                // instantJSON: {
+                //     "annotations":[
+                //         {
+                //             "bbox":[230,259,184,77],
+                //             "blendMode":"normal",
+                //             "createdAt":"2020-02-20T10:32:35Z",
+                //             "id":"01E1H2G27QDK4STYPKJK4Y2S0M",
+                //             "isDrawnNaturally":false,
+                //             "lineWidth":5,
+                //             "lines":{
+                //                 intensities:[[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]],
+                //                 points:[[[232.83749389648438,261.6500244140625],[244.03750610351562,265.6500244140625],[252.03750610351562,266.45001220703125],[267.23748779296875,267.25],[276.0375061035156,269.6500244140625],[284.8374938964844,272.04998779296875],[292.8374938964844,272.8499755859375],[300.8374938964844,274.45001220703125],[314.4375,278.45001220703125],[323.23748779296875,283.25],[330.4375,288.8500061035156],[336.8374938964844,297.6499938964844],[343.23748779296875,304.8500061035156],[351.23748779296875,312.04998779296875],[357.63751220703125,316.8500061035156],[368.8374938964844,323.25],[380.8374938964844,328.04998779296875],[394.4375,331.25],[406.4375,332.8500061035156],[411.23748779296875,332.8500061035156]]]
+                //                 },
+                //             "name":"01E1H2G27QDK4STYPKJK4Y2S0M",
+                //             "opacity":1,
+                //             "pageIndex":0,"strokeColor":"#2483C7","type":"pspdfkit/ink","updatedAt":"2020-02-20T10:32:38Z","v":1
+                //         }
+                //     ],
+                //     "format":"https://pspdfkit.com/instant-json/v1",
+                //     "pdfId":{
+                //         "changing":"7mx+shix20m1Vn+qCsWSKg==",
+                //         "permanent":"7mx+shix20m1Vn+qCsWSKg=="
+                //     }
+                // }
             })
             .then(function (instance) {
-                instance.addEventListener("annotations.create", async (createdAnnotations) => {
+                // that._instance = instance;
+                that.$parent.errorMsg = ''
+                instance.addEventListener("annotations.didSave", async () => {
                 instance.exportInstantJSON().then(function (instantJSON) {
+                    console.log(instantJSON)
+                    //filter ids for old anootations  e.g ["id":"gfhfgf758",...]
+                    // var oldAnnotations=annotations.annotations.map(oldAnnotation=>{
+                    //     return oldAnnotation.id;
+                    // });
+                    // var newAnnotation=instantJSON.annotations.filter(annotation=>{
+                    //     if(!oldAnnotations.includes(annotation.id)){
+                    //         return annotation;
+                    //     }
+                    // })
+                    // var newAnnotionWrapped={
+                    //     "format":instantJSON.format,
+                    //     "annotations":newAnnotation,
+                    //     "pdfId":instantJSON.pdfId
+                    // }
+                    // console.log(newAnnotionWrapped)
+                    //console.log("annotitions to send",instantJSON)
                 // Persist it to a server
                 const form = new FormData();
+                // form.append("payload", JSON.stringify(newAnnotionWrapped));
                 form.append("payload", JSON.stringify(instantJSON));
                 form.append("document_id", UserData.getDocumentId());
                 form.append("user_id", UserData.getUserId());
@@ -579,25 +500,9 @@
                     axios.post("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", form)
                     .then(response=>{
                         console.log(response);
-                        // console.log(JSON.stringify(instantJSON));
                     });
                 });
-         })
-
-            //     instance.addEventListener("annotations.didSave", async () => {
-            //     const instantJSON = await instance.exportInstantJSON();
-            //     await fetch("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", {
-            //         method: "POST",
-            //         headers: {
-            //         "Content-Type": "application/json"
-            //         },
-            //         body: JSON.stringify(instantJSON)
-            //     }).then(
-            //         (response)=>{
-            //            console.log(response)
-            //        }
-            //     );
-            // });
+            })
             })
             .catch(function (err) {
                 PSPDFKit.unload('.container')
@@ -610,7 +515,118 @@
                 PSPDFKit.unload(this._instance || '.container')
                 this._instance = null
             }
+        },
+
+        getImportedData: function getImportedData(annotationsCallBack) {
+            const form = new FormData();
+                form.append("document_id", UserData.getDocumentId());
+                form.append("user_id", UserData.getUserId());
+                form.append("company_code", UserData.getCompanyCode());
+
+            axios.post('https://eserver1.stl-horizon.com/pspdfkit/importAnnotation.php', form)
+                .then(response => {
+                    // this.res = response;
+                    var data = response.data;
+                    // alert(data.length);
+                    if(data){
+                        if(annotationsCallBack instanceof Function){
+                            annotationsCallBack(data.replace(/\\"/g, '"'))
+                        }
+                    }
+                    else{
+                       if(annotationsCallBack instanceof Function){
+                            annotationsCallBack(data)
+                        } 
+                    }
+                   //alert(response.data)
+                })
+                
+            },
+
+            // getImportedData: function getImportedData() {
+            // axios.get('https://eserver1.stl-horizon.com/pspdfkit/importAnnotation.php')
+            //     .then(response => {
+            //         var data = response.data;
+            //         data.replace(/\\"/g, '"');
+            //     })
+            // },
+    },
+    
+    watch: {
+        pdfUrl: function pdfUrl() {
+            this.unload()
+            this.load()
         }
+    },
+
+    beforeMount: function beforeMount(){
+       
+    },
+
+    beforeDestroy: function beforeDestroy() {
+        this.unload()
+    }
+    });
+    
+    
+    /*
+    //Beginning of Annotated PDF
+    
+    const pspdfkit2 = Vue.component('pspdfkit2', {
+    template: 
+        `<div class="containy" style="height:100%; width:97%;">
+        </div>
+        `,
+    name: 'pspdfkit2',
+    props: ['pdfUrl', 'licenseKey', 'baseUrl'],
+    _instance: null,
+
+    mounted: function mounted() {
+       this.load(); 
+    },
+
+    methods: {
+        load: function load() {
+            const that = this;
+            PSPDFKit.load({
+                // disableWebAssemblyStreaming: true,
+                pdf: this.pdfUrl,
+                container: '.containy',
+                licenseKey: this.licenseKey,
+                baseUrl: this.baseUrl,
+            })
+            .then(function (instance) {
+                that._instance = instance;
+                that.$parent.errorMsg = ''
+        //         instance.addEventListener("annotations.didSave", async () => {
+        //         instance.exportInstantJSON().then(function (instantJSON) {
+        //             console.log(instantJSON)
+                    
+        //         const form = new FormData();
+        //         form.append("payload", JSON.stringify(instantJSON));
+        //         form.append("document_id", UserData.getDocumentId());
+        //         form.append("user_id", UserData.getUserId());
+        //         form.append("company_code", UserData.getCompanyCode());
+
+        //             axios.post("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", form)
+        //             .then(response=>{
+        //                 console.log(response);
+        //             });
+        //         });
+        //  })
+            })
+            .catch(function (err) {
+                PSPDFKit.unload('.containy')
+                that.$parent.errorMsg = err.message
+            });
+        },
+
+        unload: function unload() {
+            if (this._instance) {
+                PSPDFKit.unload(this._instance || '.containy')
+                this._instance = null
+            }
+        },
     },
     
     watch: {
@@ -624,6 +640,10 @@
         this.unload()
     }
     })
+
+    //END
+    */
+    
 
     export default{            
         data: () => ({
@@ -668,6 +688,7 @@
             seen6: false,
             test: true,
             closePDF: false,
+            closePDF2: false,
             
             showMessages: false,
 
@@ -687,8 +708,6 @@
          
             date: 1570064727,
 
-            // currentComponent: 'pspdfkitComponent',
-
             pdf:'example.pdf',
             LICENSE_KEY: LICENSE_KEY,
             baseUrl: '',
@@ -696,28 +715,22 @@
         }),
 
         filters: {
-              moment: function(date){
+            moment: function(date){
                 return moment(date).format('YYYY-MM-DD');
             },
         },
 
-
         methods: {
-            openPdf(item){
+            openPdfAnnotated(item){
                 this.closePDF = !this.closePDF
-                this.pdf = item.itemUrl;
+                this.pdf=item.itemUrl;
                 UserData.setDocumentId(item.itemId);
-                //window.open(itemUrl);
-            //       instance.addEventListener("annotations.didSave", async () => {
-            //     const instantJSON = await instance.exportInstantJSON();
-            //     await fetch("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", {
-            //         method: "POST",
-            //         headers: {
-            //         "Content-Type": "application/json"
-            //         },
-            //         body: JSON.stringify(instantJSON)
-            //     });
-            // });
+            },
+
+            openPdfOriginal(item){
+                this.closePDF = !this.closePDF
+                this.pdf=item.itemUrl;
+                // UserData.setDocumentId(item.itemId);
             },
           
             reloadPage(){
@@ -735,27 +748,6 @@
             logout(){
                 this.$store.commit("setAuthentication", false)
                 this.$router.replace('/')
-            },
-
-            postMe(){
-                const formData = new FormData();
-                    formData.append('name', 'STL');
-                    formData.append('location', 'Parklands');
-
-                axios.post("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", formData)
-                    .then(response => {
-                        console.log(response);
-                    })   
-                    .catch(error => {
-                        console.log(error);
-                    }); 
-            },
-
-            getMe(){
-                axios.get("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php")
-                    .then(response => {
-                        console.log(response);
-                    })
             },
           
             getRequestUserLogin(){
@@ -784,17 +776,6 @@
             },
 
             getCompanyList(){
-                //check response
-                //check if there is data inside the response object
-                //remove console logging
-                //error handling using user friendly language
-                //sync, async
-                //fd
-                //axios interceptors
-                //Vuex, redux
-                //es6
-                //developer edition of firefox
-
                 const formData = new FormData();
                 formData.append('userId', UserData.getUserId());
                 formData.append('companyCode', UserData.getCompanyCode());
@@ -806,7 +787,6 @@
                     .then(response => {
                         this.getCompanyList = response.data;
                         this.companyList = this.getCompanyList.companyList;
-                        // let companyId = this.companyList.companyId;
                         this.$localStorage.set('getCompanyList', JSON.stringify(this.getCompanyList))
                     })
                     .catch(e => {
@@ -843,19 +823,16 @@
             },
 
             getRecentDocuments(){
-                // this.setCompanyId(companyId);
                 const formData = new FormData();
                 formData.append('userId', UserData.getUserId());
                 formData.append('companyCode', UserData.getCompanyCode());
                 formData.append('accessToken', UserData.getAccessToken());
                 formData.append('model', "getRecentDocuments");
                 formData.append('companyId', UserData.getCompanyId());
-                // formData.append('companyId', UserData.getCompanyListId());
 
                 axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
                         this.getRecentDocuments = response.data;
-                        console.log(this.getRecentDocuments);
                         this.$localStorage.set('getRecentDocuments', JSON.stringify(this.getRecentDocuments))
                         })
                     .catch(e => {
@@ -891,16 +868,9 @@
             },
 
             changeCompanyDetails(item){
-                // console.log(item);
-                // let companyId = this.companyList;
-                // alert(item.companyId);
-                // alert(this.dashboardMenuList.length);
                 this.dashboardMenuList = 0;
-                // this.dashboardMenuList = this.dashboardMenuList.splice(0, this.dashboardMenuList.length);
-                // alert(this.dashboardMenuList.length);
                 this.dashboardMenuList = item.dashboardMenuList;
-                // alert(this.dashboardMenuList.length);
-
+                
                 //Recent Documents
                 UserData.setCompanyId(item.companyId);
                 
@@ -916,7 +886,6 @@
                     .then(response => {
                         this.getCompanyList = response.data;
                         this.companyList = this.getCompanyList.companyList;
-                        // let companyId = this.companyList.companyId;
                         this.$localStorage.set('getCompanyList', JSON.stringify(this.getCompanyList))
                     })
                     .catch(e => {
@@ -947,7 +916,6 @@
                 formData3.append('accessToken', UserData.getAccessToken());
                 formData3.append('model', "getRecentDocuments");
                 formData3.append('companyId', UserData.getCompanyId());
-                // formData3.append('companyId', UserData.getCompanyListId());
 
                 axios.post(UserData.getBaseUrl(), formData3)
                     .then(response => {
@@ -987,8 +955,6 @@
 
             setCompanyId(companyId){
                 UserData.setCompanyId(companyId);
-                // window.location.reload();
-                // alert (UserData.getCompanyId());
             },
           
             getLink(){
@@ -1008,6 +974,14 @@
                 const request = axios.post("../assets/json-APIs/requestUserLogin.json", dt);
                 console.log(request);
             },
+
+            
+
+    //    input(input){
+    //    var output= input.replace(/[.*+?^$()|[\.]\\]/g, '\\$&')
+    //         return output;
+    //           },
+  
 
             openPDF: function openPDF(e) {
                 this.pdf = window.URL.createObjectURL(e.target.files[0])
@@ -1042,8 +1016,8 @@
 
         components: {
             FullCalendar, // make the <FullCalendar> tag available
-            // 'pspdfkitComponent': pspdfkitComponent,
-            pspdfkit: pspdfkit
+            pspdfkit: pspdfkit,
+            // pspdfkit2: pspdfkit2
         },
     }
 
@@ -1068,7 +1042,6 @@
     .fixed_header tbody{
         display:block;
         width: 100%;
-        /* overflow: auto; */
         height: 190px;
         overflow-y: scroll;  
         overflow-x: hidden; 
@@ -1084,10 +1057,8 @@
     }
 
     .fixed_header th, .fixed_header td {
-        /* padding: 5px; */
         text-align: left;
         height:40px;
-        /* width: 200px; */
     }
 
     .nav-menu{
@@ -1168,21 +1139,6 @@
         padding:0px;
         color:#e33333;
     }
-
-    /* table.scroll {
-        width: 100%; 
-        border-spacing: 0;
-    }
-
-    tbody tr td {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    tbody td:last-child, thead th:last-child {
-        border-right: none;
-    } */
 
     button:focus {
         outline: 0 !important;
