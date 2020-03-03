@@ -376,11 +376,81 @@
                     </div>
                 </div>
             </div> 
-        
+
         <div v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:77%; height:900px; padding:1%; overflow:hidden; margin-top:1%; margin-right:1%; margin-left:22%; z-index:-1">
-            <button class="btn btn-lg" v-on:click="closePDF = !closePDF;" style="background-color:red; float:right; margin-right:10px;">
-                <v-icon>mdi-close-outline</v-icon>
-            </button>               
+            <div style="margin-bottom:10px;">
+                <button class="btn btn-lg" v-on:click="closePDF = !closePDF;" style="background-color:red; float:right; margin-right:10px;">
+                    <v-icon>mdi-close-outline</v-icon>
+                </button>
+                <button class="btn btn-lg" v-on:click="shareDocument = !shareDocument;" style="background-color:red; float:right; margin-right:10px;">
+                    <v-icon>mdi-share-variant</v-icon>
+                </button> 
+            </div> 
+            <!-- <div style="flex-grow:1"> -->
+            <div v-if="shareDocument" style="padding:1%; position:absolute; margin-top:7%; margin-left:16%; width:64%; height:780px; background-color:rgb(235,235,235); overflow:auto;  ">
+                    <div style="width:100%; height:7%; display:flex;">
+                        <p style="font-size:24px; font-weight:bold;">Select people to share document with:</p>
+                        <!-- <v-spacer></v-spacer> -->
+                        <span style="flex-grow:1"></span>
+                        <button class="btn btn-lg" v-on:click="shareDocument = !shareDocument;" style="background-color:red; height:45px;">
+                            <v-icon>mdi-close-outline</v-icon>
+                        </button>
+                    </div>
+                    <div style="width:100%; height:92%; margin-top:1%; background-color:#fff; padding:1%; overflow:auto;">
+                        <v-card v-for="(item, index) in sharePeople" v-bind:key="index" style="background-color:rgb(250,250,250); margin-bottom:10px;">
+                            <v-card-actions>
+                                <span style="float:left; border:1px solid #000">
+                                    <img v-bind:src="userInfo.imageUrl" style="height:45px; width:55px;" />
+                                </span>
+                                <v-card-text style="float:left; margin-left:15px;">
+                                    <input type="checkbox" v-bind:id="item.id_user" v-bind:value="item.id_user" v-model="checkNames">
+                                    <p style="font-size:19px;">{{ item.name }}</p>
+                                </v-card-text>
+                            </v-card-actions>
+                        </v-card>
+
+                         <!-- <v-card style="background-color:rgb(250,250,250); margin-bottom:10px;">
+                            <v-card-actions>
+                                <span style="float:left; border:1px solid #000">
+                                    <img v-bind:src="userInfo.imageUrl" style="height:85px; width:95px;" />
+                                </span>
+                                <v-card-text style="float:left; margin-left:15px;">
+                                    <input type="checkbox" id="Liz-Keene" value="Liz-Keene" v-model="checkNames">                                    
+                                    <h4>Elizabeth Keene</h4>
+                                </v-card-text>
+                            </v-card-actions>
+                        </v-card>
+
+                         <v-card style="background-color:rgb(250,250,250); margin-bottom:10px;">
+                            <v-card-actions>
+                                <span style="float:left; border:1px solid #000">
+                                    <img v-bind:src="userInfo.imageUrl" style="height:85px; width:95px;" />
+                                </span>
+                                <v-card-text style="float:left; margin-left:15px;">
+                                    <input type="checkbox" id="Samar" value="Samar" v-model="checkNames">
+                                    <h4>Samar Navabi</h4>
+                                </v-card-text>
+                            </v-card-actions>
+                        </v-card>
+
+                        <v-card style="background-color:rgb(250,250,250); margin-bottom:10px;">
+                            <v-card-actions>
+                                <span style="float:left; border:1px solid #000">
+                                    <img v-bind:src="userInfo.imageUrl" style="height:85px; width:95px;" />
+                                </span>
+                                <v-card-text style="float:left; margin-left:15px;">
+                                    <input type="checkbox" id="Tom-Keene" value="Tom-Keene" v-model="checkNames">
+                                    <h4>Tom Keene</h4>
+                                </v-card-text>
+                            </v-card-actions>
+                        </v-card>
+ -->
+                        <v-btn v-on:click="sendSharePeople()" style="background-color:cyan; margin-top:20px; margin-left:40%;">
+                            SHARE
+                        </v-btn>
+                    </div>
+            </div>  
+            <!-- <div style="flex-grow:1"> -->
             <pspdfkit :pdf-url="pdf" :license-key="LICENSE_KEY" :base-url="baseUrl">
             </pspdfkit>
         </div>
@@ -399,14 +469,14 @@
     import PSPDFKit from "pspdfkit";
 
     const LICENSE_KEY = "Ni5LCTkSzrHKL3GnUlgVXV-Nt0-8cc5vbAlHmT6bRZZsheHGsPidBAsVHH7EbGm6krygVYe1_nAyLUlRZ4OUN9xBGmFpOiLJbNNvfnzJFkg3HwNvhVr0pNcug-kq6qFZMefIjdFy6-51sEWAD6nFfaRAFr0ihgzQ_Qf7o43DSWakOaAFFk6THvYiEAiwlDeTR-ggbcRf3orhW58EWXjqc8d1Ez1iy3SJtFsy0ReQcWBlkV2r_0HzjWzc1mvO4fDFSmYJvZ7DiL9MAtoEXyy14hpwaGW4uliBV6-JeCdjz64pzuEqhYql2EgzbG0r2eLGHIeDyrYtkA20c_Zyd_zbf4Vtbd31PPuPymL-75ZIcXtoIhlUcKLxMTEUcL8KiXgx7zEHWU4ajjtH2uPXNHkBnxyUL4K9OH7WxmV5k2nxAjqHLOf9bPIf0q61OJyejnmO";
-    // const LICENSE_KEY = "vuF0E1oK-8zmH0-rz6t6lt5x3AowOhR0kRILumR6xH5T9Ctre9Fo8gkBb404wT0dORhQliyk5XuSMMayurmNTJi4GRIuHL92DKOflXw04fv1UWthdwqHGQ0wM-E_0xTt4sk1jk9pWSkN5im3J_XmU8frGN2NYiSu-LP2BF_SFitDv9E-TSJWExDAZJVh4x3djWVg0bKVI-Pv2uS7fTh8ynEe4_7ivc-SoqEldi7evAfvas4X1EPse0VhJYWtgzhIjNs4RoXAazz4j4xPRgAQEYSL4JG6ZnT2fwCNq8uTqsnxi77aP0NvM69CmaOm_h-4yL3xCpVWV0k6HEiwO-fgn0fFQeHHRemKeXlGWnjrCBob4s1bDgjh0VWkTHRmZIbEA3jt6Ehh1VZQrlVusPOJggRF63X3sTowcQM5dPae-bHLMhdOB6pov8PKEOaWoR1pRw64NheynDAaA5elyCbP_xnG5cCuzDekt6U5K9KZ-wdc3kQFgS4kgbA1Ox1n3k2zbag_mqPkNOhzQ9AzDehO8H6W8L49hvQCQtmGAcm6nuA=";
+    // const LICENSE_KEY = "vuF0E1oK-8zmH0-rz6t6lt5x3AowOhR0kRILumR6xH5T9Ctre9Fo8gkBb404wT0dORhQliyk5XuSMMayurmNTJi4GRIuHL92DKOflXw04fv1UWthdwqHGQ0wM-E_0xTt4sk1jk9pWSkN5im3J_XmU8frGN2NYiSu-LP2BF_SFitDv9E-TSJWExDAZJVh4x3djWVg0bKVI-Pv2uS7fTh8ynEe4_7ivc-SoqEldi7evAfvas4X1EPse0VhJYWtgzhIjNs4RoXAazz4j4xPRgAQEYSL4JG6ZnT2fwCNq8uTqsnxi77aP0NvM69CmaOm_h-4yL3xCpVWV0k6HEiwO-fgn0fFQeHHRemKeXlGWnjrCBob4s1bDgjh0VWkTHRmZIbEA3jt6Ehh1VZQrlVusPOJggRF63X3sTowcQM5dPae-bHLMhdOB6pov8PKEOaWoR1pRw64NheynDAaA5elyCbP_xnG5cCuzDekt6U5K9KZ-wdc3kQFgS4kgbA1Ox1n3k2zbag_mqPkNOhzQ9AzDehO8H6W8L49hvQCQtmGAcm6nuA=";    
 
     const pspdfkit = Vue.component('pspdfkit', {
-    template: 
+    template:           
         `
         <div class="container" style="height:100%; width:97%;">
             <!--<button class="btn btn-lg" text v-on:click="closePDF = !closePDF;" style="color:green; ">CLOSE</button> -->               
-        </div>
+        </div>  
         `,
     name: 'pspdfkit',
     props: ['pdfUrl', 'licenseKey', 'baseUrl'],
@@ -428,13 +498,15 @@
         }); 
     },
 
-    methods: {
+    data: () => ({
+        quay: ";oihugvjk"
+    }),
+
+    methods: {       
+
         load: function load(annotations) {
             const that = this;
-            PSPDFKit.load({
-                // if(){
-                    
-                // }
+            PSPDFKit.load({                
                 disableWebAssemblyStreaming: true,
                 pdf: this.pdfUrl,
                 pdf2: "example.pdf",
@@ -442,6 +514,7 @@
                 licenseKey: this.licenseKey,
                 baseUrl: this.baseUrl,
                 instantJSON:annotations,
+                // toolbarItems: items,
                 // instantJSON: {
                 //     "annotations":[
                 //         {
@@ -468,8 +541,22 @@
                 // }
             })
             .then(function (instance) {
-                // that._instance = instance;
+                that._instance = instance;
                 that.$parent.errorMsg = ''
+                const items = PSPDFKit.defaultToolbarItems;
+                // console.log(items);
+                const item = {
+                    type: "custom",
+                    id: "my-button",
+                    title: "My Button",
+                    onPress: event => {
+                        alert("this.quay");
+                    }
+                };
+                instance.setToolbarItems(items => {
+                    items.push(item);
+                    return items;
+                });
                 instance.addEventListener("annotations.didSave", async () => {
                 instance.exportInstantJSON().then(function (instantJSON) {
                     console.log(instantJSON)
@@ -689,6 +776,7 @@
             test: true,
             closePDF: false,
             closePDF2: false,
+            shareDocument: false,
             
             showMessages: false,
 
@@ -712,6 +800,8 @@
             LICENSE_KEY: LICENSE_KEY,
             baseUrl: '',
             errorMsg: '',
+
+            checkNames: [],
         }),
 
         filters: {
@@ -975,6 +1065,35 @@
                 console.log(request);
             },
 
+            getSharePeople(){
+                axios.get("https://eserver1.stl-horizon.com/pspdfkit/shareAnnotation.php")
+                    .then(response => {
+                        this.sharePeople = response.data;
+                        console.log(this.sharePeople);
+                    })
+                    .catch(e => {
+                        console.log('Error', e);
+                    })
+            },
+
+            sendSharePeople(){
+                // this.checkNames.length = 0;
+                // alert(this.checkNames);
+                const formData = new FormData;
+                formData.append("document_id", UserData.getDocumentId());
+                formData.append("company_code", UserData.getCompanyCode());
+                formData.append("id_users", this.checkNames);
+
+                axios.post("https://eserver1.stl-horizon.com/pspdfkit/shareAnnotation.php", formData)
+                    .then(response => {
+                        this.sendSharePeopleArray = response.data;
+                    })
+                    .catch(e => {
+                        console.log('Error', e);
+                    })
+                alert(this.checkNames);
+            },
+
             
 
     //    input(input){
@@ -999,6 +1118,7 @@
             this.getEboardUpdates();
             this.getRecentDocuments();
             this.getCalendarEvents();
+            this.getSharePeople();
         },
 
         mounted() {

@@ -220,8 +220,9 @@
     import Vue from 'vue';
     import PSPDFKit from "pspdfkit";
 
-    const LICENSE_KEY = "H8E3jzmVoQoKTpdmwIL-fp3l4tIXnqDrMQX2iyEpWQDWkgbJ1xho58ylym0MVf1AVcCkze3LIlMvZ7SjQwo9wrkaIq8CtOP2_jKSiXyms44dQq9CXTicGr1nPn8gZrAb4_C9pikBx8K6Vn90vswIM9cxHReanwhwx6np0W9bvQwgj0mgqWrgm_ay96va6pYgPNSz6f-V-XlCdiCm8V1m3xKLN-Iu7Fw5dSGFO7jaFVKMzxmPuqXAbmmsV6RHcuqv6mKVbC_zgT-9FmJsp-ppBiRKWTefb9Shk_7-a-PmUXf4ZbTC_9c5g-n0ExH-e6h8PbHrLiOSOkkxMHK288aRHT2EwTleY1RnULGKXmc2dmpgWkSarBsfVFV6_FAHO5FE57AfGDDlCgyYqaFz5hOcNOBR178CBBBhjGvxrYwmL-0R3KsOq_5Q5VHAcYB1k-z6";
-
+    // const LICENSE_KEY = "H8E3jzmVoQoKTpdmwIL-fp3l4tIXnqDrMQX2iyEpWQDWkgbJ1xho58ylym0MVf1AVcCkze3LIlMvZ7SjQwo9wrkaIq8CtOP2_jKSiXyms44dQq9CXTicGr1nPn8gZrAb4_C9pikBx8K6Vn90vswIM9cxHReanwhwx6np0W9bvQwgj0mgqWrgm_ay96va6pYgPNSz6f-V-XlCdiCm8V1m3xKLN-Iu7Fw5dSGFO7jaFVKMzxmPuqXAbmmsV6RHcuqv6mKVbC_zgT-9FmJsp-ppBiRKWTefb9Shk_7-a-PmUXf4ZbTC_9c5g-n0ExH-e6h8PbHrLiOSOkkxMHK288aRHT2EwTleY1RnULGKXmc2dmpgWkSarBsfVFV6_FAHO5FE57AfGDDlCgyYqaFz5hOcNOBR178CBBBhjGvxrYwmL-0R3KsOq_5Q5VHAcYB1k-z6";
+    const LICENSE_KEY = "Ni5LCTkSzrHKL3GnUlgVXV-Nt0-8cc5vbAlHmT6bRZZsheHGsPidBAsVHH7EbGm6krygVYe1_nAyLUlRZ4OUN9xBGmFpOiLJbNNvfnzJFkg3HwNvhVr0pNcug-kq6qFZMefIjdFy6-51sEWAD6nFfaRAFr0ihgzQ_Qf7o43DSWakOaAFFk6THvYiEAiwlDeTR-ggbcRf3orhW58EWXjqc8d1Ez1iy3SJtFsy0ReQcWBlkV2r_0HzjWzc1mvO4fDFSmYJvZ7DiL9MAtoEXyy14hpwaGW4uliBV6-JeCdjz64pzuEqhYql2EgzbG0r2eLGHIeDyrYtkA20c_Zyd_zbf4Vtbd31PPuPymL-75ZIcXtoIhlUcKLxMTEUcL8KiXgx7zEHWU4ajjtH2uPXNHkBnxyUL4K9OH7WxmV5k2nxAjqHLOf9bPIf0q61OJyejnmO";
+ 
     const pspdfkit = Vue.component('pspdfkit', {
     template: 
         `
@@ -234,21 +235,46 @@
     _instance: null,
 
     mounted: function mounted() {
-        this.load()
+        this.getImportedData((annotations)=>{
+            try{
+                this.load(JSON.parse(annotations))
+            }
+            catch(error){
+                this.load(JSON.parse(null))
+            }
+        }); 
     },
 
     methods: {
-        load: function load() {
+        load: function load(annotations) {
             const that = this;
             PSPDFKit.load({
+                disableWebAssemblyStreaming: true,
                 pdf: this.pdfUrl,
+                pdf2: "example.pdf",
                 container: '.container',
                 licenseKey: this.licenseKey,
                 baseUrl: this.baseUrl,
+                instantJSON:annotations,
             })
             .then(function (instance) {
-                that._instance = instance;
+                // that._instance = instance;
                 that.$parent.errorMsg = ''
+                instance.addEventListener("annotations.didSave", async () => {
+                instance.exportInstantJSON().then(function (instantJSON) {
+                console.log(instantJSON)
+                const form = new FormData();
+                form.append("payload", JSON.stringify(instantJSON));
+                form.append("document_id", UserData.getDocumentId());
+                form.append("user_id", UserData.getUserId());
+                form.append("company_code", UserData.getCompanyCode());
+
+                    axios.post("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", form)
+                    .then(response=>{
+                        console.log(response);
+                    });
+                });
+            })
             })
             .catch(function (err) {
                 PSPDFKit.unload('.container')
@@ -261,7 +287,29 @@
                 PSPDFKit.unload(this._instance || '.container')
                 this._instance = null
             }
-        }
+        },
+
+        getImportedData: function getImportedData(annotationsCallBack) {
+            const form = new FormData();
+                form.append("document_id", UserData.getDocumentId());
+                form.append("user_id", UserData.getUserId());
+                form.append("company_code", UserData.getCompanyCode());
+
+            axios.post('https://eserver1.stl-horizon.com/pspdfkit/importAnnotation.php', form)
+                .then(response => {
+                    var data = response.data;
+                    if(data){
+                        if(annotationsCallBack instanceof Function){
+                            annotationsCallBack(data.replace(/\\"/g, '"'))
+                        }
+                    }
+                    else{
+                       if(annotationsCallBack instanceof Function){
+                            annotationsCallBack(data)
+                        } 
+                    }
+                })
+            },
     },
     
     watch: {
@@ -274,8 +322,7 @@
     beforeDestroy: function beforeDestroy() {
         this.unload()
     }
-    })
-
+    });
 
     export default{
         data: () => ({
@@ -411,6 +458,7 @@
                 if(item.hasOwnProperty("itemExtension")){
                     this.closePDF = !this.closePDF;
                     this.pdf=item.itemUrl;
+                    UserData.setDocumentId(item.itemId);
                     // alert(item.itemUrl);
                     //window.open(item.itemUrl);
                     return
