@@ -8,7 +8,7 @@
         </div>
 
         <!-- COMPONENT -->
-              <div style="height:850px; margin-top:0.5%; margin-bottom:0.5%; background-color:#f8f9f9; border-top:5px solid rgb(86,182,229); width:98%; margin-left:1%; margin-right:1%;">
+            <div style="height:850px; margin-top:0.5%; margin-bottom:0.5%; background-color:#f8f9f9; border-top:5px solid rgb(86,182,229); width:98%; margin-left:1%; margin-right:1%;">
                 <div class = "parent" style="height:45px; width:100%; margin-top: 7px; background-color:#fff;">
                     <div class="left-buttons">                
                         <router-link to=""><v-icon v-on:click="loadItemFromHistory()" style="float:left; margin-left:10px; background-color:rgb(86,182,229); color:#fff" size="30">mdi-chevron-left</v-icon></router-link> 

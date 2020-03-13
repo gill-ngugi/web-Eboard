@@ -38,11 +38,8 @@
                 v-if="seen2">
                  <v-list style="position">
                     <v-list-item-title style="color:#e33333; padding:15px;">Select Language</v-list-item-title>
-                    <v-list-item
-                        v-for="(item, index) in allLanguages" 
-                        :key="index"                        
-                    >
-                    <v-list-item-title> {{item.language}} <v-divider></v-divider></v-list-item-title>  
+                    <v-list-item v-for="(item, index) in allLanguages" :key="index">
+                    <v-list-item-title> {{item.language}} <v-divider></v-divider> </v-list-item-title>  
                     </v-list-item>
                 </v-list>
             </div>
@@ -379,78 +376,65 @@
 
         <div v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:77%; height:900px; padding:1%; overflow:hidden; margin-top:1%; margin-right:1%; margin-left:22%; z-index:-1">
             <div style="margin-bottom:10px;">
-                <button class="btn btn-lg" v-on:click="closePDF = !closePDF;" style="background-color:red; float:right; margin-right:10px;">
+                <button class="btn btn-lg" v-on:click="closePDF = !closePDF; shareDocument=false" style="background-color:red; float:right; margin-right:10px;">
                     <v-icon>mdi-close-outline</v-icon>
                 </button>
-                <button class="btn btn-lg" v-on:click="shareDocument = !shareDocument;" style="background-color:red; float:right; margin-right:10px;">
+                <button class="btn btn-lg" v-on:click="openShareButton()" style="background-color:red; float:right; margin-right:10px;">
                     <v-icon>mdi-share-variant</v-icon>
                 </button> 
             </div> 
             <!-- <div style="flex-grow:1"> -->
-            <div v-if="shareDocument" style="padding:1%; position:absolute; margin-top:7%; margin-left:16%; width:64%; height:780px; background-color:rgb(235,235,235); overflow:auto;  ">
-                    <div style="width:100%; height:7%; display:flex;">
-                        <p style="font-size:24px; font-weight:bold;">Select people to share document with:</p>
-                        <!-- <v-spacer></v-spacer> -->
-                        <span style="flex-grow:1"></span>
-                        <button class="btn btn-lg" v-on:click="shareDocument = !shareDocument;" style="background-color:red; height:45px;">
-                            <v-icon>mdi-close-outline</v-icon>
-                        </button>
+
+            <!-- <v-card v-if="shareDocument" style="padding:1%; position:absolute; margin-top:7%; margin-left:75%; width:15%; height:auto; background-color:rgb(247,247,247); overflow:auto;">
+                <v-card-actions>
+                    <div v-for="(item, index) in sharePeople" v-bind:key="index">
+                    <v-text>
+                        <input type="checkbox" v-bind:id="item.id_user" v-bind:value="item.id_user" v-model="checkNames">
+                        <p style="font-size:19px;">{{ item.name }}</p>
+                    </v-text>
                     </div>
-                    <div style="width:100%; height:92%; margin-top:1%; background-color:#fff; padding:1%; overflow:auto;">
-                        <v-card v-for="(item, index) in sharePeople" v-bind:key="index" style="background-color:rgb(250,250,250); margin-bottom:10px;">
-                            <v-card-actions>
-                                <span style="float:left; border:1px solid #000">
-                                    <img v-bind:src="userInfo.imageUrl" style="height:45px; width:55px;" />
-                                </span>
-                                <v-card-text style="float:left; margin-left:15px;">
-                                    <input type="checkbox" v-bind:id="item.id_user" v-bind:value="item.id_user" v-model="checkNames">
-                                    <p style="font-size:19px;">{{ item.name }}</p>
-                                </v-card-text>
-                            </v-card-actions>
-                        </v-card>
+                    <v-divider></v-divider>
+                    <v-btn v-on:click="sendSharePeople()" style="background-color:rgb(235,235,235); margin-top:20px; margin-left:40%;">
+                        SHARE
+                    </v-btn>
+                </v-card-actions>
+            </v-card> -->
 
-                         <!-- <v-card style="background-color:rgb(250,250,250); margin-bottom:10px;">
-                            <v-card-actions>
-                                <span style="float:left; border:1px solid #000">
-                                    <img v-bind:src="userInfo.imageUrl" style="height:85px; width:95px;" />
-                                </span>
-                                <v-card-text style="float:left; margin-left:15px;">
-                                    <input type="checkbox" id="Liz-Keene" value="Liz-Keene" v-model="checkNames">                                    
-                                    <h4>Elizabeth Keene</h4>
-                                </v-card-text>
-                            </v-card-actions>
-                        </v-card>
+            <!-- <div v-if="shareDocument" style="padding:1%; position:absolute; margin-top:7%; margin-left:73%; width:25%; height:500px; overflow:auto;  "> -->
+                <!-- <div style="width:100%; height:7%; display:flex;">
+                    <p style="font-size:24px; font-weight:bold;">Select people to share document with:</p>
+                    <span style="flex-grow:1"></span>
+                    <button class="btn btn-lg" v-on:click="shareDocument = !shareDocument;" style="background-color:red; height:45px;">
+                        <v-icon>mdi-close-outline</v-icon>
+                    </button>
+                </div> -->
+                <!-- <div style="width:100%; height:92%; margin-top:1%; background-color:#fff; padding:1%; overflow:auto;"> -->
+                    <v-card v-if="shareDocument" style="background-color:rgb(250,250,250); margin-bottom:10px; position:absolute; margin-top:7%; margin-left:72%; width:23%; height:570px; overflow-y:hidden;">
+                        <div style="height:90%; overflow:auto; padding-left:20px; padding-top:10px;">                        
+                            <!-- <v-card-actions> -->
+                            <!-- <span style="float:left; border:1px solid #000">
+                                <img v-bind:src="userInfo.imageUrl" style="height:45px; width:55px;" />
+                            </span> -->
+                            <!-- <v-card-text style="font-size:24px; font-weight:bold;">Select people to share document with:</v-card-text> -->
+                                <!-- <v-card-text> -->
+                                    <div style="display:block;" v-for="(item, index) in sharePeople" v-bind:key="index">
+                                        <input type="checkbox" v-bind:id="item.id_user" v-bind:value="item.id_user" v-model="checkNames">
+                                        <label v-bind:for="item.id_user" style="font-size:15px; margin-left:10px;">{{ item.name }}</label><br>
+                                        <!-- <v-divider></v-divider> -->
+                                    </div>
+                                <!-- </v-card-text> -->
+                            <!-- </v-card-actions> -->
+                        </div>
+                        <div style="height:10%; margin-top:13px;">
+                            <v-btn v-on:click="sendSharePeople()" style="margin-left:30%;">
+                                SHARE
+                            </v-btn>
+                        </div>
+                    </v-card>
+                   
+                <!-- </div> -->
+            <!-- </div>   -->
 
-                         <v-card style="background-color:rgb(250,250,250); margin-bottom:10px;">
-                            <v-card-actions>
-                                <span style="float:left; border:1px solid #000">
-                                    <img v-bind:src="userInfo.imageUrl" style="height:85px; width:95px;" />
-                                </span>
-                                <v-card-text style="float:left; margin-left:15px;">
-                                    <input type="checkbox" id="Samar" value="Samar" v-model="checkNames">
-                                    <h4>Samar Navabi</h4>
-                                </v-card-text>
-                            </v-card-actions>
-                        </v-card>
-
-                        <v-card style="background-color:rgb(250,250,250); margin-bottom:10px;">
-                            <v-card-actions>
-                                <span style="float:left; border:1px solid #000">
-                                    <img v-bind:src="userInfo.imageUrl" style="height:85px; width:95px;" />
-                                </span>
-                                <v-card-text style="float:left; margin-left:15px;">
-                                    <input type="checkbox" id="Tom-Keene" value="Tom-Keene" v-model="checkNames">
-                                    <h4>Tom Keene</h4>
-                                </v-card-text>
-                            </v-card-actions>
-                        </v-card>
- -->
-                        <v-btn v-on:click="sendSharePeople()" style="background-color:cyan; margin-top:20px; margin-left:40%;">
-                            SHARE
-                        </v-btn>
-                    </div>
-            </div>  
-            <!-- <div style="flex-grow:1"> -->
             <pspdfkit :pdf-url="pdf" :license-key="LICENSE_KEY" :base-url="baseUrl">
             </pspdfkit>
         </div>
@@ -545,18 +529,18 @@
                 that.$parent.errorMsg = ''
                 const items = PSPDFKit.defaultToolbarItems;
                 // console.log(items);
-                const item = {
-                    type: "custom",
-                    id: "my-button",
-                    title: "My Button",
-                    onPress: event => {
-                        alert("this.quay");
-                    }
-                };
-                instance.setToolbarItems(items => {
-                    items.push(item);
-                    return items;
-                });
+                // const item = {
+                //     type: "custom",
+                //     id: "my-button",
+                //     title: "My Button",
+                //     onPress: event => {
+                //         alert("this.quay");
+                //     }
+                // };
+                // instance.setToolbarItems(items => {
+                //     items.push(item);
+                //     return items;
+                // });
                 instance.addEventListener("annotations.didSave", async () => {
                 instance.exportInstantJSON().then(function (instantJSON) {
                     console.log(instantJSON)
@@ -1065,33 +1049,58 @@
                 console.log(request);
             },
 
-            getSharePeople(){
-                axios.get("https://eserver1.stl-horizon.com/pspdfkit/shareAnnotation.php")
-                    .then(response => {
-                        this.sharePeople = response.data;
-                        console.log(this.sharePeople);
-                    })
-                    .catch(e => {
-                        console.log('Error', e);
-                    })
-            },
+            // getSharePeople(){
+            //     axios.get("https://eserver1.stl-horizon.com/pspdfkit/shareAnnotation.php")
+            //         .then(response => {
+            //             this.sharePeople = response.data;
+            //             console.log(this.sharePeople);
+            //         })
+            //         .catch(e => {
+            //             console.log('Error', e);
+            //         })
+            // },
 
             sendSharePeople(){
                 // this.checkNames.length = 0;
                 // alert(this.checkNames);
-                const formData = new FormData;
-                formData.append("document_id", UserData.getDocumentId());
+                if(this.checkNames == 0){
+                    alert("Select persons to share to!");
+                }
+                else{
+                    const formData = new FormData;
+                    formData.append("document_id", UserData.getDocumentId());
+                    formData.append("company_code", UserData.getCompanyCode());
+                    formData.append("id_users", this.checkNames);
+
+                    axios.post("https://eserver1.stl-horizon.com/pspdfkit/shareAnnotation.php", formData)
+                        .then(response => {
+                            this.sendSharePeopleArray = response.data;
+                        })
+                        .catch(e => {
+                            console.log('Error', e);
+                        })
+                        this.checkNames.length=0;
+                        this.shareDocument = false;
+                    // alert(this.checkNames);
+                }
+            },
+
+            openShareButton(){
+                const formData = new FormData();
                 formData.append("company_code", UserData.getCompanyCode());
-                formData.append("id_users", this.checkNames);
+                formData.append("document_id", UserData.getDocumentId());
 
                 axios.post("https://eserver1.stl-horizon.com/pspdfkit/shareAnnotation.php", formData)
                     .then(response => {
-                        this.sendSharePeopleArray = response.data;
+                        this.sharePeople = response.data;
+                        console.log(this.sharePeople);
+                        this.shareDocument = !this.shareDocument;
                     })
                     .catch(e => {
                         console.log('Error', e);
                     })
-                alert(this.checkNames);
+
+                // shareDocument = !shareDocument;
             },
 
             
@@ -1118,7 +1127,6 @@
             this.getEboardUpdates();
             this.getRecentDocuments();
             this.getCalendarEvents();
-            this.getSharePeople();
         },
 
         mounted() {
