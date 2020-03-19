@@ -104,30 +104,26 @@
                         </tr>
                         <tr>
                             <td>
-                                <div style="width:100%; height:600px; overflow:auto;">
+                                <div style="width:100%; height:650px; overflow:auto;">
                                     <table class="table-striped" style="width:100%;">
                                         <tbody>
                                             <tr v-for="(item, index) in sortedData2" :key="index">
                                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:50%; padding-left:15px;">
-                                                    <a href="#"  v-on:click="getMeetingPack(item)">
-                                                        {{ item.itemName }}
-                                                    </a>                                                    
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{ index + 1 + "." }}</td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">    
-                                                    <span class="input-group-addon">
-                                                        <v-icon v-if="item.itemExtension" color="rgb(72,61,139)" style="margin-right:5px;">mdi-file-pdf-outline</v-icon>                                                        
-                                                        <v-icon v-else color="rgb(72,61,139)" style="margin-right:5px;">mdi-folder-open</v-icon>
-                                                    </span>
+                                                    <!-- <a href="#"  v-on:click="getMeetingPack(item)"> -->
+                                                        {{ item.evaluationName }}
+                                                    <!-- </a>                                                     -->
                                                 </td>
                                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                    {{ item.itemSize | prettyBytes }} 
+                                                    {{ parseInt(item.dateStarted, 10) |  moment('DD-MMM-YYYY') }}                                 
                                                 </td>
                                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                    {{ parseInt(item.itemLastUpdatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                                    {{ parseInt(item.dateEnding, 10) |  moment('DD-MMM-YYYY') }}                                 
                                                 </td>
                                                 <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                    <!-- {{ item.itemUploadedBy }}  -->
+                                                    {{ parseInt(item.dateCreated, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                                </td>
+                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{ item.donePercent}} {{" %"}}</td>
+                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
                                                     <v-btn color="primary">Open</v-btn>
                                                 </td>
                                             </tr>
@@ -270,6 +266,7 @@
             itemSubArray: [],
             itemSubArray2: [],
             itemSubArray3: [],
+            evaluationList: [],
 
             navigationPath:[
                 {
@@ -332,6 +329,26 @@
                 window.location.reload();
             },        
 
+            getEvaluationList(){
+                const formData = new FormData;
+                formData.append("userId", UserData.getUserId());
+                formData.append("companyCode", UserData.getCompanyCode());
+                formData.append("accessToken", UserData.getAccessToken());
+                formData.append("model", "getEvaluationList");
+                formData.append("companyId", UserData.getCompanyId());
+
+                axios.post(UserData.getBaseUrl(), formData)
+                    .then(response => {
+                        this.getEvaluationList = response.data;
+                        this.evaluationList = this.getEvaluationList.evaluationList;
+                        console.log(this.evaluationList);
+                    })
+                    .catch(e => {
+                        console.log('Error', e);
+                    })
+            },
+
+
             getMeetingPackFolder(){
                 let baseUrl = UserData.getBaseUrl();
                 axios.post(baseUrl,this.getUserData())
@@ -379,19 +396,6 @@
                 return formData;        
             },
 
-            // loadItemFromHistory(){
-            //     let baseUrl = UserData.getBaseUrl();
-            //     let currentTop = this.navigationPath.pop();
-            //     axios.post(baseUrl,this.getUserData(currentTop.itemId))
-            //         .then(response => {
-            //             this.getSubMeetingPackFolder = response.data;
-            //             this.itemSubArray = this.getSubMeetingPackFolder.data.itemSubArray;
-            //         }, 
-            //         error => {
-            //             console.error(error);
-            //     });
-            // },
-
             loadItemFromHistory(){
                 let currentTop = this.navigationPath.pop();
                 axios.post(UserData.getBaseUrl(), this.getUserData(currentTop.itemId))
@@ -436,27 +440,12 @@
         },
 
         computed: {
-            sortedData () {
-                if(!this.sort.field){
-                    return this.items
-                }
-
-                return this.items.concat().sort((a,b)=>{
-                    if(this.sort.desc){
-                        return a[this.sort.field] > b[this.sort.field] ? -1:1        
-                    }
-                    else{
-                        return a[this.sort.field] > b[this.sort.field] ? 1:-1                  
-                    }
-                })
-            },
-
             sortedData2 () {
                 if(!this.sort.field){
-                    return this.itemSubArray
+                    return this.evaluationList
                 }
 
-                return this.itemSubArray.concat().sort((a,b)=>{
+                return this.evaluationList.concat().sort((a,b)=>{
                     if(this.sort.desc){
                         return a[this.sort.field] > b[this.sort.field] ? -1:1        
                     }
@@ -469,6 +458,7 @@
       
         beforeMount(){
             this.getMeetingPackFolder();
+            this.getEvaluationList();
         },
 
         mounted() {

@@ -23,38 +23,41 @@
 
         <h4>Login to your account: </h4>
         <hr>
-        <p style="text-align:center; color:red; font-weight:bold;">{{error}}</p>
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
-                    <input type="text" class="form-control" name="userName" id="userName" placeholder="Username" v-model="input.userName" />
-                </div>
-            </div>
+          <form class="login" @submit.prevent="login">
+            <p style="text-align:center; color:red; font-weight:bold;">{{error}}</p>
+              <div class="form-group">
+                  <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+                      <input type="text" class="form-control" name="userName" id="userName" placeholder="Username" v-model="input.userName" />
+                  </div>
+              </div>
 
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                    <input type="password" class="form-control" name="userPassword" id="userPassword" placeholder="Password" v-model="input.userPassword" />
-                </div>
-            </div>
+              <div class="form-group">
+                  <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                      <input type="password" class="form-control" name="userPassword" id="userPassword" placeholder="Password" v-model="input.userPassword" />
+                  </div>
+              </div>
 
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                    <input class="form-control" name="companyCode" id="companyCode" placeholder="Company Code" v-model="input.companyCode" />
-                </div>
-            </div>    
+              <div class="form-group">
+                  <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                      <input class="form-control" name="companyCode" id="companyCode" placeholder="Company Code" v-model="input.companyCode" />
+                  </div>
+              </div>    
 
-            <div class="form-group">
-                <button type="submit" class="btn btn-danger" style="color:#fff; margin-bottom:15px;" v-on:click="sendData()">Log In</button>
-           </div>    
-           
-            <div class="forgot">
-                <!-- <p>Forgot Password?</p> -->
-            </div>
+              <div class="form-group">
+                  <!-- <button type="submit" class="btn btn-danger" style="color:#fff; margin-bottom:15px;" v-on:click="sendData()">Log In</button> -->
+                  <button type="submit" class="btn btn-danger" style="color:#fff; margin-bottom:15px;">Log In</button>
+              </div>    
+            
+              <div class="forgot">
+                  <!-- <p>Forgot Password?</p> -->
+              </div>
+          </form>
         </div>
     </v-app>
-    </div>
+  </div>
 </template>
 
 
@@ -73,7 +76,7 @@ import UserData from '../repository/UserData';
           userName : "",
           userPassword : "",
         },
-        error: "",        
+        error: UserData.getLoginErrors(),        
         // stl: {},
       }
     },
@@ -87,7 +90,7 @@ import UserData from '../repository/UserData';
       },
 
     methods: {
-       sendData() {
+      login: function () {
           const formData = new FormData();
           formData.append('companyCode', this.input.companyCode);
           formData.append('model', "requestUserLogin");
@@ -98,6 +101,35 @@ import UserData from '../repository/UserData';
           formData.append('userPassword', this.input.userPassword);
           formData.append('eboardVersion', "2.5.7"); 
           
+          let userName = this.input.userName;
+          UserData.setUserName(userName);
+
+          let userPassword = this.input.userPassword;
+          UserData.setUserPassword(userPassword);
+
+          let companyCode = this.input.companyCode;
+          UserData.setCompanyCode(companyCode);
+
+          this.$store.dispatch('login', {formData})
+            .then(() => {
+              this.$router.push("/dashboard");
+            })
+            .catch( error => {
+              console.error(error);
+          });    
+      },
+
+        sendData() {
+          const formData = new FormData();
+          formData.append('companyCode', this.input.companyCode);
+          formData.append('model', "requestUserLogin");
+          formData.append('mobileVersion', "11.4.1");
+          formData.append('deviceName', "ipad air 2");
+          formData.append('deviceToken', "b41dfaf1ba018196d5068a0ecc3bde33f83c94131ecf71d053260b944da14612");
+          formData.append('userName', this.input.userName);
+          formData.append('userPassword', this.input.userPassword);
+          formData.append('eboardVersion', "2.5.7"); 
+           
           let userName = this.input.userName;
           UserData.setUserName(userName);
 
@@ -129,27 +161,27 @@ import UserData from '../repository/UserData';
           });    
       },
 
-      login(){
-          if(this.input.userName != "" && this.input.userPassword != "" && this.input.companyCode != " "){
-          axios.get("../assets/json-APIs/requestUserLogin.json", this.input)
+      // login(){
+      //     if(this.input.userName != "" && this.input.userPassword != "" && this.input.companyCode != " "){
+      //     axios.get("../assets/json-APIs/requestUserLogin.json", this.input)
          
-          .then(response => {
-              console.log(this.input.userName),
-              console.log(this.input.userPassword),
-              console.log(this.input.companyCode),
-              console.log(response);
-          })
-          .catch(error => {
-              console.log(error);
-              }) 
+      //     .then(response => {
+      //         console.log(this.input.userName),
+      //         console.log(this.input.userPassword),
+      //         console.log(this.input.companyCode),
+      //         console.log(response);
+      //     })
+      //     .catch(error => {
+      //         console.log(error);
+      //         }) 
 
 
-         }
-          else{
-            this.error = "Fill in all credentials";
-            console.log("Fill in all credentials");
-          }
-        },
+      //    }
+      //     else{
+      //       this.error = "Fill in all credentials";
+      //       console.log("Fill in all credentials");
+      //     }
+      //   },
 
         reloadPage(){
           window.location.reload();

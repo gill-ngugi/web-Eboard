@@ -12,11 +12,11 @@
             <div class="left" style="color:#000000;">
                 <div class="left-bottom">
                     <v-list style="background-color:#f8f9f9;">
-                        <v-list-item
-                            v-for="(item, index) in itemSubArrayStaticData.itemSubArray"
-                            :key="index"                                
-                        >
-                        <v-list-item-title><a href="#" v-on:click="loadDirectoriesAndFiles(item)"> {{item.itemName}} </a> <v-divider></v-divider></v-list-item-title>  
+                        <v-list-item v-for="(item, index) in complianceList" v-bind:key="index">
+                            <v-list-item-title @click="getComplianceArray(item)">
+                                <a href="#">{{ item.bodyCode }}</a>
+                                <v-divider></v-divider>
+                            </v-list-item-title>  
                         </v-list-item>
                     </v-list>
                 </div>
@@ -27,20 +27,13 @@
                 <div class = "parent" style="height:45px; width:100%; background-color:#fff;">
                     <div class="left-buttons">                
                         <v-icon style="float:left; margin-top:5px; margin-left:10px; background-color:rgb(162,29,33); color:#fff" size="30">mdi-bell-outline</v-icon>
-                        <p style="float:left; font-weight:bold; font-size:24px; text-align:left; margin-left:10px; width:250px;">{{joinNames()}}</p>              
+                        <p style="float:left; font-weight:bold; font-size:24px; text-align:left; margin-left:10px; width:250px;">{{this.bodyCode }}</p>              
                     </div>
                         <div class="filler"></div>
                     <div class="right-buttons" style="display:inline;"> 
                         <v-icon style="float:left; margin-top:5px; margin-left:10px; background-color:rgb(162,29,33); color:#fff" size="30">mdi-file-document</v-icon>
                     </div> 
                 </div> 
-
-               
-            
-            <!-- Header 2 -->
-                <!-- <div class = "parent" style="height:55px; width:100%; background-color:#f1f1f1;">
-                    <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">{{joinNames()}}</p>            
-                </div> -->
 
             <!-- Table -->
                 <table style="width:100%;">
@@ -60,16 +53,16 @@
                         <td>
                             <table class="table-striped" style="width:100%;">  
                                 <tbody>
-                                    <tr v-for="(item, index) in sortedData2" :key="index" style="width:100%;">
-                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">{{"Serial "}} {{ index + 1 + "." }}</td>
-                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">{{"KRA "}} {{ index + 1 + "." }}</td>
+                                    <tr style="width:100%;" v-for="(item, index) in sortedData2" :key="index">
+                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">{{item.serialNumber}}</td>
+                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">{{item.complianceCode}}</td>
                                         <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:60%;">
-                                            <a href="#"  v-on:click="getResources(item)">
-                                                {{ item.itemName }}
+                                            <a href="#">
+                                                {{item.codeDescription}}
                                             </a>
                                         </td>
                                         <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">
-                                            <v-btn class="white--text" color="rgb(162,29,33)">Monthly</v-btn>
+                                            <v-btn class="white--text" color="rgb(162,29,33)">{{item.frequencyName}}</v-btn>
                                         </td>
                                     </tr>
                                 </tbody>                              
@@ -207,32 +200,14 @@
         data: () => ({
             moment: moment,
             test: true,
-            itemSubArrayStaticData: [],
-            itemSubArrayDynamicData: [],
-            resourceDirectors: [],
-            itemName: '',
-
-            items: [
-                { title: 'Name' },
-                { title: 'Size' },
-                { title: 'Modified On' },
-                { title: 'Submitted By' },
-            ],
+            complianceList: [],
+            complianceArray: [],
+            bodyCode: "",
 
             sort: {
                 field: '',
                 desc: true        
             },
-
-            navigationPath:[
-                {
-                    "itemName":"...",
-                    "localUrl":"0"
-                }
-            ],
-
-            currentParent:"",
-            parentItemId:"",
 
             userdata:{                
                 rootUrl:"https://eserver1.stl-horizon.com/api_v13/frontend/web/index.php/user/create"
@@ -245,88 +220,34 @@
             errorMsg: '',   
         }),
 
-
         methods: {
             reloadPage(){
                 window.location.reload();
             },    
+
+            getComplianceList(){
+                const formData = new FormData;
+                formData.append("userId", UserData.getUserId());
+                formData.append("companyCode", UserData.getCompanyCode());
+                formData.append("accessToken", UserData.getAccessToken());
+                formData.append("model", "getComplianceList");
+                formData.append("companyId", UserData.getCompanyId());
+
+                axios.post(UserData.getBaseUrl(), formData)
+                    .then(response => {
+                        this.getComplianceList = response.data;
+                        this.complianceList = this.getComplianceList.complianceList;
+                        console.log(this.complianceList);
+                    })
+            },
+
+            getComplianceArray(item){
+                this.complianceArray = item.complianceRules;
+                this.bodyCode = item.bodyCode;
+                // alert(item.bodyId);
+                console.log(this.complianceArray);
+            },
             
-            getResourcePackFolder(){                
-                axios.post(UserData.getBaseUrl(), this.getUserData())
-                    .then(response => {
-                        this.getResourcePackFolder = response.data;
-                        this.$localStorage.set('getResourcePackFolder', JSON.stringify(this.getResourcePackFolder));
-                        this.itemSubArrayStaticData = this.getResourcePackFolder.staticData;
-                        this.itemSubArrayDynamicData = this.getResourcePackFolder.dynamicData;
-                    })
-                    .catch(e => {
-                        console.log('Error', e);
-                    })
-            }, 
-
-            loadDirectoriesAndFiles(item){
-                axios.post(UserData.getBaseUrl(), this.getUserData(item.itemId, item.itemParentId))
-                    .then(response => {
-                        this.getResourcePackFolder = response.data;
-                        this.resourceDirectors = this.getResourcePackFolder.data.itemSubArray;
-                        this.navigationPath = [];
-                        this.navigationPath.push({
-                            "itemName": this.getResourcePackFolder.data.itemName,
-                            "itemId": this.itemParentId
-                        });
-                    })
-                    .catch(e => {
-                        console.log('Error', e);
-                    })
-            },
-
-            getUserData(itemId=0,parentItemId=0){
-                this.parentItemId=parentItemId;
-                const formData = new FormData();
-                    formData.append('userId', UserData.getUserId());
-                    formData.append('companyCode', UserData.getCompanyCode());
-                    formData.append('accessToken', UserData.getAccessToken());
-                    formData.append('model', "getResourcePackFolder");
-                    formData.append('companyId', UserData.getCompanyId());
-                    formData.append('itemId', itemId);
-                return formData;        
-            },
-
-            getResources(item){
-                if(item.hasOwnProperty("itemExtension")){
-                    this.closePDF = !this.closePDF;
-                    this.pdf=item.itemUrl;
-                    UserData.setDocumentId(item.itemId);
-                    return
-                }
-                axios.post(UserData.getBaseUrl(), this.getUserData(item.itemId, item.itemParentId))
-                    .then(response => {
-                        this.getResourcePackFolder = response.data;
-                        this.resourceDirectors = this.getResourcePackFolder.data.itemSubArray;
-                        this.navigationPath.push({
-                            "itemName": this.getResourcePackFolder.data.itemName, 
-                            "itemId": this.parentItemId
-                        })
-                        console.log(item.itemUrl);
-                    })
-            },
-
-            loadItemFromHistory(){
-                let currentTop = this.navigationPath.pop();
-                axios.post(UserData.getBaseUrl(), this.getUserData(currentTop.itemId))
-                    .then(response =>{
-                        this.getSubMeetingPackFolder = response.data;
-                        this.resourceDirectors = this.getSubMeetingPackFolder.data.itemSubArray; 
-                    })
-            },
-
-            joinNames(){
-                return[...this.navigationPath.map((value)=>{
-                    return value.itemName
-                })]
-                .join("/")
-            },
-
             doSort (field) {
                 if(field == this.sort.field){
                     this.sort.desc = !this.sort.desc
@@ -345,9 +266,9 @@
         computed: {
             sortedData2 () {
                 if(!this.sort.field){
-                    return this.resourceDirectors
+                    return this.complianceArray
                 }
-                return this.resourceDirectors.concat().sort((a,b)=>{
+                return this.complianceArray.concat().sort((a,b)=>{
                     if(this.sort.desc){
                         return a[this.sort.field] > b[this.sort.field] ? -1:1        
                     }
@@ -359,15 +280,7 @@
         },
       
         beforeMount(){
-            this.getResourcePackFolder();
-        },
-
-        mounted() {
-            const getResourcePackFolder = JSON.parse(this.$localStorage.get('getResourcePackFolder'));
-            
-            if (getResourcePackFolder) {  
-                this.getResourcePackFolder = getResourcePackFolder;
-            }
+            this.getComplianceList();
         },
 
         components: {

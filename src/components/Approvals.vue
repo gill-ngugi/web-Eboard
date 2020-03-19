@@ -17,10 +17,10 @@
                             Category
                         </v-list-item-title>
                         <v-list-item
-                            v-for="(item, index) in itemSubArrayStaticData.itemSubArray"
+                            v-for="(item, index) in approvalTypes"
                             :key="index"                                
-                        >
-                        <v-list-item-title><a href="#" v-on:click="loadDirectoriesAndFiles(item)"> {{item.itemName}} </a> <v-divider></v-divider></v-list-item-title>  
+                        > 
+                        <v-list-item-title><a href="#" v-on:click="getCategoryId(item)"> {{item.categoryName}} </a> <v-divider></v-divider></v-list-item-title>  
                         </v-list-item>
                     </v-list>
                 </div>
@@ -51,8 +51,8 @@
                                 <v-list>
                                     <v-list-item style="display:block;">     
                                         <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                            v-on:click="doSort('itemName')" href="javascript:">Name
-                                            <span v-if="sort.field=='itemName'">({{sort.desc?'desc':'asc'}})</span>
+                                            v-on:click="doSort('approvalId')" href="javascript:">ID
+                                            <span v-if="sort.field=='approvalId'">({{sort.desc?'desc':'asc'}})</span>
                                         </v-list-item-title>
 
                                         <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
@@ -111,30 +111,31 @@
                     </tr>
                     <tr>
                         <td>
-                            <table class="table-striped" style="width:100%;">  
-                                <tbody>
-                                    <tr v-for="(item, index) in sortedData2" :key="index" style="width:100%;">
-                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{" - "}}</td>
-                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:20%;">{{"Staff Bus"}}</td>
-                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:20%;">
-                                            <!-- <a href="#"  v-on:click="getResources(item)"> -->
-                                                <!-- {{ item.itemName }} -->
-                                                {{ "Business Loan" }}
-                                            <!-- </a> -->
-                                        </td>
-                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">
-                                            {{"KES 10000"}}
-                                        </td>
-                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%;">
-                                            {{ parseInt(item.itemLastUpdatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                        </td>
-                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{"1/3"}}</td>
-                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">
-                                            <v-btn class="white--text" color="primary">Pending</v-btn>
-                                        </td>
-                                    </tr>
-                                </tbody>                              
-                            </table>
+                            <div style="height:650px; overflow:auto;">
+                                <table class="table-striped" style="width:100%;">  
+                                    <tbody>
+                                        <tr v-for="(item, index) in sortedData2" :key="index" style="width:100%;">
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{item.approvalId}}</td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:20%;">
+                                                {{item.approvalName}}
+                                            </td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:20%;">
+                                                {{item.applicantName}}
+                                            </td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">
+                                                {{item.amount}}
+                                            </td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%;">
+                                                {{ parseInt(item.dateSubmitted, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                            </td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{item.votes}}</td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">
+                                                <v-btn class="white--text" color="primary">Pending</v-btn>
+                                            </td>
+                                        </tr>
+                                    </tbody>                              
+                                </table>
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -272,6 +273,8 @@
             itemSubArrayDynamicData: [],
             resourceDirectors: [],
             itemName: '',
+            approvalTypes: [],
+            approvals: [],
 
             items: [
                 { title: 'Name' },
@@ -311,81 +314,33 @@
             reloadPage(){
                 window.location.reload();
             },    
-            
-            getResourcePackFolder(){                
-                axios.post(UserData.getBaseUrl(), this.getUserData())
+
+            getApprovalTypes(){
+                const formData = new FormData;
+                formData.append("userId", UserData.getUserId());
+                formData.append("companyCode", UserData.getCompanyCode());
+                formData.append("accessToken", UserData.getAccessToken());
+                formData.append("model", "getApprovals");
+                formData.append("companyId", UserData.getCompanyId());
+
+                axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
-                        this.getResourcePackFolder = response.data;
-                        this.$localStorage.set('getResourcePackFolder', JSON.stringify(this.getResourcePackFolder));
-                        this.itemSubArrayStaticData = this.getResourcePackFolder.staticData;
-                        this.itemSubArrayDynamicData = this.getResourcePackFolder.dynamicData;
+                        this.getApprovals = response.data;
+                        this.approvalTypes = this.getApprovals.approvalTypes;
+                        // console.log(this.approvalTypes);
                     })
                     .catch(e => {
-                        console.log('Error', e);
-                    })
-            }, 
-
-            loadDirectoriesAndFiles(item){
-                axios.post(UserData.getBaseUrl(), this.getUserData(item.itemId, item.itemParentId))
-                    .then(response => {
-                        this.getResourcePackFolder = response.data;
-                        this.resourceDirectors = this.getResourcePackFolder.data.itemSubArray;
-                        this.navigationPath = [];
-                        this.navigationPath.push({
-                            "itemName": this.getResourcePackFolder.data.itemName,
-                            "itemId": this.itemParentId
-                        });
-                    })
-                    .catch(e => {
-                        console.log('Error', e);
+                        console.log("Error", e);
                     })
             },
 
-            getUserData(itemId=0,parentItemId=0){
-                this.parentItemId=parentItemId;
-                const formData = new FormData();
-                    formData.append('userId', UserData.getUserId());
-                    formData.append('companyCode', UserData.getCompanyCode());
-                    formData.append('accessToken', UserData.getAccessToken());
-                    formData.append('model', "getResourcePackFolder");
-                    formData.append('companyId', UserData.getCompanyId());
-                    formData.append('itemId', itemId);
-                return formData;        
+            hope(){
+                console.log(this.approvalTypes);
             },
 
-            getResources(item){
-                if(item.hasOwnProperty("itemExtension")){
-                    this.closePDF = !this.closePDF;
-                    this.pdf=item.itemUrl;
-                    UserData.setDocumentId(item.itemId);
-                    return
-                }
-                axios.post(UserData.getBaseUrl(), this.getUserData(item.itemId, item.itemParentId))
-                    .then(response => {
-                        this.getResourcePackFolder = response.data;
-                        this.resourceDirectors = this.getResourcePackFolder.data.itemSubArray;
-                        this.navigationPath.push({
-                            "itemName": this.getResourcePackFolder.data.itemName, 
-                            "itemId": this.parentItemId
-                        })
-                        console.log(item.itemUrl);
-                    })
-            },
-
-            loadItemFromHistory(){
-                let currentTop = this.navigationPath.pop();
-                axios.post(UserData.getBaseUrl(), this.getUserData(currentTop.itemId))
-                    .then(response =>{
-                        this.getSubMeetingPackFolder = response.data;
-                        this.resourceDirectors = this.getSubMeetingPackFolder.data.itemSubArray; 
-                    })
-            },
-
-            joinNames(){
-                return[...this.navigationPath.map((value)=>{
-                    return value.itemName
-                })]
-                .join("/")
+            getCategoryId(item){
+                console.log(item.approvals);
+                this.approvals = item.approvals;
             },
 
             doSort (field) {
@@ -406,9 +361,9 @@
         computed: {
             sortedData2 () {
                 if(!this.sort.field){
-                    return this.resourceDirectors
+                    return this.approvals
                 }
-                return this.resourceDirectors.concat().sort((a,b)=>{
+                return this.approvals.concat().sort((a,b)=>{
                     if(this.sort.desc){
                         return a[this.sort.field] > b[this.sort.field] ? -1:1        
                     }
@@ -420,15 +375,7 @@
         },
       
         beforeMount(){
-            this.getResourcePackFolder();
-        },
-
-        mounted() {
-            const getResourcePackFolder = JSON.parse(this.$localStorage.get('getResourcePackFolder'));
-            
-            if (getResourcePackFolder) {  
-                this.getResourcePackFolder = getResourcePackFolder;
-            }
+            this.getApprovalTypes();
         },
 
         components: {

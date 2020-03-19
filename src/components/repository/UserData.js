@@ -69,7 +69,15 @@
         static getDocumentId=()=>{
             return UserData.itemId;
         }
-    
+ 
+        static setLoginErrors=(login_errors)=>{
+            UserData.login_errors = login_errors;
+        }
+
+        static getLoginErrors=()=>{
+            return UserData.login_errors;
+        }   
+
         static getUserData(itemId=0,parentItemId=0){   
            this.parentItemId=parentItemId;
            const formData = new FormData();
