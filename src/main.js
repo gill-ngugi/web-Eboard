@@ -12,8 +12,15 @@ import moment from 'moment-timezone'
 import VueLocalStorage from 'vue-localstorage'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import store from './store';
+// import store from './store';
 import router from './router';
+import GraphLine3D from 'vue-graph/src/components/line3d.js'
+import NoteWidget from 'vue-graph/src/widgets/note.js'
+import LegendWidget from 'vue-graph/src/widgets/legends.js'
+ 
+Vue.component(GraphLine3D.name, GraphLine3D);
+Vue.component(NoteWidget.name, NoteWidget);
+Vue.component(LegendWidget.name, LegendWidget);
 
 // import vueFilterPrettyBytes from 'vue-filter-pretty-bytes';
 // import PSPDFKit from "pspdfkit";
@@ -66,18 +73,18 @@ Vue.component('Gillian', {
 });
 
 
-// const storey = new Vuex.Store(
-//   {
-//     state: {
-//         authenticated: false
-//     },
-//     mutations: {
-//         setAuthentication(state, status) {
-//             state.authenticated = status;
-//         }
-//     }
-//   }
-// );
+const store = new Vuex.Store(
+  {
+    state: {
+        authenticated: false
+    },
+    mutations: {
+        setAuthentication(state, status) {
+            state.authenticated = status;
+        }
+    }
+  }
+);
 
 // const routery = new VueRouter({
 //   mode: 'history',

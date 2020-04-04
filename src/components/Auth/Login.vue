@@ -90,36 +90,36 @@ import UserData from '../repository/UserData';
       },
 
     methods: {
-      login: function () {
-          const formData = new FormData();
-          formData.append('companyCode', this.input.companyCode);
-          formData.append('model', "requestUserLogin");
-          formData.append('mobileVersion', "11.4.1");
-          formData.append('deviceName', "ipad air 2");
-          formData.append('deviceToken', "b41dfaf1ba018196d5068a0ecc3bde33f83c94131ecf71d053260b944da14612");
-          formData.append('userName', this.input.userName);
-          formData.append('userPassword', this.input.userPassword);
-          formData.append('eboardVersion', "2.5.7"); 
+      // login: function () {
+      //     const formData = new FormData();
+      //     formData.append('companyCode', this.input.companyCode);
+      //     formData.append('model', "requestUserLogin");
+      //     formData.append('mobileVersion', "11.4.1");
+      //     formData.append('deviceName', "ipad air 2");
+      //     formData.append('deviceToken', "b41dfaf1ba018196d5068a0ecc3bde33f83c94131ecf71d053260b944da14612");
+      //     formData.append('userName', this.input.userName);
+      //     formData.append('userPassword', this.input.userPassword);
+      //     formData.append('eboardVersion', "2.5.7"); 
           
-          let userName = this.input.userName;
-          UserData.setUserName(userName);
+      //     let userName = this.input.userName;
+      //     UserData.setUserName(userName);
 
-          let userPassword = this.input.userPassword;
-          UserData.setUserPassword(userPassword);
+      //     let userPassword = this.input.userPassword;
+      //     UserData.setUserPassword(userPassword);
 
-          let companyCode = this.input.companyCode;
-          UserData.setCompanyCode(companyCode);
+      //     let companyCode = this.input.companyCode;
+      //     UserData.setCompanyCode(companyCode);
 
-          this.$store.dispatch('login', {formData})
-            .then(() => {
-              this.$router.push("/dashboard");
-            })
-            .catch( error => {
-              console.error(error);
-          });    
-      },
+      //     this.$store.dispatch('login', {formData})
+      //       .then(() => {
+      //         this.$router.push("/dashboard");
+      //       })
+      //       .catch( error => {
+      //         console.error(error);
+      //     });    
+      // },
 
-        sendData() {
+        login() {
           const formData = new FormData();
           formData.append('companyCode', this.input.companyCode);
           formData.append('model', "requestUserLogin");
@@ -191,7 +191,7 @@ import UserData from '../repository/UserData';
 </script>
 
 <style scoped>
- .success-message {
+  .success-message {
     color: green;
   }
 
@@ -201,7 +201,7 @@ import UserData from '../repository/UserData';
     font: 400 15px/1.8 "Lato", sans-serif;
     color: #777;
     position: relative;
-}
+  }
 
   .caption {
     position: absolute;
@@ -282,21 +282,21 @@ import UserData from '../repository/UserData';
     width: 18px;
   }
 
- .login-form .forgot{
+  .login-form .forgot{
     float: right;
     color: red;
     margin-right:10%;
     margin-top: 4%;
     margin-bottom:4%;
-}
+  }
 
- .input-group-addon {
+  .input-group-addon {
     background: #CACFD2;
     width: 25px;
     padding-top: 4px;
     text-align: center;
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
-}
+  }
  
 </style>

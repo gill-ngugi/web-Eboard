@@ -78,6 +78,30 @@
             return UserData.login_errors;
         }   
 
+        static setBodyId = (bodyId) => {
+            UserData.bodyId = bodyId;
+        }
+
+        static getBodyId = () => {
+            return UserData.bodyId;
+        }
+
+        static setCdsId = (cdsId) => {
+            UserData.cdsId = cdsId;
+        }
+
+        static getCdsId = () => {
+            return UserData.cdsId;
+        }
+
+        static setCdsBsId = (cdsBsid) => {
+            UserData.cdsBsid = cdsBsid;
+        }
+
+        static getCdsBsId = () => {
+            return UserData.cdsBsid;
+        }
+
         static getUserData(itemId=0,parentItemId=0){   
            this.parentItemId=parentItemId;
            const formData = new FormData();

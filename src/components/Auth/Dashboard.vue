@@ -216,7 +216,8 @@
                     <v-divider style="margin:0px; padding:0px;"></v-divider> -->
 
                     <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
-                        <div class="col-md-12 col-sm-12" v-if="isLoggedIn" style="margin:0px; padding:0px;">                        
+                        <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">                        
+                        <!-- <div class="col-md-12 col-sm-12" v-if="isLoggedIn" style="margin:0px; padding:0px;">                         -->
                             <!-- <p style="cursor:pointer" v-on:click="logout()">Logout</p> -->
                             <a style="cursor:pointer" v-on:click="logout">Logout</a>
                         </div>                       
@@ -800,17 +801,17 @@
         },
 
         methods: {
-            logout: function () {
-                this.$store.dispatch('logout')
-                    .then(() => {
-                        this.$router.push('/')
-                    })
-            },
-
-            // logout(){
-            //     this.$store.commit("setAuthentication", false)
-            //     this.$router.replace('/')
+            // logout: function () {
+            //     this.$store.dispatch('logout')
+            //         .then(() => {
+            //             this.$router.push('/')
+            //         })
             // },
+
+            logout(){
+                this.$store.commit("setAuthentication", false)
+                this.$router.replace('/')
+            },
 
             openPdfAnnotated(item){
                 this.closePDF = !this.closePDF

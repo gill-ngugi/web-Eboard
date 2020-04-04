@@ -437,9 +437,9 @@
             },
             userdata:{                
                 rootUrl:"https://eserver1.stl-horizon.com/api_v13/frontend/web/index.php/user/create"
-           },
+            },
 
-           pdf:'example.pdf',
+            pdf:'example.pdf',
             LICENSE_KEY: LICENSE_KEY,
             baseUrl: '',
             errorMsg: '',
@@ -458,8 +458,8 @@
                     .then(response => {         
                         this.getMeetingPackFolder = response.data;
                         this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray;                    
-                            this.parentUrl=baseUrl;                          
-                            this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"itemId":this.parentItemId})
+                        this.parentUrl = baseUrl;                          
+                        this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"itemId":this.parentItemId})
                     })
                     .catch(e => {
                         console.log('Error', e);

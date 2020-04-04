@@ -24,6 +24,7 @@
     "pspdfkit": "https://customers.pspdfkit.com/npm/TRIAL-rwmhI25jIHAj1-FgPQRjD9Sfal2YKvWgKSQGHlbwl3qGkozxG5cvkuCo6TUCbKrYzVbZshtgNxbI2JfCMiEAnjyBu7vRSMLdx-_Mmy7BM8I/latest.tar.gz",
     "vue": "^2.6.11",
     "vue-filter-pretty-bytes": "^0.1.4",
+    "vue-graph": "^0.8.7",
     "vue-localstorage": "^0.6.2",
     "vue-moment": "^4.1.0",
     "vue-router": "^3.1.5",
