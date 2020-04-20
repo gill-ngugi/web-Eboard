@@ -57,8 +57,8 @@
                                             :colors="[ '#9EDE00', '#ECE100', '#EC9800', '#EC2500' ]"
                                         >
                                             <note :text="'Bar Graph'"></note>
-                                            <tooltip :names="this.names" :position="'left'"></tooltip>
-                                            <legends :names="this.names" :filter="true"></legends>
+                                            <tooltip :names="['Compliance', 'Non-Compliance']" :position="'left'"></tooltip>
+                                            <legends :names="['Compliance', 'Non-Compliance']" :filter="true"></legends>
                                         </graph-bar>
                                     </div>
 
@@ -200,8 +200,8 @@
                                             :colors="[ '#9EDE00', '#ECE100', '#EC9800', '#EC2500' ]"
                                         >
                                             <note :text="'Bar Graph'"></note>
-                                            <tooltip :names="this.names" :position="'left'"></tooltip>
-                                            <legends :names="this.names" :filter="true"></legends>
+                                            <tooltip :names="['Compliance', 'Non-Compliance']" :position="'left'"></tooltip>
+                                            <legends :names="['Compliance', 'Non-Compliance']" :filter="true"></legends>
                                         </graph-bar>
                                     </div>
  

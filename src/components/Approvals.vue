@@ -31,7 +31,7 @@
                 <div class = "parent" style="height:45px; width:100%; background-color:#fff;">
                     <div class="left-buttons">                
                         <v-icon style="float:left; margin-top:5px; margin-left:10px; background-color:rgb(71,183,83); color:#fff" size="30">mdi-bell-outline</v-icon>
-                        <p style="float:left; font-weight:bold; font-size:24px; text-align:left; margin-left:10px; width:250px;">Approvals</p>              
+                        <p style="float:left; font-weight:bold; font-size:24px; text-align:left; margin-left:10px; ">{{approvalName}}</p>              
                     </div>
                         <div class="filler"></div>
                     <div class="right-buttons" style="display:inline;"> 
@@ -85,8 +85,6 @@
                     </div> 
                 </div> 
 
-               
-            
             <!-- Header 2 -->
                 <!-- <div class = "parent" style="height:55px; width:100%; background-color:#f1f1f1;">
                     <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">{{joinNames()}}</p>            
@@ -111,27 +109,163 @@
                     </tr>
                     <tr>
                         <td>
-                            <div style="height:650px; overflow:auto;">
+                            <div style="height:810px; overflow:auto;">
                                 <table class="table-striped" style="width:100%;">  
                                     <tbody>
-                                        <tr v-for="(item, index) in sortedData2" :key="index" style="width:100%;">
-                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{item.approvalId}}</td>
-                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:20%;">
-                                                {{item.approvalName}}
-                                            </td>
-                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:20%;">
-                                                {{item.applicantName}}
-                                            </td>
-                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">
-                                                {{item.amount}}
-                                            </td>
-                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%;">
-                                                {{ parseInt(item.dateSubmitted, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                            </td>
-                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{item.votes}}</td>
-                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">
-                                                <v-btn class="white--text" color="primary">Pending</v-btn>
-                                            </td>
+                                        <tr>
+                                            <v-expansion-panels>
+                                                <v-expansion-panel v-for="(item, index) in sortedData2" :key="index" style="width:100%;">
+                                                    <v-expansion-panel-header>
+                                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{item.approvalId}}</td>
+                                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:20%;">
+                                                            {{item.approvalName}}
+                                                        </td>
+                                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:20%;">
+                                                            {{item.applicantName}}
+                                                        </td>
+                                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">
+                                                            {{item.amount}}
+                                                         </td>
+                                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%;">
+                                                            {{ parseInt(item.dateSubmitted, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                                        </td>
+                                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{item.votes}}</td>
+                                                        <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">
+                                                            <v-btn class="white--text" color="primary">Pending</v-btn>
+                                                        </td>
+                                                    </v-expansion-panel-header>
+                                                    <v-expansion-panel-content>
+                                                        <div style="display:block; width:98%; height:400px; margin:1%; border:1px solid grey">
+                                                            <div class="top" style="height:150px; width:100%; margin-bottom:10px;">
+                                                                <div class="top-left" style="overflow:auto; padding:10px; float:left; height:100%; width:43%; margin-right:1%;">
+                                                                    <p style="font-weight:bold; font-size:19px; margin:0px;">Full Proposal Description</p>
+                                                                    <p style="margin:0px; padding-left:10px;">Development Loan Application Form</p>
+                                                                </div>
+                                                                <div class="top-right" style="overflow:auto; padding:10px; float:left; height:100%; width:56%;">
+                                                                    <p style="font-weight:bold; font-size:19px; margin:0px;">Source Documents</p>
+                                                                    <p style="margin:0px; padding-left:10px;"><v-icon style="color:rgb(71,183,83);">mdi-file-document</v-icon>Letter to verify employment.pdf</p>
+                                                                    <p style="font-weight:bold; font-size:19px; margin:0px;">Supplementary Documents</p>
+                                                                    <p style="margin:0px; padding-left:10px;"><v-icon style="color:rgb(71,183,83);" >mdi-file-document</v-icon>Development Loan Application Form.pdf</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="bottom" style="padding:10px; height:240px; width:100%;">
+                                                                <p style="margin:0px; padding-left:10px; font-weight:bold; font-size:19px;">Actions</p>
+                                                                <div class="modals">
+                                                                <!-- APPROVE MODAL -->
+                                                                    <div class="approve" style="float:left;">
+                                                                        <v-dialog v-model="dialog" width="500">
+                                                                            <template v-slot:activator="{on}">
+                                                                                <v-btn v-on="on" style="margin-right:10px;" color="success">
+                                                                                    Approve
+                                                                                </v-btn>  
+                                                                            </template>
+
+                                                                            <v-card class="headline grey lighten-2" style="padding:3%">
+                                                                                <p>Approve with conditions</p>
+                                                                                <v-textarea solo name="input-7-4"></v-textarea>
+                                                                                <p>Comments</p>
+                                                                                <v-textarea solo name="input-7-4"></v-textarea>
+                                                                                <v-text-field single-line solo label="Password Required"></v-text-field>
+                                                                                <v-btn color="primary" @click="dialog=false">Cancel</v-btn>
+                                                                                <v-btn color="primary" @click="dialog=false" style="float:right">Submit</v-btn>
+                                                                                <!-- <v-card-title class="headline grey lighten-2" primary-title>
+                                                                                    Privacy Policy
+                                                                                </v-card-title>
+                                                                                <v-card-text>
+                                                                                    oyuglijl
+                                                                                </v-card-text>
+                                                                                <v-divider></v-divider>
+                                                                                <v-card-actions>
+                                                                                    <v-spacer></v-spacer>
+                                                                                    <v-btn color="primary" text @click="dialog=false">
+                                                                                        I accept
+                                                                                    </v-btn>
+                                                                                </v-card-actions> -->
+                                                                            </v-card>
+                                                                        </v-dialog>
+                                                                    </div>
+                                                                
+                                                                <!-- REJECT MODAL -->
+                                                                    <div class="reject" style="float:left;">
+                                                                        <v-dialog v-model="dialog2" width="500">
+                                                                            <template v-slot:activator="{on}">
+                                                                                <v-btn v-on="on" style="margin-right:10px;" color="error">
+                                                                                    Reject
+                                                                                </v-btn>  
+                                                                            </template>
+
+                                                                            <v-card class="headline grey lighten-2" style="padding:3%">
+                                                                                <p>Comments</p>
+                                                                                <v-textarea solo name="input-7-4"></v-textarea>
+                                                                                <v-radio-group v-model="row" row>
+                                                                                    <v-radio label="Request" value="request"></v-radio>
+                                                                                    <v-radio label="Rework" value="rework"></v-radio>
+                                                                                    <v-radio label="Comment" value="comment"></v-radio>
+                                                                                </v-radio-group>
+                                                                                <v-text-field single-line solo label="Password Required"></v-text-field>
+                                                                                <v-btn color="primary" @click="dialog2=false">Cancel</v-btn>
+                                                                                <v-btn color="primary" @click="dialog2=false" style="float:right">Submit</v-btn>
+                                                                            </v-card>
+                                                                        </v-dialog>
+                                                                    </div>
+                                                                <!-- COMMENT MODAL -->
+                                                                    <div class="comment" style="float:left; margin-bottom:15px;">
+                                                                        <v-dialog v-model="dialog3" width="500">
+                                                                            <template v-slot:activator="{on}">
+                                                                                <v-btn v-on="on" style="margin-right:10px;" color="warning">
+                                                                                    Comment
+                                                                                </v-btn>  
+                                                                            </template>
+
+                                                                            <v-card class="headline grey lighten-2" style="padding:3%">
+                                                                                <p>Comments</p>
+                                                                                <v-textarea solo name="input-7-4"></v-textarea>
+                                                                                <v-text-field single-line solo label="Password Required"></v-text-field>
+                                                                                <v-btn color="primary" @click="dialog3=false">Cancel</v-btn>
+                                                                                <v-btn color="primary" @click="dialog3=false" style="float:right">Submit</v-btn>
+                                                                            </v-card>
+                                                                        </v-dialog>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- APPROVER TABLE -->
+                                                                <div>
+                                                                    <table style="width:100%;">
+                                                                        <tr>
+                                                                            <td>
+                                                                                <table style="width:100%;">
+                                                                                    <tr style="background-color:rgb(71,183,83); color:#fff">
+                                                                                        <th style="width:20%;">Approver</th>
+                                                                                        <th style="width:20%;">Action</th>
+                                                                                        <th style="width:20%;">Comment</th>
+                                                                                        <th style="width:20%;">Condition</th>
+                                                                                        <th style="width:20%;">Date</th>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <table class="table-striped" style="width:100%;">
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <td style="width:20%;">Aditya Aditya</td>
+                                                                                            <td style="width:20%;">Approved</td>
+                                                                                            <td style="width:20%;">Allowed</td>
+                                                                                            <td style="width:20%;">Okay</td>
+                                                                                            <td style="width:20%;">12-Apr-2019</td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table> 
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </v-expansion-panel-content>
+                                                </v-expansion-panel>
+                                            </v-expansion-panels>
                                         </tr>
                                     </tbody>                              
                                 </table>
@@ -139,6 +273,7 @@
                         </td>
                     </tr>
                 </table>
+            
             </div>
 
             <div v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:100%; height:100%; padding:1%; overflow:hidden; margin-right:0; ">
@@ -163,7 +298,8 @@
 
     // const LICENSE_KEY = "H8E3jzmVoQoKTpdmwIL-fp3l4tIXnqDrMQX2iyEpWQDWkgbJ1xho58ylym0MVf1AVcCkze3LIlMvZ7SjQwo9wrkaIq8CtOP2_jKSiXyms44dQq9CXTicGr1nPn8gZrAb4_C9pikBx8K6Vn90vswIM9cxHReanwhwx6np0W9bvQwgj0mgqWrgm_ay96va6pYgPNSz6f-V-XlCdiCm8V1m3xKLN-Iu7Fw5dSGFO7jaFVKMzxmPuqXAbmmsV6RHcuqv6mKVbC_zgT-9FmJsp-ppBiRKWTefb9Shk_7-a-PmUXf4ZbTC_9c5g-n0ExH-e6h8PbHrLiOSOkkxMHK288aRHT2EwTleY1RnULGKXmc2dmpgWkSarBsfVFV6_FAHO5FE57AfGDDlCgyYqaFz5hOcNOBR178CBBBhjGvxrYwmL-0R3KsOq_5Q5VHAcYB1k-z6";
     const LICENSE_KEY = "Ni5LCTkSzrHKL3GnUlgVXV-Nt0-8cc5vbAlHmT6bRZZsheHGsPidBAsVHH7EbGm6krygVYe1_nAyLUlRZ4OUN9xBGmFpOiLJbNNvfnzJFkg3HwNvhVr0pNcug-kq6qFZMefIjdFy6-51sEWAD6nFfaRAFr0ihgzQ_Qf7o43DSWakOaAFFk6THvYiEAiwlDeTR-ggbcRf3orhW58EWXjqc8d1Ez1iy3SJtFsy0ReQcWBlkV2r_0HzjWzc1mvO4fDFSmYJvZ7DiL9MAtoEXyy14hpwaGW4uliBV6-JeCdjz64pzuEqhYql2EgzbG0r2eLGHIeDyrYtkA20c_Zyd_zbf4Vtbd31PPuPymL-75ZIcXtoIhlUcKLxMTEUcL8KiXgx7zEHWU4ajjtH2uPXNHkBnxyUL4K9OH7WxmV5k2nxAjqHLOf9bPIf0q61OJyejnmO";
- 
+    // const LICENSE_KEY = "vuF0E1oK-8zmH0-rz6t6lt5x3AowOhR0kRILumR6xH5T9Ctre9Fo8gkBb404wT0dORhQliyk5XuSMMayurmNTJi4GRIuHL92DKOflXw04fv1UWthdwqHGQ0wM-E_0xTt4sk1jk9pWSkN5im3J_XmU8frGN2NYiSu-LP2BF_SFitDv9E-TSJWExDAZJVh4x3djWVg0bKVI-Pv2uS7fTh8ynEe4_7ivc-SoqEldi7evAfvas4X1EPse0VhJYWtgzhIjNs4RoXAazz4j4xPRgAQEYSL4JG6ZnT2fwCNq8uTqsnxi77aP0NvM69CmaOm_h-4yL3xCpVWV0k6HEiwO-fgn0fFQeHHRemKeXlGWnjrCBob4s1bDgjh0VWkTHRmZIbEA3jt6Ehh1VZQrlVusPOJggRF63X3sTowcQM5dPae-bHLMhdOB6pov8PKEOaWoR1pRw64NheynDAaA5elyCbP_xnG5cCuzDekt6U5K9KZ-wdc3kQFgS4kgbA1Ox1n3k2zbag_mqPkNOhzQ9AzDehO8H6W8L49hvQCQtmGAcm6nuA=";
+    
     const pspdfkit = Vue.component('pspdfkit', {
     template: 
         `
@@ -275,6 +411,7 @@
             itemName: '',
             approvalTypes: [],
             approvals: [],
+            approvalName: '',
 
             items: [
                 { title: 'Name' },
@@ -307,6 +444,11 @@
             LICENSE_KEY: LICENSE_KEY,
             baseUrl: '',
             errorMsg: '',   
+
+            row: null,
+            dialog: false,
+            dialog2: false,
+            dialog3: false
         }),
 
 
@@ -339,8 +481,9 @@
             },
 
             getCategoryId(item){
-                console.log(item.approvals);
+                // console.log(item.approvals);
                 this.approvals = item.approvals;
+                this.approvalName = item.categoryName;
             },
 
             doSort (field) {
