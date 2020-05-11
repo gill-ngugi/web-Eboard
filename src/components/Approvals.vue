@@ -114,7 +114,7 @@
                                     <tbody>
                                         <tr>
                                             <v-expansion-panels>
-                                                <v-expansion-panel v-for="(item, index) in sortedData2" :key="index" style="width:100%;">
+                                                <v-expansion-panel v-for="(item, index) in sortedData2" :key="index" @click="approvalDescription(item); getApprovalComments();" style="width:100%;">
                                                     <v-expansion-panel-header>
                                                         <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{item.approvalId}}</td>
                                                         <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:20%;">
@@ -135,39 +135,63 @@
                                                         </td>
                                                     </v-expansion-panel-header>
                                                     <v-expansion-panel-content>
-                                                        <div style="display:block; width:98%; height:400px; margin:1%; border:1px solid grey">
-                                                            <div class="top" style="height:150px; width:100%; margin-bottom:10px;">
+                                                        <div style="display:block; width:98%; height:400px; margin:1%; border:1px solid grey; overflow:hidden;">
+                                                            <!-- <p style="font-weight:bold; color:red;">{{pass_error}}</p> -->
+                                                            <div class="top" style="height:150px; width:100%; margin-bottom:10px; overflow:auto;">
                                                                 <div class="top-left" style="overflow:auto; padding:10px; float:left; height:100%; width:43%; margin-right:1%;">
                                                                     <p style="font-weight:bold; font-size:19px; margin:0px;">Full Proposal Description</p>
-                                                                    <p style="margin:0px; padding-left:10px;">Development Loan Application Form</p>
+                                                                    <p style="margin:0px; padding-left:10px; width:350px; height:auto; text-align:justify;">{{approvalDesc}}</p>
                                                                 </div>
                                                                 <div class="top-right" style="overflow:auto; padding:10px; float:left; height:100%; width:56%;">
-                                                                    <p style="font-weight:bold; font-size:19px; margin:0px;">Source Documents</p>
-                                                                    <p style="margin:0px; padding-left:10px;"><v-icon style="color:rgb(71,183,83);">mdi-file-document</v-icon>Letter to verify employment.pdf</p>
-                                                                    <p style="font-weight:bold; font-size:19px; margin:0px;">Supplementary Documents</p>
-                                                                    <p style="margin:0px; padding-left:10px;"><v-icon style="color:rgb(71,183,83);" >mdi-file-document</v-icon>Development Loan Application Form.pdf</p>
+                                                                    <p style="font-weight:bold; font-size:19px; margin:0px;">Source Documents:</p>
+                                                                    <div><div v-for="(item, index) in approvalDocs" v-bind:key="index" style="margin:0px; padding-left:10px; display:flex;">
+                                                                        <v-icon style="color:rgb(71,183,83);">mdi-file-document</v-icon>
+                                                                        <a href="#" style="margin:0px;" @click="setPdf(item)">{{item.itemName}}</a>
+                                                                    </div></div>
+                                                                    <p style="font-weight:bold; font-size:19px; margin:0px; margin-top:10px;">Supplementary Documents:</p>
+                                                                    <div><div v-for="(suppItem, index) in approvalSuppDocs" v-bind:key="index" style="margin:0px; padding-left:10px; display:flex;">
+                                                                        <v-icon style="color:rgb(71,183,83);" >mdi-file-document</v-icon>
+                                                                        <a href="#" style="margin:0px;" @click="setPdf2(suppItem)">{{suppItem.itemName}}</a>
+                                                                    </div></div>
                                                                 </div>
                                                             </div>
                                                             <div class="bottom" style="padding:10px; height:240px; width:100%;">
                                                                 <p style="margin:0px; padding-left:10px; font-weight:bold; font-size:19px;">Actions</p>
                                                                 <div class="modals">
-                                                                <!-- APPROVE MODAL -->
+                                                                    <!-- APPROVE MODAL -->
                                                                     <div class="approve" style="float:left;">
                                                                         <v-dialog v-model="dialog" width="500">
                                                                             <template v-slot:activator="{on}">
-                                                                                <v-btn v-on="on" style="margin-right:10px;" color="success">
+                                                                                <v-btn v-on="on" @click="reset(); actionType = 2;" style="margin-right:10px;" color="success">
                                                                                     Approve
                                                                                 </v-btn>  
                                                                             </template>
 
                                                                             <v-card class="headline grey lighten-2" style="padding:3%">
+                                                                                <v-snackbar
+                                                                                    v-model="snackbar"
+                                                                                    :timeout="timeout"
+                                                                                    :top="top"
+                                                                                    >
+                                                                                    <p style="font-weight:bold; font-size:16px;">{{ pass_error }}</p>
+                                                                                    <v-btn
+                                                                                        color="pink"
+                                                                                        text
+                                                                                        @click="snackbar = false; pass_error=''"
+                                                                                    >
+                                                                                        Close
+                                                                                    </v-btn>
+                                                                                </v-snackbar>
                                                                                 <p>Approve with conditions</p>
-                                                                                <v-textarea solo name="input-7-4"></v-textarea>
+                                                                                <v-textarea solo name="input-7-4" type="text" v-model="conditions"></v-textarea>
                                                                                 <p>Comments</p>
-                                                                                <v-textarea solo name="input-7-4"></v-textarea>
-                                                                                <v-text-field single-line solo label="Password Required"></v-text-field>
-                                                                                <v-btn color="primary" @click="dialog=false">Cancel</v-btn>
-                                                                                <v-btn color="primary" @click="dialog=false" style="float:right">Submit</v-btn>
+                                                                                <v-textarea solo name="input-7-4" type="text" v-model="comments"></v-textarea>
+                                                                                <v-text-field single-line solo label="Password Required" type="password" v-model="password" required></v-text-field>
+                                                                                <v-btn color="primary" @click="dialog=false; reset()">Close</v-btn>
+                                                                                <v-btn color="primary" type="submit" v-if="passCheck" @click="dialog=true; snackbar=true; pass_error='Password is required';" style="float:right">Submit</v-btn>
+                                                                                <v-btn color="primary" type="submit" v-else @click="dialog=true; updateApproval(); snackbar=true;" style="float:right">Submit</v-btn>
+                                                                                <!-- <v-btn color="primary" type="submit" v-else @click="dialog=false; snackbar=false; updateApproval();" style="float:right">Submit</v-btn> -->
+                                                                                
                                                                                 <!-- <v-card-title class="headline grey lighten-2" primary-title>
                                                                                     Privacy Policy
                                                                                 </v-card-title>
@@ -185,44 +209,76 @@
                                                                         </v-dialog>
                                                                     </div>
                                                                 
-                                                                <!-- REJECT MODAL -->
+                                                                    <!-- REJECT MODAL -->
                                                                     <div class="reject" style="float:left;">
-                                                                        <v-dialog v-model="dialog2" width="500">
+                                                                        <v-dialog v-model="dialog3" width="500">
                                                                             <template v-slot:activator="{on}">
-                                                                                <v-btn v-on="on" style="margin-right:10px;" color="error">
+                                                                                <v-btn v-on="on" @click="reset(); actionType = 3;" style="margin-right:10px;" color="error">
                                                                                     Reject
                                                                                 </v-btn>  
                                                                             </template>
 
                                                                             <v-card class="headline grey lighten-2" style="padding:3%">
+                                                                                <v-snackbar
+                                                                                    v-model="snackbar"
+                                                                                    :timeout="timeout"
+                                                                                    :top="top"
+                                                                                    >
+                                                                                    <p style="font-weight:bold; font-size:16px;">{{ pass_error }}</p>
+                                                                                    <v-btn
+                                                                                        color="pink"
+                                                                                        text
+                                                                                        @click="snackbar = false; pass_error=''"
+                                                                                    >
+                                                                                        Close
+                                                                                    </v-btn>
+                                                                                </v-snackbar>
                                                                                 <p>Comments</p>
-                                                                                <v-textarea solo name="input-7-4"></v-textarea>
-                                                                                <v-radio-group v-model="row" row>
-                                                                                    <v-radio label="Request" value="request"></v-radio>
-                                                                                    <v-radio label="Rework" value="rework"></v-radio>
-                                                                                    <v-radio label="Comment" value="comment"></v-radio>
-                                                                                </v-radio-group>
-                                                                                <v-text-field single-line solo label="Password Required"></v-text-field>
-                                                                                <v-btn color="primary" @click="dialog2=false">Cancel</v-btn>
-                                                                                <v-btn color="primary" @click="dialog2=false" style="float:right">Submit</v-btn>
+                                                                                <v-textarea solo name="input-7-4" type="text" v-model="comments"></v-textarea>
+                                                                                <v-text-field single-line solo label="Password Required" type="password" v-model="password" required></v-text-field>
+                                                                                <v-btn color="primary" @click="dialog3=false; reset()">Close</v-btn>
+                                                                                <v-btn color="primary" type="submit" v-if="passCheck" @click="dialog3=true; snackbar=true; pass_error='Password is required';" style="float:right">Submit</v-btn>
+                                                                                <v-btn color="primary" type="submit" v-else @click="dialog3=true; updateApproval(); snackbar=true;" style="float:right">Submit</v-btn>
                                                                             </v-card>
                                                                         </v-dialog>
                                                                     </div>
-                                                                <!-- COMMENT MODAL -->
-                                                                    <div class="comment" style="float:left; margin-bottom:15px;">
-                                                                        <v-dialog v-model="dialog3" width="500">
+
+                                                                    <!-- COMMENT MODAL -->
+                                                                    <div class="comment" style="float:left;">
+                                                                        <v-dialog v-model="dialog2" width="500">
                                                                             <template v-slot:activator="{on}">
-                                                                                <v-btn v-on="on" style="margin-right:10px;" color="warning">
+                                                                                <v-btn v-on="on" @click="reset();" style="margin-right:10px; margin-bottom:10px;" color="warning">
                                                                                     Comment
                                                                                 </v-btn>  
                                                                             </template>
 
                                                                             <v-card class="headline grey lighten-2" style="padding:3%">
+                                                                                <v-snackbar
+                                                                                    v-model="snackbar"
+                                                                                    :timeout="timeout"
+                                                                                    :top="top"
+                                                                                    >
+                                                                                    <p style="font-weight:bold; font-size:16px;">{{ pass_error }}</p>
+                                                                                    <v-btn
+                                                                                        color="pink"
+                                                                                        text
+                                                                                        @click="snackbar = false; pass_error=''"
+                                                                                    >
+                                                                                        Close
+                                                                                    </v-btn>
+                                                                                </v-snackbar>
                                                                                 <p>Comments</p>
-                                                                                <v-textarea solo name="input-7-4"></v-textarea>
-                                                                                <v-text-field single-line solo label="Password Required"></v-text-field>
-                                                                                <v-btn color="primary" @click="dialog3=false">Cancel</v-btn>
-                                                                                <v-btn color="primary" @click="dialog3=false" style="float:right">Submit</v-btn>
+                                                                                <v-textarea solo name="input-7-4" type="text" v-model="comments"></v-textarea>
+                                                                                <p>{{radio}}</p> 
+                                                                                <v-text-field single-line solo label="Password Required" type="password" v-model="password" required></v-text-field>
+                                                                                <v-radio-group v-model="radio" row>
+                                                                                    <v-radio label="Request" value="5"></v-radio>
+                                                                                    <v-radio label="Rework" value="6"></v-radio>
+                                                                                    <v-radio label="Comment" value="4"></v-radio>
+                                                                                </v-radio-group>
+                                                                                <v-btn color="primary" @click="dialog2=false; reset()">Close</v-btn>
+                                                                                <v-btn color="primary" type="submit" v-if="passCheck" @click="dialog2=true; snackbar=true; pass_error='Password is required';" style="float:right">Submit</v-btn>
+                                                                                <v-btn color="primary" type="submit" v-else @click="dialog2=true; actionType=radio; updateApproval(); snackbar=true;" style="float:right">Submit</v-btn>
                                                                             </v-card>
                                                                         </v-dialog>
                                                                     </div>
@@ -243,20 +299,22 @@
                                                                                     </tr>
                                                                                 </table>
                                                                             </td>
-                                                                        </tr>
+                                                                        </tr> 
                                                                         <tr>
                                                                             <td>
-                                                                                <table class="table-striped" style="width:100%;">
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td style="width:20%;">Aditya Aditya</td>
-                                                                                            <td style="width:20%;">Approved</td>
-                                                                                            <td style="width:20%;">Allowed</td>
-                                                                                            <td style="width:20%;">Okay</td>
-                                                                                            <td style="width:20%;">12-Apr-2019</td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                </table>
+                                                                                <div style="height:120px; overflow:auto">
+                                                                                    <table class="table-striped" style="width:100%;">
+                                                                                        <tbody >
+                                                                                            <tr v-for="(item, index) in approvalComments" v-bind:key="index">
+                                                                                                <td style="width:20%;">{{ item.approver }}</td>
+                                                                                                <td style="width:20%;">{{ item.approvalActionName }}</td>
+                                                                                                <td style="width:20%;">{{ item.approverComment }}</td>
+                                                                                                <td style="width:20%;">{{ item.approvalCondition }}</td>
+                                                                                                <td style="width:20%;">{{ parseInt(item.approvalCommentDate, 10) | moment('DD-MMM-YYYY') }}</td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </table> 
@@ -276,7 +334,7 @@
             
             </div>
 
-            <div v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:100%; height:100%; padding:1%; overflow:hidden; margin-right:0; ">
+            <div v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:100%; height:100%; padding:1%; overflow:hidden; margin-right:0; z-index:2;">
                 <button class="btn btn-lg" v-on:click="closePDF = !closePDF;" style="background-color:red; float:right; margin-right:10px;">
                     <v-icon>mdi-close-outline</v-icon>
                 </button>               
@@ -289,6 +347,7 @@
     </div>
 </template>
 
+
 <script>
     var moment = require('moment');
     import axios from 'axios';
@@ -297,8 +356,9 @@
     import PSPDFKit from "pspdfkit";
 
     // const LICENSE_KEY = "H8E3jzmVoQoKTpdmwIL-fp3l4tIXnqDrMQX2iyEpWQDWkgbJ1xho58ylym0MVf1AVcCkze3LIlMvZ7SjQwo9wrkaIq8CtOP2_jKSiXyms44dQq9CXTicGr1nPn8gZrAb4_C9pikBx8K6Vn90vswIM9cxHReanwhwx6np0W9bvQwgj0mgqWrgm_ay96va6pYgPNSz6f-V-XlCdiCm8V1m3xKLN-Iu7Fw5dSGFO7jaFVKMzxmPuqXAbmmsV6RHcuqv6mKVbC_zgT-9FmJsp-ppBiRKWTefb9Shk_7-a-PmUXf4ZbTC_9c5g-n0ExH-e6h8PbHrLiOSOkkxMHK288aRHT2EwTleY1RnULGKXmc2dmpgWkSarBsfVFV6_FAHO5FE57AfGDDlCgyYqaFz5hOcNOBR178CBBBhjGvxrYwmL-0R3KsOq_5Q5VHAcYB1k-z6";
-    const LICENSE_KEY = "Ni5LCTkSzrHKL3GnUlgVXV-Nt0-8cc5vbAlHmT6bRZZsheHGsPidBAsVHH7EbGm6krygVYe1_nAyLUlRZ4OUN9xBGmFpOiLJbNNvfnzJFkg3HwNvhVr0pNcug-kq6qFZMefIjdFy6-51sEWAD6nFfaRAFr0ihgzQ_Qf7o43DSWakOaAFFk6THvYiEAiwlDeTR-ggbcRf3orhW58EWXjqc8d1Ez1iy3SJtFsy0ReQcWBlkV2r_0HzjWzc1mvO4fDFSmYJvZ7DiL9MAtoEXyy14hpwaGW4uliBV6-JeCdjz64pzuEqhYql2EgzbG0r2eLGHIeDyrYtkA20c_Zyd_zbf4Vtbd31PPuPymL-75ZIcXtoIhlUcKLxMTEUcL8KiXgx7zEHWU4ajjtH2uPXNHkBnxyUL4K9OH7WxmV5k2nxAjqHLOf9bPIf0q61OJyejnmO";
+    // const LICENSE_KEY = "Ni5LCTkSzrHKL3GnUlgVXV-Nt0-8cc5vbAlHmT6bRZZsheHGsPidBAsVHH7EbGm6krygVYe1_nAyLUlRZ4OUN9xBGmFpOiLJbNNvfnzJFkg3HwNvhVr0pNcug-kq6qFZMefIjdFy6-51sEWAD6nFfaRAFr0ihgzQ_Qf7o43DSWakOaAFFk6THvYiEAiwlDeTR-ggbcRf3orhW58EWXjqc8d1Ez1iy3SJtFsy0ReQcWBlkV2r_0HzjWzc1mvO4fDFSmYJvZ7DiL9MAtoEXyy14hpwaGW4uliBV6-JeCdjz64pzuEqhYql2EgzbG0r2eLGHIeDyrYtkA20c_Zyd_zbf4Vtbd31PPuPymL-75ZIcXtoIhlUcKLxMTEUcL8KiXgx7zEHWU4ajjtH2uPXNHkBnxyUL4K9OH7WxmV5k2nxAjqHLOf9bPIf0q61OJyejnmO";
     // const LICENSE_KEY = "vuF0E1oK-8zmH0-rz6t6lt5x3AowOhR0kRILumR6xH5T9Ctre9Fo8gkBb404wT0dORhQliyk5XuSMMayurmNTJi4GRIuHL92DKOflXw04fv1UWthdwqHGQ0wM-E_0xTt4sk1jk9pWSkN5im3J_XmU8frGN2NYiSu-LP2BF_SFitDv9E-TSJWExDAZJVh4x3djWVg0bKVI-Pv2uS7fTh8ynEe4_7ivc-SoqEldi7evAfvas4X1EPse0VhJYWtgzhIjNs4RoXAazz4j4xPRgAQEYSL4JG6ZnT2fwCNq8uTqsnxi77aP0NvM69CmaOm_h-4yL3xCpVWV0k6HEiwO-fgn0fFQeHHRemKeXlGWnjrCBob4s1bDgjh0VWkTHRmZIbEA3jt6Ehh1VZQrlVusPOJggRF63X3sTowcQM5dPae-bHLMhdOB6pov8PKEOaWoR1pRw64NheynDAaA5elyCbP_xnG5cCuzDekt6U5K9KZ-wdc3kQFgS4kgbA1Ox1n3k2zbag_mqPkNOhzQ9AzDehO8H6W8L49hvQCQtmGAcm6nuA=";
+    const LICENSE_KEY = "xmnyiKkvzmQ0WIOagPDOdV_GESKnYO6fNa-1Ck87vP0NEExhZQ_DNdRPLVJK1l2M2s30Yt1Sz1J94COZb2TWcvvO2mQRYJBkIZWMYLII-p0daMx3ClCRbSmPJ1yUW0EbvRm50xZC2hzO8lLVP2GRr47Qeceo0Y837a9qyXglGJLiJpKVYl1liSuDzArGi1nPOF1AfbyevOEdBaUVAMiYypx6iIo281tNqkzMV5j4d5eB-yMpn0xnvbXd-RdiGLZXn--8yqGVbwZWSTCjnnPbVkheQqiuAUUrvFPlC0LENI1c94TS_zLzo6RVx03kZF0bxI_vYyyxYx8r7IwghUBKXuBnUJXZHsteNLBMaQg-rIKh-ORAwjFwSM80vLow6nunBmPyLHvyERGeABpyPQyWRN0R6DaflKyYpmUn_UohjxcfYl8AQYJkf6cAXLJAeWnQ"
     
     const pspdfkit = Vue.component('pspdfkit', {
     template: 
@@ -412,6 +472,22 @@
             approvalTypes: [],
             approvals: [],
             approvalName: '',
+            approvalDesc: '',
+            approvalDocs: [],
+            approvalSuppDocs: [],
+            approvalComments: [],
+            actionType: '',
+            comments: '',
+            conditions: '',
+            password: '',
+            pass_error: '',
+            snackbar: false,
+            timeout: 200000000,
+            top: 'top',
+            radio: '',
+            dialog: false,
+            dialog2: false,
+            dialog3: false,
 
             items: [
                 { title: 'Name' },
@@ -445,10 +521,6 @@
             baseUrl: '',
             errorMsg: '',   
 
-            row: null,
-            dialog: false,
-            dialog2: false,
-            dialog3: false
         }),
 
 
@@ -476,14 +548,85 @@
                     })
             },
 
-            hope(){
-                console.log(this.approvalTypes);
-            },
-
             getCategoryId(item){
                 // console.log(item.approvals);
                 this.approvals = item.approvals;
                 this.approvalName = item.categoryName;
+            },
+
+            approvalDescription(item){
+                this.approvalDesc = item.description;
+                this.approvalDocs = item.documents;
+                this.approvalSuppDocs = item.suppDocuments;
+                UserData.setApprovalId(item.approvalId);
+            },
+
+            getApprovalComments(){
+                const formData = new FormData;
+                formData.append("userId", UserData.getUserId());
+                formData.append("companyCode", UserData.getCompanyCode());
+                formData.append("accessToken", UserData.getAccessToken());
+                formData.append("model", "getApprovalComments");
+                formData.append("companyId", UserData.getCompanyId());
+                formData.append("approvalId", UserData.getApprovalId());
+
+                axios.post(UserData.getBaseUrl(), formData)
+                    .then(response => {
+                        this.getApprovalComment = response.data;
+                        this.approvalComments = this.getApprovalComment.comments;
+                        console.log(this.approvalComments);
+                    })
+                    .catch(e => {
+                        console.log("Error", e);
+                    })
+            },
+
+            setPdf(item){
+                this.closePDF = !this.closePDF;
+                this.pdf = item.itemUrl;
+                UserData.setDocumentId(item.itemId)
+            },
+
+            setPdf2(suppItem){
+                this.closePDF = !this.closePDF; 
+                this.pdf = suppItem.itemUrl;
+                UserData.setDocumentId(suppItem.itemId)
+            },
+
+            updateApproval(){
+                // this.radio = this.actionType;
+                const formData = new FormData;
+                formData.append("userId", UserData.getUserId());
+                formData.append("companyCode", UserData.getCompanyCode());
+                formData.append("accessToken", UserData.getAccessToken());
+                formData.append("model", "updateApproval");
+                formData.append("companyId", UserData.getCompanyId());
+                formData.append("actionType", this.actionType);
+                formData.append("approvalId", UserData.getApprovalId());
+                formData.append("comments", this.comments);
+                formData.append("conditions", this.conditions);
+                formData.append("password", this.password);
+
+                axios.post(UserData.getBaseUrl(), formData)
+                    .then(response => {
+                        this.getApprovalComments();
+                        this.pass_error = "";
+                        this.pass_error = response.data.message;
+                        console.log(this.pass_error);
+                        console.log(this.actionType); 
+                        this.reset();
+                    })
+                    .catch(e => {
+                        console.log("Error", e);
+                    })
+                
+            },
+
+            reset(){
+                this.comments = "";
+                this.conditions = "";
+                this.password = "";
+                this.radio = "";
             },
 
             doSort (field) {
@@ -514,6 +657,14 @@
                         return a[this.sort.field] > b[this.sort.field] ? 1:-1                  
                     }
                 })
+            },
+
+            passCheck(){
+                return !this.password;
+            },
+
+            passErrorsCheck(){
+                return !this.pass_error;
             }
         },
       

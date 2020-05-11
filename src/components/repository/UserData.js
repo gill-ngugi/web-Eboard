@@ -102,6 +102,14 @@
             return UserData.cdsBsid;
         }
 
+        static setApprovalId = (approvalId) => {
+            UserData.approvalId = approvalId;
+        }
+
+        static getApprovalId = () => {
+            return UserData.approvalId;
+        }
+
         static getUserData(itemId=0,parentItemId=0){   
            this.parentItemId=parentItemId;
            const formData = new FormData();

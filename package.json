@@ -21,7 +21,7 @@
     "json-pretty-parse-cli": "^2.0.0",
     "moment-timezone": "^0.5.27",
     "popper.js": "^1.16.1",
-    "pspdfkit": "https://customers.pspdfkit.com/npm/TRIAL-rwmhI25jIHAj1-FgPQRjD9Sfal2YKvWgKSQGHlbwl3qGkozxG5cvkuCo6TUCbKrYzVbZshtgNxbI2JfCMiEAnjyBu7vRSMLdx-_Mmy7BM8I/latest.tar.gz",
+    "pspdfkit": "^2020.2.1",
     "vue": "^2.6.11",
     "vue-filter-pretty-bytes": "^0.1.4",
     "vue-graph": "^0.8.7",

@@ -8,133 +8,190 @@
         </div>
 
         <!-- COMPONENT -->
-              <div style="height:850px; margin-top:0.5%; margin-bottom:0.5%; background-color:#f8f9f9; border-top:5px solid rgb(72,61,139); width:98%; margin-left:1%; margin-right:1%;">
-                <div class = "parent" style="height:45px; width:100%; margin-top: 7px; background-color:#fff;">
-                    <div class="left-buttons">                
-                        <p style="float:left; font-weight:bold; font-size:24px; text-align:left; margin-left:10px; width:250px;">Evaluation</p>              
+            <div style="height:850px; margin-top:0.5%; margin-bottom:0.5%; background-color:#f8f9f9; border-top:5px solid rgb(72,61,139); width:98%; margin-left:1%; margin-right:1%;">
+                <div class="two" v-if="two" style="margin-top:7px; position:absolute; background-color:#f5f5f5; width:98%; height:840px; margin-right:1%; z-index:3;">
+                    <div style="display:flex; margin-left:1%; 
+                    margin-bottom:10px;">
+                        <v-icon @click="two = !two" style="color:#fff; background-color:rgb(72,61,139);">mdi-chevron-left</v-icon>
+                        <h4 style="margin-left:10px; color:rgb(72,61,139);">Training</h4>
                     </div>
-                        <div class="filler"></div>
-                    <div class="right-buttons" style="display:inline;">            
-                        <div class="dropdown-table" style="display:inline;">
-                            <v-menu>
-                                <template v-slot:activator="{ on }">
-                                    <v-btn
-                                        color="#000" 
-                                        text
-                                        v-on="on"
-                                    >
-                                        Descending
-                                        <v-icon>mdi-swap-vertical-bold</v-icon>
-                                    </v-btn>
-                                </template>
-                                <v-list>
-                                    <v-list-item style="display:block;">     
-                                        <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                            v-on:click="doSort('itemName')" href="javascript:">Name
-                                            <span v-if="sort.field=='itemName'">({{sort.desc?'desc':'asc'}})</span>
-                                        </v-list-item-title>
+                    <div>
+                        <div class="left1" style="float:left; width:9%; height:780px; overflow:auto; margin-left:1%; margin-right:1%; text-align:center">
+                            <!-- <v-card v-for="(item, index) in evalArray" :key="index" style="width:100%; height:auto; padding:5px; background-color:#fff; margin-bottom:7px;">
+                                <img src="./male-icon.png" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;">
+                                <p>{{item.userName}}</p>
+                            </v-card> -->
+                            <div v-for="(items, index) in evaluatees" :key="index">
+                            <v-card v-for="(item, index) in items" :key="index" style="width:100%; height:auto; padding:5px; background-color:#fff; margin-bottom:7px;">
+                                <img v-if="item.userImageURL" :src="item.userImageURL" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;">
+                                <!-- <img :src="item.userImageURL" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;"> -->
+                                <img v-else src="./male-icon.png" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;">
+                                <p>{{item.userName}}</p>
+                            </v-card>
+                            </div>
+                            <!-- <v-card style="width:100%; height:auto; padding:5px; background-color:#fff; margin-bottom:7px;">
+                                <img src="./male-icon.png" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;">
+                                <p>Jaswinder Gahir</p>
+                            </v-card>
+                            <v-card style="width:100%; height:auto; padding:5px; background-color:#fff; margin-bottom:7px;">
+                                <img src="./male-icon.png" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;">
+                                <p>Jaswinder Gahir</p>
+                            </v-card>
+                            <v-card style="width:100%; height:auto; padding:5px; background-color:#fff; margin-bottom:7px;">
+                                <img src="./male-icon.png" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;">
+                                <p>Jaswinder Gahir</p>
+                            </v-card> -->
+                        </div>
+                        <div class="right1" style="float:left; width:88%; height:780px; overflow:auto; background-color:#f5f5f5; margin-right:1%;">
+                            <v-card>
+                                <v-tabs grow show-arrows v-model="tab" background-color="rgb(220,220,220)" color="rgb(72,61,139)" style="font-weight:bolder;">
+                                <v-tabs-slider></v-tabs-slider>
+                                    <!-- <v-tab v-for="i in 20" :key="i" :href="'#tab-' + i">GIGI {{i}}</v-tab> -->
+                                    <v-tab v-for="item in tabItems" :key="item.tab">
+                                        {{ item.tab }}
+                                    </v-tab>
+                                </v-tabs>
+                                <v-tabs-items v-model="tab">
+                                    <!-- <v-tab-item v-for="i in 3" :key="i" :value="'tab' + i"> -->
+                                    <v-tab-item v-for="item in tabItems" :key="item.tab">
+                                        <v-card flat>
+                                            <v-card-text>
+                                                {{ item.content }}
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-tab-item>
+                                </v-tabs-items>
+                            </v-card>
+                        </div>
+                    </div>
+                </div>
 
-                                        <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                            v-on:click="doSort('itemSize')" href="javascript:">Size
-                                            <span v-if="sort.field=='itemSize'">({{sort.desc?'desc':'asc'}})</span>
-                                        </v-list-item-title>
+                <div class="one">
+                    <div class = "parent" style="height:45px; width:100%; margin-top:7px; background-color:#fff;">
+                        <div class="left-buttons">                
+                            <p style="float:left; font-weight:bold; font-size:24px; text-align:left; margin-left:10px; width:250px;">Evaluation</p>              
+                        </div>
+                            <div class="filler"></div>
+                        <div class="right-buttons" style="display:inline;">            
+                            <div class="dropdown-table" style="display:inline;">
+                                <v-menu>
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn
+                                            color="#000" 
+                                            text
+                                            v-on="on"
+                                        >
+                                            Descending
+                                            <v-icon>mdi-swap-vertical-bold</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <v-list>
+                                        <v-list-item style="display:block;">     
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
+                                                v-on:click="doSort('itemName')" href="javascript:">Name
+                                                <span v-if="sort.field=='itemName'">({{sort.desc?'desc':'asc'}})</span>
+                                            </v-list-item-title>
 
-                                        <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                            v-on:click="doSort('itemLastUpdatedOn')" href="javascript:">Modified On
-                                            <span v-if="sort.field=='itemLastUpdatedOn'">({{sort.desc?'desc':'asc'}})</span>
-                                        </v-list-item-title>
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
+                                                v-on:click="doSort('itemSize')" href="javascript:">Size
+                                                <span v-if="sort.field=='itemSize'">({{sort.desc?'desc':'asc'}})</span>
+                                            </v-list-item-title>
 
-                                        <v-list-item-title style="padding: 12px; font-size:16px; cursor:pointer" 
-                                            v-on:click="doSort('itemUploadedBy')" href="javascript:">Submitted By
-                                            <span v-if="sort.field=='itemUploadedBy'">({{sort.desc?'desc':'asc'}})</span>
-                                        </v-list-item-title>
-                                    </v-list-item>
-                                </v-list>
-                            </v-menu>       
+                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
+                                                v-on:click="doSort('itemLastUpdatedOn')" href="javascript:">Modified On
+                                                <span v-if="sort.field=='itemLastUpdatedOn'">({{sort.desc?'desc':'asc'}})</span>
+                                            </v-list-item-title>
+
+                                            <v-list-item-title style="padding: 12px; font-size:16px; cursor:pointer" 
+                                                v-on:click="doSort('itemUploadedBy')" href="javascript:">Submitted By
+                                                <span v-if="sort.field=='itemUploadedBy'">({{sort.desc?'desc':'asc'}})</span>
+                                            </v-list-item-title>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-menu>       
+                            </div> 
+                        
+                            <div style="display:inline; margin-right:10px;">
+                                <button style="padding:0px;" class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">Created On</button>
+                            </div>
+                            <div style="display:inline; margin-right:10px;">
+                                <button style="padding:0px;" class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">All</button>
+                            </div>
+                            <div style="display:inline; margin-right:10px;">
+                                <button style="padding:0px;" class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">Open</button>
+                            </div>
+                            <div style="display:inline; margin-right:10px;">
+                                <button style="padding:0px;" class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">Ongoing</button>
+                            </div>
+                            <div style="display:inline; margin-right:10px;">
+                                <button style="padding:0px;" class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">Completed</button>
+                            </div>
                         </div> 
-                    
-                        <div style="display:inline; margin-right:10px;">
-                            <button style="padding:0px;" class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">Created On</button>
-                        </div>
-                        <div style="display:inline; margin-right:10px;">
-                            <button style="padding:0px;" class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">All</button>
-                        </div>
-                        <div style="display:inline; margin-right:10px;">
-                            <button style="padding:0px;" class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">Open</button>
-                        </div>
-                        <div style="display:inline; margin-right:10px;">
-                            <button style="padding:0px;" class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">Ongoing</button>
-                        </div>
-                        <div style="display:inline; margin-right:10px;">
-                            <button style="padding:0px;" class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">Completed</button>
-                        </div>
                     </div> 
-                </div> 
 
-                <div  v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:98%; height:850px; padding:1%; margin-right:1%; z-index:2;">
-                <!-- <div v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:77%; height:900px; padding:1%; overflow:hidden; margin-top:1%; margin-right:1%; margin-left:22%; z-index:-1"> -->
+                    <div class="blackish" style="width:100%;">                    
+                        <table width="100%" style="overflow-y:auto; overflow-x:auto;">
+                            <tr>
+                                <td>
+                                    <div style="width:100%;">
+                                        <table style="width:100%;">
+                                            <tr style="color:#fff; background-color:rgb(72,61,139);">
+                                                <th style="padding:7px; width:50%; padding-left:15px;">Name</th>
+                                                <th style="width:10%;">From</th> 
+                                                <th style="width:10%;">To</th>
+                                                <th style="width:10%;">Created On</th>
+                                                <th style="width:10%;">% Done</th>
+                                                <th style="width:10%;">Status</th>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="width:100%; height:700px; overflow:auto;">
+                                        <table class="table-striped" style="width:100%;">
+                                            <tbody>
+                                                <tr v-for="(item, index) in sortedData2" :key="index">
+                                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:50%; padding-left:15px;">
+                                                        <!-- <a href="#"  v-on:click="getMeetingPack(item)"> -->
+                                                            {{ item.evaluationName }}
+                                                        <!-- </a>                                                     -->
+                                                    </td>
+                                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                        {{ parseInt(item.dateStarted, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                                    </td>
+                                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                        {{ parseInt(item.dateEnding, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                                    </td>
+                                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                        {{ parseInt(item.dateCreated, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                                    </td>
+                                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{ item.donePercent}} {{" %"}}</td>
+                                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                        <v-btn color="primary" @click="two = !two">Open</v-btn>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                
+            </div>  
+                
+
+                <div v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:98%; height:850px; padding:1%; margin-left:1%; margin-right:1%; z-index:2;">
                     <button class="btn btn-lg" v-on:click="closePDF = !closePDF;" style="background-color:red; float:right; margin-right:10px;">
                         <v-icon>mdi-close-outline</v-icon>
                     </button>              
                     <pspdfkit :pdf-url="pdf" :license-key="LICENSE_KEY" :base-url="baseUrl">
                     </pspdfkit> 
                 </div>
-            
-                <!-- <div class = "parent" style="height:55px; width:100%; background-color:#f1f1f1;">
-                    <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">{{joinNames()}}</p>            
-                </div> -->
-
-                <div class="blackish" style="width:100%;">                    
-                    <table width="100%" style="overflow-y:auto; overflow-x:auto;">
-                        <tr>
-                            <td>
-                                <div style="width:100%;">
-                                    <table style="width:100%;">
-                                        <tr style="color:#fff; background-color:rgb(72,61,139);">
-                                            <th style="padding:7px; width:50%; padding-left:15px;">Name</th>
-                                            <th style="width:10%;">From</th> 
-                                            <th style="width:10%;">To</th>
-                                            <th style="width:10%;">Created On</th>
-                                            <th style="width:10%;">% Done</th>
-                                            <th style="width:10%;">Status</th>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div style="width:100%; height:650px; overflow:auto;">
-                                    <table class="table-striped" style="width:100%;">
-                                        <tbody>
-                                            <tr v-for="(item, index) in sortedData2" :key="index">
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:50%; padding-left:15px;">
-                                                    <!-- <a href="#"  v-on:click="getMeetingPack(item)"> -->
-                                                        {{ item.evaluationName }}
-                                                    <!-- </a>                                                     -->
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                    {{ parseInt(item.dateStarted, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                    {{ parseInt(item.dateEnding, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                    {{ parseInt(item.dateCreated, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{ item.donePercent}} {{" %"}}</td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                    <v-btn color="primary">Open</v-btn>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>  
         <!-- END OF COMPONENT -->
 
         <!-- FOOTER -->
@@ -261,12 +318,12 @@
     export default{
         data: () => ({
             moment: moment,
-            test: true,
             getRecentDocuments: [],
             itemSubArray: [],
             itemSubArray2: [],
             itemSubArray3: [],
             evaluationList: [],
+            evaluatees: [],
 
             navigationPath:[
                 {
@@ -304,6 +361,19 @@
                 { id: 4, name: 'John Doe', leave: 133.53 }
             ],
 
+            tabItems: [
+                { tab: 'One', content: 'Tab 1 Content' },
+                { tab: 'Two', content: 'Tab 2 Content' },
+                { tab: 'Three', content: 'Tab 3 Content' },
+                { tab: 'Four', content: 'Tab 4 Content' },
+                { tab: 'Five', content: 'Tab 5 Content' },
+                { tab: 'Six', content: 'Tab 6 Content' },
+                { tab: 'Seven', content: 'Tab 7 Content' },
+                { tab: 'Eight', content: 'Tab 8 Content' },
+                { tab: 'Nine', content: 'Tab 9 Content' },
+                { tab: 'Ten', content: 'Tab 10 Content' },
+            ],
+
             load:{
                 userId: '45',
                 companyCode: '010',
@@ -312,16 +382,19 @@
                 companyId: '2',
                 itemId: '0'
             },
+
             userdata:{                
                 rootUrl:"https://eserver1.stl-horizon.com/api_v13/frontend/web/index.php/user/create"
-           },
+            },
 
-           pdf:'example.pdf',
+            pdf:'example.pdf',
             LICENSE_KEY: LICENSE_KEY,
             baseUrl: '',
             errorMsg: '',
 
+            two: false,
             closePDF: false,
+            tab: null,
         }),
 
         methods: {
@@ -329,7 +402,7 @@
                 window.location.reload();
             },        
 
-            getEvaluationList(){
+            getEvaluationList () {
                 const formData = new FormData;
                 formData.append("userId", UserData.getUserId());
                 formData.append("companyCode", UserData.getCompanyCode());
@@ -340,73 +413,48 @@
                 axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
                         this.getEvaluationList = response.data;
-                        this.evaluationList = this.getEvaluationList.evaluationList;
-                        console.log(this.evaluationList);
+                        this.evaluationList = this.getEvaluationList.evaluationList;    
+                        this.evaluatees = this.evaluationList.map(movie => movie.evaluatees);
+                        
+                        /* 
+                        for(var i=0; i<this.evaluatees.length; i++){
+                             console.log(this.evaluatees[i]); 
+                            }  
+                        */
+
+                        /* 
+                        for(var i in this.evaluatees){
+                        //     var Brooke = this.evaluatees[i];
+                        //     for(var j in Brooke){
+                        //         var userName = Brooke[j].userName;
+                        //         console.log(userName);
+                        //         var userId = Brooke[j].userId;
+                        //         console.log(userId);
+                        //         var userImageURL = Brooke[j].userImageURL;
+                        //         console.log(userImageURL);
+                        //     }
+                            } 
+                        */
+
+                        /* 
+                        Object.keys(this.evaluatees).forEach(i => {
+                        //     Object.keys(this.evaluatees[i]).forEach(j => {
+                        //         var {userName, userId, userImageURL} = this.evaluatees[i][j];
+                        //         this.userName = userName;
+                        //         console.log(this.userName, userId, userImageURL);
+                        //         // alert(this.userName);
+                        //     })
+                        // })
+                        // this.evalName = this.evaluatees.map(popcorn => popcorn.userName);
+                        // console.log(this.evaluatees[0]);
+                           console.log(this.evaluatees[16].map(movie => movie.userName));
+                        */   
+
                     })
-                    .catch(e => {
+                    .catch(e => { 
                         console.log('Error', e);
                     })
-            },
-
-
-            getMeetingPackFolder(){
-                let baseUrl = UserData.getBaseUrl();
-                axios.post(baseUrl,this.getUserData())
-                    .then(response => {         
-                        this.getMeetingPackFolder = response.data;
-                        this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray;                    
-                            this.parentUrl=baseUrl;                          
-                            this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"itemId":this.parentItemId})
-                    })
-                    .catch(e => {
-                        console.log('Error', e);
-                    })
-            },
-
-            getMeetingPack(item){
-                if(item.hasOwnProperty("itemExtension")){
-                    // window.open(item.itemUrl);
-                    this.closePDF = !this.closePDF;
-                    this.pdf=item.itemUrl;
-                    UserData.setDocumentId(item.itemId);
-                    return   
-                }                   
-                let baseUrl = UserData.getBaseUrl();
-                axios.post(baseUrl,this.getUserData(item.itemId, item.itemParentId))
-                    .then(response => {  
-                        this.getMeetingPackFolder = response.data;
-                        this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray;                    
-                            this.parentUrl=baseUrl;                            
-                            this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"itemId":this.parentItemId})
-                        })
-                    .catch(e => {
-                        console.log('Error', e);
-                })
-            },
-
-            getUserData(itemId=0,parentItemId=0){
-                this.parentItemId=parentItemId;
-                const formData = new FormData();
-                formData.append('userId', UserData.getUserId());
-                formData.append('companyCode', UserData.getCompanyCode());
-                formData.append('accessToken', UserData.getAccessToken());
-                formData.append('model', "getMeetingPackFolder");
-                formData.append('companyId', UserData.getCompanyId());
-                formData.append('itemId', itemId);
-                return formData;        
-            },
-
-            loadItemFromHistory(){
-                let currentTop = this.navigationPath.pop();
-                axios.post(UserData.getBaseUrl(), this.getUserData(currentTop.itemId))
-                    .then(response => {
-                        this.getSubMeetingPackFolder = response.data;
-                        this.itemSubArray = this.getSubMeetingPackFolder.data.itemSubArray;   
-                    })
-                    .catch(e => {
-                        console.log("Error", e)
-                        })
-            },
+            }, 
 
             joinNames(){
                 return [...this.navigationPath.map((value)=>{
@@ -453,11 +501,22 @@
                         return a[this.sort.field] > b[this.sort.field] ? 1:-1                  
                     }
                 })
+            },
+
+            evalArray:function(){
+                var evalArray = [];
+                Object.keys(this.evaluatees).forEach(i => {
+                    Object.keys(this.evaluatees[i]).forEach(j => {
+                        // var {userName, userId, userImageURL} = this.evaluatees[i][j];
+                        evalArray.push(this.evaluatees[i][j]);
+                        // console.log(userName, userId, userImageURL);
+                    })
+                })
+                return evalArray;
             }
         },
       
         beforeMount(){
-            this.getMeetingPackFolder();
             this.getEvaluationList();
         },
 
