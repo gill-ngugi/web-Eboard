@@ -10,58 +10,58 @@
         <!-- COMPONENT -->
             <div style="height:850px; margin-top:0.5%; margin-bottom:0.5%; background-color:#f8f9f9; border-top:5px solid rgb(72,61,139); width:98%; margin-left:1%; margin-right:1%;">
                 <div class="two" v-if="two" style="margin-top:7px; position:absolute; background-color:#f5f5f5; width:98%; height:840px; margin-right:1%; z-index:3;">
-                    <div style="display:flex; margin-left:1%; 
-                    margin-bottom:10px;">
+                    <div style="display:flex; margin-left:1%; margin-bottom:10px;">
                         <v-icon @click="two = !two" style="color:#fff; background-color:rgb(72,61,139);">mdi-chevron-left</v-icon>
-                        <h4 style="margin-left:10px; color:rgb(72,61,139);">Training</h4>
+                        <h4 style="margin-left:10px; color:rgb(72,61,139);">{{ evalName }}</h4>
                     </div>
                     <div>
-                        <div class="left1" style="float:left; width:9%; height:780px; overflow:auto; margin-left:1%; margin-right:1%; text-align:center">
+                        <div class="left1" style="float:left; width:11%; height:780px; overflow:auto; margin-left:1%; margin-right:1%; text-align:center">
+                            <!-- Use Computed Property -->
                             <!-- <v-card v-for="(item, index) in evalArray" :key="index" style="width:100%; height:auto; padding:5px; background-color:#fff; margin-bottom:7px;">
                                 <img src="./male-icon.png" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;">
                                 <p>{{item.userName}}</p>
                             </v-card> -->
                             <div v-for="(items, index) in evaluatees" :key="index">
-                            <v-card v-for="(item, index) in items" :key="index" style="width:100%; height:auto; padding:5px; background-color:#fff; margin-bottom:7px;">
+                            <v-card v-for="(item, index) in items" :key="index" @click="setEvaluateeId(item.userId); getEvaluationDetail()" style="width:100%; height:auto; padding:5px; background-color:#fff; margin-bottom:7px; cursor:pointer;">
                                 <img v-if="item.userImageURL" :src="item.userImageURL" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;">
                                 <!-- <img :src="item.userImageURL" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;"> -->
                                 <img v-else src="./male-icon.png" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;">
                                 <p>{{item.userName}}</p>
                             </v-card>
                             </div>
-                            <!-- <v-card style="width:100%; height:auto; padding:5px; background-color:#fff; margin-bottom:7px;">
-                                <img src="./male-icon.png" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;">
-                                <p>Jaswinder Gahir</p>
-                            </v-card>
-                            <v-card style="width:100%; height:auto; padding:5px; background-color:#fff; margin-bottom:7px;">
-                                <img src="./male-icon.png" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;">
-                                <p>Jaswinder Gahir</p>
-                            </v-card>
-                            <v-card style="width:100%; height:auto; padding:5px; background-color:#fff; margin-bottom:7px;">
-                                <img src="./male-icon.png" style="height:90px; width:80px; margin-top:7px; border:1px solid #000; border-radius:50%;">
-                                <p>Jaswinder Gahir</p>
-                            </v-card> -->
                         </div>
-                        <div class="right1" style="float:left; width:88%; height:780px; overflow:auto; background-color:#f5f5f5; margin-right:1%;">
+                        <div class="right1" style="float:left; width:86%; height:780px; overflow:auto; background-color:#f5f5f5; margin-right:1%;">
                             <v-card>
                                 <v-tabs grow show-arrows v-model="tab" background-color="rgb(220,220,220)" color="rgb(72,61,139)" style="font-weight:bolder;">
                                 <v-tabs-slider></v-tabs-slider>
                                     <!-- <v-tab v-for="i in 20" :key="i" :href="'#tab-' + i">GIGI {{i}}</v-tab> -->
-                                    <v-tab v-for="item in tabItems" :key="item.tab">
-                                        {{ item.tab }}
+                                    <!-- <v-tab v-for="item in tabItems" :key="item.tab"> -->
+                                    <v-tab v-for="(item, index) in categories" :key="index">
+                                        {{ item.categoryName }}
                                     </v-tab>
                                 </v-tabs>
                                 <v-tabs-items v-model="tab">
                                     <!-- <v-tab-item v-for="i in 3" :key="i" :value="'tab' + i"> -->
-                                    <v-tab-item v-for="item in tabItems" :key="item.tab">
-                                        <v-card flat>
-                                            <v-card-text>
-                                                {{ item.content }}
+                                    <!-- <v-tab-item v-for="item in tabItems" :key="item.tab"> -->
+                                    <v-tab-item v-for="(item, index) in categories" :key="index">
+                                        <v-card flat v-for="(itemy, index) in item.questions" :key="index" style="display:flex; border-bottom:1px solid rgb(220,220,220)">
+                                            <v-card-text style="font-size:19px;">
+                                                {{ index + 1 + "." }} {{ itemy.questionName }}
                                             </v-card-text>
+                                            <v-btn class="a" fab small style="margin:7px; color:rgb(72,61,139);">1</v-btn>
+                                            <v-btn class="b" fab small style="margin:7px; color:rgb(72,61,139);">2</v-btn>
+                                            <v-btn class="c" fab small style="margin:7px; color:rgb(72,61,139);">3</v-btn>
+                                            <v-btn class="d" fab small style="margin:7px; color:rgb(72,61,139);">4</v-btn>
+                                            <v-btn class="e" fab small style="margin:7px; color:rgb(72,61,139);">5</v-btn>
                                         </v-card>
                                     </v-tab-item>
                                 </v-tabs-items>
                             </v-card>
+                            <v-btn color="rgb(220,220,220)" style="width:100%; display:flex; padding-top:10px;">
+                                <!-- <span style="flex-grow:1"></span> -->
+                                <p style="color:rgb(72,61,139);">Save and Continue</p>
+                                <!-- <span style="flex-grow:1"></span> -->
+                            </v-btn>
                         </div>
                     </div>
                 </div>
@@ -129,7 +129,7 @@
                         </div> 
                     </div> 
 
-                    <div class="blackish" style="width:100%;">                    
+                    <div class="blackish" style="width:100%; margin-right:1%;">                    
                         <table width="100%" style="overflow-y:auto; overflow-x:auto;">
                             <tr>
                                 <td>
@@ -152,11 +152,11 @@
                                     <div style="width:100%; height:700px; overflow:auto;">
                                         <table class="table-striped" style="width:100%;">
                                             <tbody>
-                                                <tr v-for="(item, index) in sortedData2" :key="index">
+                                                <tr v-for="(item, index) in sortedData2" :key="index" @click="two = !two; setEvaluationId(item.evaluationId); setEvalName(item.evaluationName);" style="cursor:pointer;">
                                                     <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:50%; padding-left:15px;">
                                                         <!-- <a href="#"  v-on:click="getMeetingPack(item)"> -->
                                                             {{ item.evaluationName }}
-                                                        <!-- </a>                                                     -->
+                                                        <!-- </a> -->
                                                     </td>
                                                     <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
                                                         {{ parseInt(item.dateStarted, 10) |  moment('DD-MMM-YYYY') }}                                 
@@ -169,7 +169,7 @@
                                                     </td>
                                                     <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{ item.donePercent}} {{" %"}}</td>
                                                     <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                        <v-btn color="primary" @click="two = !two">Open</v-btn>
+                                                        <v-btn color="primary">Open</v-btn>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -324,6 +324,12 @@
             itemSubArray3: [],
             evaluationList: [],
             evaluatees: [],
+            evaluationDetail: [],
+            categories: [],
+            questions: [],
+            scaleInformation: [],
+
+            evalName: "",
 
             navigationPath:[
                 {
@@ -414,8 +420,8 @@
                     .then(response => {
                         this.getEvaluationList = response.data;
                         this.evaluationList = this.getEvaluationList.evaluationList;    
-                        this.evaluatees = this.evaluationList.map(movie => movie.evaluatees);
-                        
+                        this.evaluatees = this.evaluationList.map(evaluate => evaluate.evaluatees);
+                        this.scaleInformation = this.evaluationList.map(scale => scale.scaleInformation);
                         /* 
                         for(var i=0; i<this.evaluatees.length; i++){
                              console.log(this.evaluatees[i]); 
@@ -455,6 +461,55 @@
                         console.log('Error', e);
                     })
             }, 
+
+            setEvaluationId(item){
+                UserData.setEvaluationId(item);
+                console.log(item);
+            },
+
+            setEvaluateeId(item){
+                UserData.setEvaluateeId(item);
+                console.log(item);
+                console.log(this.scaleInformation);
+            },
+
+            setEvalName(item){
+                this.evalName = item;
+            },
+
+            getEvaluationDetail(){
+                const formData = new FormData;
+                // formData.append("userId", UserData.getUserId());
+                formData.append("userId", "45");
+                // formData.append("companyCode", UserData.getCompanyCode());
+                formData.append("companyCode", "010");
+                // formData.append("accessToken", UserData.getAccessToken());
+                formData.append("accessToken", "97f914eb1ceb1867e3824f647f7e589b");
+                formData.append("model", "getEvaluationDetail");
+                // formData.append("companyId", UserData.getCompanyId());
+                formData.append("companyId", "2");
+                // formData.append("evaluationId", UserData.getEvaluationId());
+                formData.append("evaluationId", "408");
+                // formData.append("evaluateeId", UserData.getEvaluateeId());
+                formData.append("evaluateeId", "17");
+
+                axios.post(UserData.getBaseUrl(), formData)
+                    .then(response => {
+                        this.getEvaluationDetailArray = response.data;
+                        this.evaluationDetail = this.getEvaluationDetailArray.evaluationDetail;
+                        this.categories = this.getEvaluationDetailArray.evaluationDetail.categories;
+                        this.questions = this.categories.map(mapCat => mapCat.questions);
+                        // console.log(this.questions);
+
+                        // for(var i in this.questions){
+                        //     var name = this.questions[i];
+                        //     for(var j in name){
+                        //         var questionName = name[j].questionName;
+                        //         console.log(questionName);
+                        //     }
+                        // }
+                    })
+            },
 
             joinNames(){
                 return [...this.navigationPath.map((value)=>{

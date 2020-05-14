@@ -110,6 +110,22 @@
             return UserData.approvalId;
         }
 
+        static setEvaluationId = (evaluationId) => {
+            UserData.evaluationId = evaluationId;
+        }
+
+        static getEvaluationId = () => {
+            return UserData.evaluationId;
+        }
+
+        static setEvaluateeId = (evaluateeId) => {
+            UserData.evaluateeId = evaluateeId
+        }
+
+        static getEvaluateeId = () => {
+            return UserData.evaluateeId;
+        }
+
         static getUserData(itemId=0,parentItemId=0){   
            this.parentItemId=parentItemId;
            const formData = new FormData();
