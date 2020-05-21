@@ -48,16 +48,17 @@
                                             <v-card-text style="font-size:19px;">
                                                 {{ index + 1 + "." }} {{ itemy.questionName }}
                                             </v-card-text>
-                                            <v-btn class="a" fab small style="margin:7px; color:rgb(72,61,139);">1</v-btn>
-                                            <v-btn class="b" fab small style="margin:7px; color:rgb(72,61,139);">2</v-btn>
-                                            <v-btn class="c" fab small style="margin:7px; color:rgb(72,61,139);">3</v-btn>
-                                            <v-btn class="d" fab small style="margin:7px; color:rgb(72,61,139);">4</v-btn>
-                                            <v-btn class="e" fab small style="margin:7px; color:rgb(72,61,139);">5</v-btn>
+                                            <v-btn class="a" fab small @click="saveContinue(itemy, 1)" style="margin:7px; color:rgb(72,61,139);">1</v-btn>
+                                            <v-btn class="b" fab small @click="saveContinue(itemy, 2)" style="margin:7px; color:rgb(72,61,139);">2</v-btn>
+                                            <v-btn class="c" fab small @click="saveContinue(itemy, 3)" style="margin:7px; color:rgb(72,61,139);">3</v-btn>
+                                            <v-btn class="d" fab small @click="saveContinue(itemy, 4)" style="margin:7px; color:rgb(72,61,139);">4</v-btn>
+                                            <v-btn class="e" fab small @click="saveContinue(itemy, 5)" style="margin:7px; color:rgb(72,61,139);">5</v-btn>
                                         </v-card>
                                     </v-tab-item>
                                 </v-tabs-items>
                             </v-card>
-                            <v-btn color="rgb(220,220,220)" style="width:100%; display:flex; padding-top:10px;">
+                            <v-btn @click="updateAllQuestions()" color="rgb(220,220,220)" style="width:100%; display:flex; padding-top:10px;">
+                            <!-- <v-btn color="rgb(220,220,220)" block> -->
                                 <!-- <span style="flex-grow:1"></span> -->
                                 <p style="color:rgb(72,61,139);">Save and Continue</p>
                                 <!-- <span style="flex-grow:1"></span> -->
@@ -328,6 +329,14 @@
             categories: [],
             questions: [],
             scaleInformation: [],
+            // ansyArr: [
+            //     {
+            //         question: "",
+            //         answer: ""
+            //     }
+            // ],
+            answerArr: [],
+            questionArr: [],
 
             evalName: "",
 
@@ -464,13 +473,13 @@
 
             setEvaluationId(item){
                 UserData.setEvaluationId(item);
-                console.log(item);
+                // console.log(item);
             },
 
             setEvaluateeId(item){
                 UserData.setEvaluateeId(item);
-                console.log(item);
-                console.log(this.scaleInformation);
+                // console.log(item);
+                // console.log(this.scaleInformation);
             },
 
             setEvalName(item){
@@ -509,6 +518,63 @@
                         //     }
                         // }
                     })
+            },
+
+            saveContinue(itemy, val){   
+                //console.log("questionId",itemy.questionId,"answer",val);
+                // if (array.includes(value) === false) array.push(value);
+                // if (this.questionArr.includes(itemy.questionId) === false) this.questionArr.push(itemy.questionId);
+                // console.log(this.questionArr.length);
+                // if(this.quest.includes(itemy.questionId) === false) 
+                // this.questionArr.push({"question":itemy.questionId, "answer":val});
+                //this.quest = this.questionArr.map(quest => quest.question);
+            
+                   var choice={"answer":val,"question":itemy.questionId}
+                   var index= this.questionArr.findIndex((c)=>{
+                        if(c.question==choice.question){
+                            return true;
+                        }
+                        return false;
+                    })
+                    if(index==-1){
+                        this.questionArr.push(choice)
+                    }else{
+                    //    this.questionArr[index]={...choice,"answer":val}
+                       this.questionArr[index]={...choice}
+                    }
+                     // "12,45,6" !=[12,45,8]
+                   
+                    var apiData={ 
+                                "answer" : this.questionArr.map(ans => ans.answer).toString(), 
+                                "userId" : "17", 
+                                "evaluationId" : "408", 
+                                "question" : this.questionArr.map(ques => ques.question).toString()
+                            }
+                    console.log(apiData)
+
+                    },
+
+            updateAllQuestions(){
+                const formData = new FormData;
+                formData.append("userId", "45");
+                formData.append("companyCode", "010");
+                formData.append("accessToken", "97f914eb1ceb1867e3824f647f7e589b");
+                formData.append("model", "getEvaluationDetail");
+                formData.append("companyId", "2");
+                formData.append("evaluations", 
+                                    JSON.stringify( [
+                                        { 
+                                            "answer" : this.questionArr.map(ans => ans.answer).toString(), 
+                                            "userId" : 17, 
+                                            "evaluationId" : 408, 
+                                            "question" : this.questionArr.map(ques => ques.question).toString()
+                                        }
+                                    ]))
+            axios.post(UserData.getBaseUrl(), formData)
+                .then(response => {
+                    this.updateAllQuestionsArray = response.data;
+                    console.log(this.updateAllQuestions);
+                })
             },
 
             joinNames(){
