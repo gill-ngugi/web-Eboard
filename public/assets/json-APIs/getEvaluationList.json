@@ -1,0 +1,915 @@
+{
+    "success": 1,
+    "InvalidAccessToken": "0",
+    "message": "Found Evaluations",
+    "evaluationList": [
+        {
+            "evaluationId": "299",
+            "evaluationName": "CEO evaluates Board members",
+            "evaluationDate": "",
+            "dateCreated": "1455235200",
+            "dateStarted": "1451606400",
+            "dateEnding": "1454284800",
+            "donePercent": 97.37,
+            "stt_id": "7",
+            "mmb2_id": "45",
+            "mmb_id": "35",
+            "scl_id": "5",
+            "status_code": "7",
+            "status_name": "Ongoing",
+            "chairmanComment": "",
+            "reportUrl": "",
+            "canComment": "0",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "0",
+            "evaluatees": [
+                {
+                    "userName": "Anthony Kombo",
+                    "userEmail": "bethuel@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "0727672137",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "33",
+                    "userDesignation": "Compliance,Board - Self ,Board - Individual,Total Board,Administrator,Audit committee,Credit Committee,HR Committee"
+                },
+                {
+                    "userName": "Michelle Ngei",
+                    "userEmail": "",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "35",
+                    "userDesignation": "SMS M"
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "Key Issues to be considered\r\n\tStrategic Thinking\r\n\tCorporate Governance\r\n\tCompetence\r\n\tIndependence\r\n\tPreparedness as a Director \r\n\tPersonal Attributes\r\n\tAwareness of operational Environment including stakeholders Interests\r\n",
+            "scaleInformation": [
+                {
+                    "scale": "3",
+                    "description": "3"
+                },
+                {
+                    "scale": "2",
+                    "description": "2"
+                },
+                {
+                    "scale": "1",
+                    "description": "1"
+                },
+                {
+                    "scale": "4",
+                    "description": "4"
+                },
+                {
+                    "scale": "5",
+                    "description": "5"
+                }
+            ],
+            "userComment": ""
+        },
+        {
+            "evaluationId": "315",
+            "evaluationName": "CEO evalutates Equity Membersss",
+            "evaluationDate": "",
+            "dateCreated": "1456099200",
+            "dateStarted": "1454284800",
+            "dateEnding": "1456099200",
+            "donePercent": 100,
+            "stt_id": "1",
+            "mmb2_id": "45",
+            "mmb_id": "33",
+            "scl_id": "5",
+            "status_code": "1",
+            "status_name": "Open",
+            "chairmanComment": "",
+            "reportUrl": "",
+            "canComment": "1",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "0",
+            "evaluatees": [
+                {
+                    "userName": "Anthony Kombo",
+                    "userEmail": "bethuel@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "0727672137",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "33",
+                    "userDesignation": "Compliance,Board - Self ,Board - Individual,Total Board,Administrator,Audit committee,Credit Committee,HR Committee"
+                },
+                {
+                    "userName": "Michelle Ngei",
+                    "userEmail": "",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "35",
+                    "userDesignation": "SMS M"
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "Key Issues to be considered\r\n\tStrategic Thinking\r\n\tCorporate Governance\r\n\tCompetence\r\n\tIndependence\r\n\tPreparedness as a Director \r\n\tPersonal Attributes\r\n\tAwareness of operational Environment including stakeholders Interests\r\n",
+            "scaleInformation": [
+                {
+                    "scale": "3",
+                    "description": "3"
+                },
+                {
+                    "scale": "2",
+                    "description": "2"
+                },
+                {
+                    "scale": "1",
+                    "description": "1"
+                },
+                {
+                    "scale": "4",
+                    "description": "4"
+                },
+                {
+                    "scale": "5",
+                    "description": "5"
+                }
+            ],
+            "userComment": ""
+        },
+        {
+            "evaluationId": "347",
+            "evaluationName": "ipad testing 07122016 2 ",
+            "evaluationDate": "",
+            "dateCreated": "1481068800",
+            "dateStarted": "1480982400",
+            "dateEnding": "1480982400",
+            "donePercent": 100,
+            "stt_id": "1",
+            "mmb2_id": "45",
+            "mmb_id": "27",
+            "scl_id": "5",
+            "status_code": "1",
+            "status_name": "Open",
+            "chairmanComment": "Trstihbfghn",
+            "reportUrl": "",
+            "canComment": "0",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "0",
+            "evaluatees": [
+                {
+                    "userName": "Jaswinder Gahir",
+                    "userEmail": "jaswinder@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "0721693390",
+                    "ImageId": "39",
+                    "userImageURL": "http://eserver1.stl-horizon.com/api_v9/frontend/web/user/files?companyId=2&userId=45&companyCode=010&actionTypes=getUserImages&ImageId=39",
+                    "userId": "27",
+                    "userDesignation": "Administrator,Approvals,Board - Individual,Chairman,Managers,Audit, Corporate Governance & Risk management Comm,Compliance,Board - Self ,Board,Credit Committee,HR Committee,Audit committee"
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "\tDoes the CEO Recommend to the Board long term strategy and annual business plans and budgets\r\n\tHow effectively and efficiently is the strategic plan implemented\r\n\tIs there continuous achievement of financial and nonfinancial Key Performance Indicators\r\n\tHow good is the CEO in leading change and change management\r\n",
+            "scaleInformation": [
+                {
+                    "scale": "3",
+                    "description": "3"
+                },
+                {
+                    "scale": "2",
+                    "description": "2"
+                },
+                {
+                    "scale": "1",
+                    "description": "1"
+                },
+                {
+                    "scale": "4",
+                    "description": "4"
+                },
+                {
+                    "scale": "5",
+                    "description": "5"
+                }
+            ],
+            "userComment": ""
+        },
+        {
+            "evaluationId": "389",
+            "evaluationName": "open ended evaluation for anand 15072018",
+            "evaluationDate": "",
+            "dateCreated": "1531699200",
+            "dateStarted": "1451606400",
+            "dateEnding": "1483142400",
+            "donePercent": 0,
+            "stt_id": "1",
+            "mmb2_id": "45",
+            "mmb_id": "17",
+            "scl_id": "0",
+            "status_code": "1",
+            "status_name": "Open",
+            "chairmanComment": "",
+            "reportUrl": "",
+            "canComment": "0",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "0",
+            "evaluatees": [
+                {
+                    "userName": "Total Board",
+                    "userEmail": "board@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "37",
+                    "userImageURL": "http://eserver1.stl-horizon.com/api_v9/frontend/web/user/files?companyId=2&userId=45&companyCode=010&actionTypes=getUserImages&ImageId=37",
+                    "userId": "17",
+                    "userDesignation": "Board - Self "
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "\tBoards interpreted the mandate of the Corporation. \r\n\tHow well does the Board comprehend the mandate of the Corporation \r\n\tRelevance of the mandate to national economic development. \r\n\tDesired future given the mandate. \r\n",
+            "scaleInformation": [],
+            "userComment": ""
+        },
+        {
+            "evaluationId": "408",
+            "evaluationName": "test anand 07092018 1",
+            "evaluationDate": "",
+            "dateCreated": "1536278400",
+            "dateStarted": "1536278400",
+            "dateEnding": "1538265600",
+            "donePercent": 50,
+            "stt_id": "1",
+            "mmb2_id": "45",
+            "mmb_id": "17",
+            "scl_id": "3",
+            "status_code": "1",
+            "status_name": "Open",
+            "chairmanComment": "",
+            "reportUrl": "",
+            "canComment": "1",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "0",
+            "evaluatees": [
+                {
+                    "userName": "Total Board",
+                    "userEmail": "board@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "37",
+                    "userImageURL": "http://eserver1.stl-horizon.com/api_v9/frontend/web/user/files?companyId=2&userId=45&companyCode=010&actionTypes=getUserImages&ImageId=37",
+                    "userId": "17",
+                    "userDesignation": "Board - Self "
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "\tBoards interpreted the mandate of the Corporation. \r\n\tHow well does the Board comprehend the mandate of the Corporation \r\n\tRelevance of the mandate to national economic development. \r\n\tDesired future given the mandate. \r\n",
+            "scaleInformation": [
+                {
+                    "scale": "1",
+                    "description": "Very Poor"
+                },
+                {
+                    "scale": "2",
+                    "description": "Poor"
+                },
+                {
+                    "scale": "3",
+                    "description": "Average"
+                },
+                {
+                    "scale": "4",
+                    "description": "Good"
+                },
+                {
+                    "scale": "5",
+                    "description": "Very Good"
+                }
+            ],
+            "userComment": "SOme comment"
+        },
+        {
+            "evaluationId": "409",
+            "evaluationName": "test anand 07092018 2",
+            "evaluationDate": "",
+            "dateCreated": "1536278400",
+            "dateStarted": "1536278400",
+            "dateEnding": "1538265600",
+            "donePercent": 0,
+            "stt_id": "1",
+            "mmb2_id": "45",
+            "mmb_id": "17",
+            "scl_id": "3",
+            "status_code": "1",
+            "status_name": "Open",
+            "chairmanComment": "",
+            "reportUrl": "",
+            "canComment": "1",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "0",
+            "evaluatees": [
+                {
+                    "userName": "Total Board",
+                    "userEmail": "board@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "37",
+                    "userImageURL": "http://eserver1.stl-horizon.com/api_v9/frontend/web/user/files?companyId=2&userId=45&companyCode=010&actionTypes=getUserImages&ImageId=37",
+                    "userId": "17",
+                    "userDesignation": "Board - Self "
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "\tBoards interpreted the mandate of the Corporation. \r\n\tHow well does the Board comprehend the mandate of the Corporation \r\n\tRelevance of the mandate to national economic development. \r\n\tDesired future given the mandate. \r\n",
+            "scaleInformation": [
+                {
+                    "scale": "1",
+                    "description": "Very Poor"
+                },
+                {
+                    "scale": "2",
+                    "description": "Poor"
+                },
+                {
+                    "scale": "3",
+                    "description": "Average"
+                },
+                {
+                    "scale": "4",
+                    "description": "Good"
+                },
+                {
+                    "scale": "5",
+                    "description": "Very Good"
+                }
+            ],
+            "userComment": "Dummy Comment"
+        },
+        {
+            "evaluationId": "410",
+            "evaluationName": "test anand 07092018 3",
+            "evaluationDate": "",
+            "dateCreated": "1536278400",
+            "dateStarted": "1536278400",
+            "dateEnding": "1537920000",
+            "donePercent": 0,
+            "stt_id": "1",
+            "mmb2_id": "45",
+            "mmb_id": "17",
+            "scl_id": "3",
+            "status_code": "1",
+            "status_name": "Open",
+            "chairmanComment": "",
+            "reportUrl": "",
+            "canComment": "1",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "0",
+            "evaluatees": [
+                {
+                    "userName": "Total Board",
+                    "userEmail": "board@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "37",
+                    "userImageURL": "http://eserver1.stl-horizon.com/api_v9/frontend/web/user/files?companyId=2&userId=45&companyCode=010&actionTypes=getUserImages&ImageId=37",
+                    "userId": "17",
+                    "userDesignation": "Board - Self "
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "\tBoards interpreted the mandate of the Corporation. \r\n\tHow well does the Board comprehend the mandate of the Corporation \r\n\tRelevance of the mandate to national economic development. \r\n\tDesired future given the mandate. \r\n",
+            "scaleInformation": [
+                {
+                    "scale": "1",
+                    "description": "Very Poor"
+                },
+                {
+                    "scale": "2",
+                    "description": "Poor"
+                },
+                {
+                    "scale": "3",
+                    "description": "Average"
+                },
+                {
+                    "scale": "4",
+                    "description": "Good"
+                },
+                {
+                    "scale": "5",
+                    "description": "Very Good"
+                }
+            ],
+            "userComment": "Sample comments"
+        },
+        {
+            "evaluationId": "411",
+            "evaluationName": "test anand 07092018 4",
+            "evaluationDate": "",
+            "dateCreated": "1536278400",
+            "dateStarted": "1536364800",
+            "dateEnding": "1536969600",
+            "donePercent": 0,
+            "stt_id": "1",
+            "mmb2_id": "45",
+            "mmb_id": "17",
+            "scl_id": "3",
+            "status_code": "1",
+            "status_name": "Open",
+            "chairmanComment": "",
+            "reportUrl": "",
+            "canComment": "1",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "0",
+            "evaluatees": [
+                {
+                    "userName": "Total Board",
+                    "userEmail": "board@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "37",
+                    "userImageURL": "http://eserver1.stl-horizon.com/api_v9/frontend/web/user/files?companyId=2&userId=45&companyCode=010&actionTypes=getUserImages&ImageId=37",
+                    "userId": "17",
+                    "userDesignation": "Board - Self "
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "\tBoards interpreted the mandate of the Corporation. \r\n\tHow well does the Board comprehend the mandate of the Corporation \r\n\tRelevance of the mandate to national economic development. \r\n\tDesired future given the mandate. \r\n",
+            "scaleInformation": [
+                {
+                    "scale": "1",
+                    "description": "Very Poor"
+                },
+                {
+                    "scale": "2",
+                    "description": "Poor"
+                },
+                {
+                    "scale": "3",
+                    "description": "Average"
+                },
+                {
+                    "scale": "4",
+                    "description": "Good"
+                },
+                {
+                    "scale": "5",
+                    "description": "Very Good"
+                }
+            ],
+            "userComment": ""
+        },
+        {
+            "evaluationId": "421",
+            "evaluationName": "Training_all board members evaluate the full board_Android",
+            "evaluationDate": "",
+            "dateCreated": "1542326400",
+            "dateStarted": "1514764800",
+            "dateEnding": "1546214400",
+            "donePercent": 0,
+            "stt_id": "1",
+            "mmb2_id": "45",
+            "mmb_id": "92",
+            "scl_id": "5",
+            "status_code": "1",
+            "status_name": "Open",
+            "chairmanComment": "test 2",
+            "reportUrl": "",
+            "canComment": "0",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "0",
+            "evaluatees": [
+                {
+                    "userName": "Anthony Kombo",
+                    "userEmail": "bethuel@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "0727672137",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "33",
+                    "userDesignation": "Compliance,Board - Self ,Board - Individual,Total Board,Administrator,Audit committee,Credit Committee,HR Committee"
+                },
+                {
+                    "userName": "Ashish vora",
+                    "userEmail": "aashish@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "+917227972876",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "92",
+                    "userDesignation": "Administrator,Compliance,Board - Self ,Chairman,Credit Committee,HR Committee,Audit committee"
+                },
+                {
+                    "userName": "Bethuel Muthangya",
+                    "userEmail": "bethuel@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "+254727672137",
+                    "ImageId": "99",
+                    "userImageURL": "http://eserver1.stl-horizon.com/api_v9/frontend/web/user/files?companyId=2&userId=45&companyCode=010&actionTypes=getUserImages&ImageId=99",
+                    "userId": "76",
+                    "userDesignation": "Compliance,CEO,Board - Self ,Administrator,Managers,Board - Individual,Board,Credit Committee,HR Committee,Audit committee,Total Board"
+                },
+                {
+                    "userName": "Jaswinder Gahir",
+                    "userEmail": "jaswinder@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "0721693390",
+                    "ImageId": "39",
+                    "userImageURL": "http://eserver1.stl-horizon.com/api_v9/frontend/web/user/files?companyId=2&userId=45&companyCode=010&actionTypes=getUserImages&ImageId=39",
+                    "userId": "27",
+                    "userDesignation": "Administrator,Approvals,Board - Individual,Chairman,Managers,Audit, Corporate Governance & Risk management Comm,Compliance,Board - Self ,Board,Credit Committee,HR Committee,Audit committee"
+                },
+                {
+                    "userName": "Leiney Ogeto",
+                    "userEmail": "bethuel@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "69",
+                    "userDesignation": "Board - Self "
+                },
+                {
+                    "userName": "Michael Orenda",
+                    "userEmail": "michael@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "0722913237",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "61",
+                    "userDesignation": "Administrator,Compliance,Board - Self ,Board - Individual,Total Board"
+                },
+                {
+                    "userName": "Total Board",
+                    "userEmail": "board@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "37",
+                    "userImageURL": "http://eserver1.stl-horizon.com/api_v9/frontend/web/user/files?companyId=2&userId=45&companyCode=010&actionTypes=getUserImages&ImageId=37",
+                    "userId": "17",
+                    "userDesignation": "Board - Self "
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "\tBoards interpreted the mandate of the Corporation. \r\n\tHow well does the Board comprehend the mandate of the Corporation \r\n\tRelevance of the mandate to national economic development. \r\n\tDesired future given the mandate. \r\n",
+            "scaleInformation": [
+                {
+                    "scale": "3",
+                    "description": "3"
+                },
+                {
+                    "scale": "2",
+                    "description": "2"
+                },
+                {
+                    "scale": "1",
+                    "description": "1"
+                },
+                {
+                    "scale": "4",
+                    "description": "4"
+                },
+                {
+                    "scale": "5",
+                    "description": "5"
+                }
+            ],
+            "userComment": ""
+        },
+        {
+            "evaluationId": "440",
+            "evaluationName": "android test 10042019",
+            "evaluationDate": "",
+            "dateCreated": "1554854400",
+            "dateStarted": "1514764800",
+            "dateEnding": "1546214400",
+            "donePercent": 50,
+            "stt_id": "1",
+            "mmb2_id": "45",
+            "mmb_id": "17",
+            "scl_id": "5",
+            "status_code": "1",
+            "status_name": "Open",
+            "chairmanComment": "Ok\r\n",
+            "reportUrl": "",
+            "canComment": "1",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "1",
+            "evaluatees": [
+                {
+                    "userName": "Total Board",
+                    "userEmail": "board@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "37",
+                    "userImageURL": "http://eserver1.stl-horizon.com/api_v9/frontend/web/user/files?companyId=2&userId=45&companyCode=010&actionTypes=getUserImages&ImageId=37",
+                    "userId": "17",
+                    "userDesignation": "Board - Self "
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "\tBoards interpreted the mandate of the Corporation. \r\n\tHow well does the Board comprehend the mandate of the Corporation \r\n\tRelevance of the mandate to national economic development. \r\n\tDesired future given the mandate. \r\n",
+            "scaleInformation": [
+                {
+                    "scale": "3",
+                    "description": "3"
+                },
+                {
+                    "scale": "2",
+                    "description": "2"
+                },
+                {
+                    "scale": "1",
+                    "description": "1"
+                },
+                {
+                    "scale": "4",
+                    "description": "4"
+                },
+                {
+                    "scale": "5",
+                    "description": "5"
+                }
+            ],
+            "userComment": "some comment"
+        },
+        {
+            "evaluationId": "299",
+            "names": "Anand Upadhyay",
+            "evaluationDate": "",
+            "dateCreated": "1455235200",
+            "dateStarted": "1451606400",
+            "dateEnding": "1454284800",
+            "donePercent": 97.37,
+            "chairmanComment": "",
+            "reportUrl": "",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "0",
+            "canComment": "0",
+            "evaluationName": "CEO evaluates Board members",
+            "stt_id": "7",
+            "scl_id": "5",
+            "mmb2_id": "45",
+            "mmb_id": "35",
+            "status_code": "7",
+            "status_name": "Ongoing",
+            "evaluatees": [
+                {
+                    "userName": "Anthony Kombo",
+                    "userEmail": "bethuel@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "0727672137",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "33",
+                    "userDesignation": "Compliance,Board - Self ,Board - Individual,Total Board,Administrator,Audit committee,Credit Committee,HR Committee"
+                },
+                {
+                    "userName": "Michelle Ngei",
+                    "userEmail": "",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "35",
+                    "userDesignation": "SMS M"
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "Key Issues to be considered\r\n\tStrategic Thinking\r\n\tCorporate Governance\r\n\tCompetence\r\n\tIndependence\r\n\tPreparedness as a Director \r\n\tPersonal Attributes\r\n\tAwareness of operational Environment including stakeholders Interests\r\n",
+            "scaleInformation": [
+                {
+                    "scale": "3",
+                    "description": "3"
+                },
+                {
+                    "scale": "2",
+                    "description": "2"
+                },
+                {
+                    "scale": "1",
+                    "description": "1"
+                },
+                {
+                    "scale": "4",
+                    "description": "4"
+                },
+                {
+                    "scale": "5",
+                    "description": "5"
+                }
+            ],
+            "userComment": ""
+        },
+        {
+            "evaluationId": "306",
+            "evaluationName": "director evaluation on board members",
+            "stt_id": "3",
+            "evaluationDate": "",
+            "dateCreated": "1455235200",
+            "dateStarted": "1451606400",
+            "dateEnding": "1454284800",
+            "chairmanComment": "",
+            "reportUrl": "",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "0",
+            "canComment": "0",
+            "donePercent": 100,
+            "mmb2_id": "45",
+            "scl_id": "5",
+            "mmb_id": "35",
+            "status_code": "3",
+            "status_name": "Completed",
+            "evaluatees": [
+                {
+                    "userName": "Anthony Kombo",
+                    "userEmail": "bethuel@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "0727672137",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "33",
+                    "userDesignation": "Compliance,Board - Self ,Board - Individual,Total Board,Administrator,Audit committee,Credit Committee,HR Committee"
+                },
+                {
+                    "userName": "Michelle Ngei",
+                    "userEmail": "",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "35",
+                    "userDesignation": "SMS M"
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "Key Issues to be considered\r\n\tStrategic Thinking\r\n\tCorporate Governance\r\n\tCompetence\r\n\tIndependence\r\n\tPreparedness as a Director \r\n\tPersonal Attributes\r\n\tAwareness of operational Environment including stakeholders Interests\r\n",
+            "scaleInformation": [
+                {
+                    "scale": "3",
+                    "description": "3"
+                },
+                {
+                    "scale": "2",
+                    "description": "2"
+                },
+                {
+                    "scale": "1",
+                    "description": "1"
+                },
+                {
+                    "scale": "4",
+                    "description": "4"
+                },
+                {
+                    "scale": "5",
+                    "description": "5"
+                }
+            ],
+            "userComment": ""
+        },
+        {
+            "evaluationId": "327",
+            "evaluationName": "Test Evaluation 2",
+            "stt_id": "3",
+            "evaluationDate": "",
+            "dateCreated": "1457395200",
+            "dateStarted": "1454284800",
+            "dateEnding": "1456704000",
+            "chairmanComment": "",
+            "reportUrl": "",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "0",
+            "canComment": "0",
+            "donePercent": 100,
+            "mmb2_id": "45",
+            "scl_id": "5",
+            "mmb_id": "35",
+            "status_code": "3",
+            "status_name": "Completed",
+            "evaluatees": [
+                {
+                    "userName": "Anthony Kombo",
+                    "userEmail": "bethuel@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "0727672137",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "33",
+                    "userDesignation": "Compliance,Board - Self ,Board - Individual,Total Board,Administrator,Audit committee,Credit Committee,HR Committee"
+                },
+                {
+                    "userName": "Michelle Ngei",
+                    "userEmail": "",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "35",
+                    "userDesignation": "SMS M"
+                },
+                {
+                    "userName": "Veronica Wambui",
+                    "userEmail": "bethuel@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "",
+                    "userImageURL": "",
+                    "userId": "63",
+                    "userDesignation": "Administrator,Board - Individual"
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "Key Issues to be considered\r\n\tStrategic Thinking\r\n\tCorporate Governance\r\n\tCompetence\r\n\tIndependence\r\n\tPreparedness as a Director \r\n\tPersonal Attributes\r\n\tAwareness of operational Environment including stakeholders Interests\r\n",
+            "scaleInformation": [
+                {
+                    "scale": "3",
+                    "description": "3"
+                },
+                {
+                    "scale": "2",
+                    "description": "2"
+                },
+                {
+                    "scale": "1",
+                    "description": "1"
+                },
+                {
+                    "scale": "4",
+                    "description": "4"
+                },
+                {
+                    "scale": "5",
+                    "description": "5"
+                }
+            ],
+            "userComment": ""
+        },
+        {
+            "evaluationId": "434",
+            "evaluationName": "test for cec",
+            "stt_id": "3",
+            "evaluationDate": "",
+            "dateCreated": "1551052800",
+            "dateStarted": "1548979200",
+            "dateEnding": "1551052800",
+            "chairmanComment": "",
+            "reportUrl": "",
+            "isOpen": "0",
+            "isEvaluateSelf": "0",
+            "isSent": "0",
+            "canComment": "0",
+            "donePercent": 100,
+            "mmb2_id": "45",
+            "scl_id": "8",
+            "mmb_id": "17",
+            "status_code": "3",
+            "status_name": "Completed",
+            "evaluatees": [
+                {
+                    "userName": "Total Board",
+                    "userEmail": "board@stl-horizon.com",
+                    "companyName": "STL Vision",
+                    "userPhone": "",
+                    "ImageId": "37",
+                    "userImageURL": "http://eserver1.stl-horizon.com/api_v9/frontend/web/user/files?companyId=2&userId=45&companyCode=010&actionTypes=getUserImages&ImageId=37",
+                    "userId": "17",
+                    "userDesignation": "Board - Self "
+                }
+            ],
+            "isChairman": "0",
+            "evaluationGuidelines": "\tBoards interpreted the mandate of the Corporation. \r\n\tHow well does the Board comprehend the mandate of the Corporation \r\n\tRelevance of the mandate to national economic development. \r\n\tDesired future given the mandate. \r\n",
+            "scaleInformation": [
+                {
+                    "scale": "4",
+                    "description": "Excellent"
+                },
+                {
+                    "scale": "3",
+                    "description": "Good"
+                },
+                {
+                    "scale": "2",
+                    "description": "Average"
+                },
+                {
+                    "scale": "1",
+                    "description": "Poor"
+                }
+            ],
+            "userComment": ""
+        }
+    ]
+}

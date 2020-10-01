@@ -54,6 +54,14 @@
             return UserData.companyId;
         }
 
+        static setCompanyName=(companyName)=>{
+            UserData.companyName = companyName;
+        }
+    
+        static getCompanyName=()=>{
+            return UserData.companyName;
+        }
+
         static setCompanyListId=(companyId)=>{
             UserData.companyId = companyId;
         }

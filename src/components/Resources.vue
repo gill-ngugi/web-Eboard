@@ -456,13 +456,20 @@
             // },
 
             getResources(item){
-                if(item.hasOwnProperty("itemExtension")){
+                if(item.itemExtension == 'pdf'){
                     this.closePDF = !this.closePDF;
                     this.pdf=item.itemUrl;
                     UserData.setDocumentId(item.itemId);
-                    // alert(item.itemUrl);
-                    //window.open(item.itemUrl);
-                    return
+                    return  
+                }
+                if(item.itemExtension == ('docx')){
+                    window.open(item.itemUrl);
+                }
+                if(item.itemExtension == ('pptx')){
+                    window.open(item.itemUrl);
+                }
+                if(item.itemExtension == ('xlsx')){
+                    window.open(item.itemUrl);
                 }
                 axios.post(UserData.getBaseUrl(), this.getUserData(item.itemId, item.itemParentId))
                     .then(response => {

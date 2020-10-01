@@ -1,12 +1,26 @@
 <template>    
     <div>
-        <!-- <v-app> -->
         <div class = "nav-menu parent" style=" height:45px; width:98%; padding:0px; padding-top:0.3%; margin-left:1%; margin-right:1%;">
             <div class="left-buttons" style="margin-left:10px;">
-                <button class="btn btn-lg" text v-on:click="seen1 = !seen1">
-                    {{companyDetail.companyName}}
-                    <span class="input-group-addon"><i class="fa fa-chevron-down"></i></span>                            
-                </button>
+                <v-dialog v-model="dialog" persistent max-width="290">
+                <template v-slot:activator="{ on, attrs }"> 
+                    <button class="btn btn-lg" text v-on:click="seen1 = !seen1; on" v-bind="attrs">
+                        <!-- {{companyDetail.companyName}} -->
+                        {{selectedCompanyName}}
+                        <span class="input-group-addon"><i class="fa fa-chevron-down"></i></span>                            
+                    </button>
+                </template>
+                    <v-card>
+                        <v-card-text>
+                            <h3>Company changed to: {{selectedCompanyName}}</h3>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="green darken-1" text @click="dialog = false">Disagree</v-btn>
+                            <v-btn color="green darken-1" text @click="dialog = false">Agree</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
             </div>    
             <div class="filler"></div>
                 <img class="bgimg-1" src="../img/eboard_Logo_new@2x.png" style="height:75%; width:auto; padding-top:5px">
@@ -28,8 +42,11 @@
                         v-for="(item, index) in companyList"
                         :key="index"                                
                     >
-                        <!-- START HERE!!! -->
-                    <v-list-item-title v-on:click="changeCompanyDetails(); UserData.setCompanyId(item.companyId);" style="cursor:pointer;">{{ item.companyName }} <v-divider></v-divider></v-list-item-title>  
+                    <!-- START HERE!!! -->
+                    <v-list-item-title v-on:click="changeCompanyDetails(item);" style="cursor:pointer;">
+                        {{ item.companyName }} 
+                        <v-divider></v-divider>
+                    </v-list-item-title>  
                     </v-list-item>
                 </v-list>
             </div>
@@ -39,11 +56,8 @@
                 v-if="seen2">
                  <v-list style="position">
                     <v-list-item-title style="color:#e33333; padding:15px;">Select Language</v-list-item-title>
-                    <v-list-item
-                        v-for="(item, index) in allLanguages" 
-                        :key="index"                        
-                    >
-                    <v-list-item-title> {{item.language}} <v-divider></v-divider></v-list-item-title>  
+                    <v-list-item v-for="(item, index) in allLanguages" :key="index">
+                    <v-list-item-title> {{item.language}} <v-divider></v-divider> </v-list-item-title>  
                     </v-list-item>
                 </v-list>
             </div>
@@ -66,7 +80,6 @@
                     <v-card-actions>
                     <div style="float:left; margin:0px;">
                         <img v-bind:src="userInfo.imageUrl" style="height:85px; width:95px; background-color:#fff; border:1px solid black;">
-                        <!-- <img src="../img/male-icon.png" style="height:85px; width:95px; background-color:cyan; border:1px solid black;"> -->
                     </div>
                     <div style="float:left; position:relative; margin:0px;">    
                         <v-card-text>
@@ -85,7 +98,7 @@
                  
                     <div><p style="color:#e33333;">Options<span style="float:right;">v3.0.1</span></p></div>
                     
-                    <div class="row" style="margin:0px; padding:0px;">
+                    <!-- <div class="row" style="margin:0px; padding:0px;">
                         <div class="col-md-8 col-sm-8" style="margin:0px; padding:0px;">
                             Notifications
                         </div>
@@ -164,7 +177,7 @@
                             Change Applock PIN
                         </div>                       
                     </div>
-                    <v-divider style="margin:0px; padding:0px;"></v-divider>
+                    <v-divider style="margin:0px; padding:0px;"></v-divider> -->
 
                     <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
                         <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">
@@ -172,7 +185,7 @@
                         </div>                       
                     </div>
                     <v-divider style="margin:0px; padding:0px;"></v-divider>
-
+<!-- 
                     <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
                         <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">
                             Manage Briefcase
@@ -218,15 +231,16 @@
                             Feedback
                         </div>                       
                     </div>
-                    <v-divider style="margin:0px; padding:0px;"></v-divider>
+                    <v-divider style="margin:0px; padding:0px;"></v-divider> -->
 
                     <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
                         <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">                        
-                            <p style="cursor:pointer" v-on:click="logout()">Logout</p>
+                        <!-- <div class="col-md-12 col-sm-12" v-if="isLoggedIn" style="margin:0px; padding:0px;">                         -->
+                            <!-- <p style="cursor:pointer" v-on:click="logout()">Logout</p> -->
+                            <a style="cursor:pointer" v-on:click="logout">Logout</a>
                         </div>                       
                     </div>
                     <v-divider style="margin:0px; padding:0px;"></v-divider>
-
                 </v-list>
             </div>
   
@@ -246,65 +260,72 @@
                 </div>
             </div>
 
-            <!-- <div class="right" style="background-color:cyan; width:77%; height:900px; overflow:hidden; margin-right:1%; margin-top:1%; float:left; position:relative; z-index:-1"> -->
-                <!-- <div class="col-right-top" style="padding:1%; width:100%; height:35%;">
+            <div class="right" style="width:77%; height:900px; overflow:hidden; margin-right:1%; margin-top:1%; float:left; position:relative; z-index:-1">
+                <div class="col-right-top" style="padding:1%; width:100%; height:35%;">
                     <div class="input-group" style="color: #27ae60; font-weight:bold;">
-                         <span class="input-group-addon"><v-icon color="#27ae60">mdi-file-document</v-icon></span>
+                        <span class="input-group-addon"><v-icon color="#27ae60">mdi-file-document</v-icon></span>
                         <p style="margin-left:20px; margin-right:20px;">My Inbox</p> 
                         <v-spacer></v-spacer>                        
-                        <button class="btn btn-lg" text style="color:green">PSPDF</button>
-                        <button class="btn btn-lg" text @click="reloadPage"><v-icon color="#27ae60">mdi-refresh</v-icon></button>
+                        <!-- <button class="btn btn-lg" text @click="reloadPage"><v-icon color="#27ae60">mdi-refresh</v-icon></button> -->
                     </div>
 
-                <div style="width:100%;">
-                    <table width="100%" style="overflow-y:auto; overflow-x:auto;">
-                        <tr>
-                            <td>
-                                <div style="width:100%;">
-                                    <table width="100%">
-                                        <tr style="color:#fff; background-color:#27ae60;">
-                                            <th style="width:5%; padding:7px;">No.</th>
-                                            <th style="width:5%;"></th>
-                                            <th style="width:60%;">Name</th>
-                                            <th style="width:15%;">Size</th>
-                                            <th style="width:15%;">Created_on</th>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div style="width:100%; height:190px; overflow:auto;">
-                                    <table class="table-striped" width="100%">
-                                        <tbody>
-                                            <tr v-for="(item, index) in getRecentDocuments.recentDocumentsList" :key="index">
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:5%; padding:7px;">{{ index + 1 + "." }}</td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:5%">    
-                                                    <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:60%">
-                                                    <a href="#" v-on:click="openPdf(item.itemUrl)">
-                                                        {{ item.itemName }}
-                                                    </a>
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%">
-                                                    {{ item.itemSize | prettyBytes }} 
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%">
-                                                    {{ parseInt(item.itemCreatedOn*1000, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                                </td>
+                    <div style="width:100%;">
+                        <table width="100%" style="overflow-y:auto; overflow-x:auto;">
+                            <tr>
+                                <td>
+                                    <div style="width:100%;">
+                                        <table width="100%">
+                                            <tr style="color:#fff; background-color:#27ae60;">
+                                                <th style="width:5%; padding:7px;">No.</th>
+                                                <th style="width:5%;"></th>
+                                                <th style="width:60%;">Name</th>
+                                                <th style="width:15%;">Size</th>
+                                                <th style="width:15%;">Created_on</th>
+                                                <!-- <th style="width:10%;">Annotated</th> -->
                                             </tr>
-                                        </tbody>
-                                    </table>  
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="width:100%; height:190px; overflow:auto;">
+                                        <table class="table-striped" width="100%">
+                                            <tbody>
+                                                <tr v-for="(item, index) in getRecentDocumentsArr.recentDocumentsList" :key="index">
+                                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:5%; padding:7px;">{{ index + 1 + "." }}</td>
+                                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:5%">    
+                                                        <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
+                                                    </td>
+                                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:60%">
+                                                        <a href="#" v-on:click="openPdfAnnotated(item)">
+                                                        <!-- <a href="#" v-on:click="closePDF = !closePDF">-->
+                                                            {{ item.itemName }}
+                                                        </a> 
+                                                    </td>
+                                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%">
+                                                        {{ item.itemSize | prettyBytes }} 
+                                                    </td>
+                                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%">
+                                                        {{ parseInt(item.itemCreatedOn*1000, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                                    </td>
+                                                    <!-- <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%">
+                                                        <v-btn style="background-color:#27ae60" v-on:click="openPdfAnnotated(item)">
+                                                            Open
+                                                        </v-btn> 
+                                                    </td> -->
+                                                </tr>
+                                            </tbody>
+                                        </table>  
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-                </div> -->
 
-                <!-- <div class="right-bottom" style="width:100%; height:64%; margin-top:1%;">
+
+                <div class="right-bottom" style="width:100%; height:64%; margin-top:1%;">
                     <div class="col-right-bottom-left" style="width:35%; height:100%; margin-right:1%; float:left; position:relative;">
                             <div v-if="test" class="input-group" style="width:100%;">
                                 <div class="parent">
@@ -320,7 +341,7 @@
                                 </div>
 
                                 <div style = "height:500px; overflow:auto; width:100%;">
-                                    <div class="parent" style="padding:4%; padding-bottom:1%;" v-for="(notification, index) in getLatestNotifications.notificationsList" :key="index">
+                                    <div class="parent" style="padding:4%; padding-bottom:1%;" v-for="(notification, index) in getLatestNotificationsArr.notificationsList" :key="index">
                                         <div class="left-buttons">
                                             <v-icon color="#E74343" style="margin-top:25px; margin-right:70px; ">mdi-square</v-icon>
                                         </div>
@@ -348,7 +369,7 @@
                             </div>
 
                             <div style = "height:500px; overflow:auto; width:100%;">
-                                <div class="parent" style="padding:4%; padding-bottom:1%;" v-for="(task, index) in getLatestNotifications.taskList" :key="index">
+                                <div class="parent" style="padding:4%; padding-bottom:1%;" v-for="(task, index) in getLatestNotificationsArr.taskList" :key="index">
                                     <div class="left-buttons">
                                         <v-icon color="#E74343" style="margin-top:25px; margin-right:70px; ">mdi-radiobox-marked</v-icon>
                                     </div>
@@ -362,18 +383,81 @@
                         </div>
                     </div>
 
-                    <div class="col-right-bottom-right" style="padding:1%; width:64%; height:100%; float:left; position:relative; overflow:auto;">
+                    <div class="col-right-bottom-right" style="padding:1%; width:64%; height:100%; float:left; position:relative; overflow:auto;">                        
                         <FullCalendar                             
                             defaultView="dayGridMonth" 
                             :plugins="calendarPlugins"  
                             :events="eventArray"
                         />                      
                     </div>
+                </div>
+            </div> 
+
+        <div v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:77%; height:900px; padding:1%; overflow:hidden; margin-top:1%; margin-right:1%; margin-left:22%; z-index:-1">
+            <div style="margin-bottom:10px;">
+                <button class="btn btn-lg" v-on:click="closePDF = !closePDF; shareDocument=false" style="background-color:red; float:right; margin-right:10px;">
+                    <v-icon>mdi-close-outline</v-icon>
+                </button>
+                <button class="btn btn-lg" v-on:click="openShareButton()" style="background-color:red; float:right; margin-right:10px;">
+                    <v-icon>mdi-share-variant</v-icon>
+                </button> 
+            </div> 
+            <!-- <div style="flex-grow:1"> -->
+
+            <!-- <v-card v-if="shareDocument" style="padding:1%; position:absolute; margin-top:7%; margin-left:75%; width:15%; height:auto; background-color:rgb(247,247,247); overflow:auto;">
+                <v-card-actions>
+                    <div v-for="(item, index) in sharePeople" v-bind:key="index">
+                    <v-text>
+                        <input type="checkbox" v-bind:id="item.id_user" v-bind:value="item.id_user" v-model="checkNames">
+                        <p style="font-size:19px;">{{ item.name }}</p>
+                    </v-text>
+                    </div>
+                    <v-divider></v-divider>
+                    <v-btn v-on:click="sendSharePeople()" style="background-color:rgb(235,235,235); margin-top:20px; margin-left:40%;">
+                        SHARE
+                    </v-btn>
+                </v-card-actions>
+            </v-card> -->
+
+            <!-- <div v-if="shareDocument" style="padding:1%; position:absolute; margin-top:7%; margin-left:73%; width:25%; height:500px; overflow:auto;  "> -->
+                <!-- <div style="width:100%; height:7%; display:flex;">
+                    <p style="font-size:24px; font-weight:bold;">Select people to share document with:</p>
+                    <span style="flex-grow:1"></span>
+                    <button class="btn btn-lg" v-on:click="shareDocument = !shareDocument;" style="background-color:red; height:45px;">
+                        <v-icon>mdi-close-outline</v-icon>
+                    </button>
                 </div> -->
-                <div :is="currentComponent" :swap-component="swapComponent" :swap-component1="swapComponent1"></div>
-    <!-- </div>  -->
-    <!-- </v-app> -->
-    </div> 
+                <!-- <div style="width:100%; height:92%; margin-top:1%; background-color:#fff; padding:1%; overflow:auto;"> -->
+                    <v-card v-if="shareDocument" style="background-color:rgb(250,250,250); margin-bottom:10px; position:absolute; margin-top:7%; margin-left:72%; width:23%; height:570px; overflow-y:hidden;">
+                        <div style="height:90%; overflow:auto; padding-left:20px; padding-top:10px;">                        
+                            <!-- <v-card-actions> -->
+                            <!-- <span style="float:left; border:1px solid #000">
+                                <img v-bind:src="userInfo.imageUrl" style="height:45px; width:55px;" />
+                            </span> -->
+                            <!-- <v-card-text style="font-size:24px; font-weight:bold;">Select people to share document with:</v-card-text> -->
+                                <!-- <v-card-text> -->
+                                    <div style="display:block;" v-for="(item, index) in sharePeople" v-bind:key="index">
+                                        <input type="checkbox" v-bind:id="item.id_user" v-bind:value="item.id_user" v-model="checkNames">
+                                        <label v-bind:for="item.id_user" style="font-size:15px; margin-left:10px;">{{ item.name }}</label><br>
+                                        <!-- <v-divider></v-divider> -->
+                                    </div>
+                                <!-- </v-card-text> -->
+                            <!-- </v-card-actions> -->
+                        </div>
+                        <div style="height:10%; margin-top:13px;">
+                            <v-btn v-on:click="sendSharePeople()" style="margin-left:30%;">
+                                SHARE
+                            </v-btn>
+                        </div>
+                    </v-card>
+                   
+                <!-- </div> -->
+            <!-- </div>   -->
+
+            <pspdfkit :pdf-url="pdf" :license-key="LICENSE_KEY" :base-url="baseUrl">
+            </pspdfkit>
+        </div>
+    </div>       
 </template>
 
 <script>
@@ -383,398 +467,273 @@
     import dayGridPlugin from '@fullcalendar/daygrid';
     import UserData from '../repository/UserData';
     import JQuery from 'jquery'
-    window.$ = JQuery
+    window.$ = JQuery;
+    import Vue from 'vue';
+    import PSPDFKit from "pspdfkit";
 
-    var mainContentRight = {
-        props: ['swapComponent', 'swapComponent1'],
-        data: () => ({
-            seen: false,
-            seen1: false,
-            seen2: false,
-            seen3: true,
-            seen4: false,
-            seen5: false,
-            seen6: false,
-            test: true,
-            
-            showMessages: false,
+    // const LICENSE_KEY = "Ni5LCTkSzrHKL3GnUlgVXV-Nt0-8cc5vbAlHmT6bRZZsheHGsPidBAsVHH7EbGm6krygVYe1_nAyLUlRZ4OUN9xBGmFpOiLJbNNvfnzJFkg3HwNvhVr0pNcug-kq6qFZMefIjdFy6-51sEWAD6nFfaRAFr0ihgzQ_Qf7o43DSWakOaAFFk6THvYiEAiwlDeTR-ggbcRf3orhW58EWXjqc8d1Ez1iy3SJtFsy0ReQcWBlkV2r_0HzjWzc1mvO4fDFSmYJvZ7DiL9MAtoEXyy14hpwaGW4uliBV6-JeCdjz64pzuEqhYql2EgzbG0r2eLGHIeDyrYtkA20c_Zyd_zbf4Vtbd31PPuPymL-75ZIcXtoIhlUcKLxMTEUcL8KiXgx7zEHWU4ajjtH2uPXNHkBnxyUL4K9OH7WxmV5k2nxAjqHLOf9bPIf0q61OJyejnmO";
+    // const LICENSE_KEY = "vuF0E1oK-8zmH0-rz6t6lt5x3AowOhR0kRILumR6xH5T9Ctre9Fo8gkBb404wT0dORhQliyk5XuSMMayurmNTJi4GRIuHL92DKOflXw04fv1UWthdwqHGQ0wM-E_0xTt4sk1jk9pWSkN5im3J_XmU8frGN2NYiSu-LP2BF_SFitDv9E-TSJWExDAZJVh4x3djWVg0bKVI-Pv2uS7fTh8ynEe4_7ivc-SoqEldi7evAfvas4X1EPse0VhJYWtgzhIjNs4RoXAazz4j4xPRgAQEYSL4JG6ZnT2fwCNq8uTqsnxi77aP0NvM69CmaOm_h-4yL3xCpVWV0k6HEiwO-fgn0fFQeHHRemKeXlGWnjrCBob4s1bDgjh0VWkTHRmZIbEA3jt6Ehh1VZQrlVusPOJggRF63X3sTowcQM5dPae-bHLMhdOB6pov8PKEOaWoR1pRw64NheynDAaA5elyCbP_xnG5cCuzDekt6U5K9KZ-wdc3kQFgS4kgbA1Ox1n3k2zbag_mqPkNOhzQ9AzDehO8H6W8L49hvQCQtmGAcm6nuA=";    
+    const LICENSE_KEY = "xmnyiKkvzmQ0WIOagPDOdV_GESKnYO6fNa-1Ck87vP0NEExhZQ_DNdRPLVJK1l2M2s30Yt1Sz1J94COZb2TWcvvO2mQRYJBkIZWMYLII-p0daMx3ClCRbSmPJ1yUW0EbvRm50xZC2hzO8lLVP2GRr47Qeceo0Y837a9qyXglGJLiJpKVYl1liSuDzArGi1nPOF1AfbyevOEdBaUVAMiYypx6iIo281tNqkzMV5j4d5eB-yMpn0xnvbXd-RdiGLZXn--8yqGVbwZWSTCjnnPbVkheQqiuAUUrvFPlC0LENI1c94TS_zLzo6RVx03kZF0bxI_vYyyxYx8r7IwghUBKXuBnUJXZHsteNLBMaQg-rIKh-ORAwjFwSM80vLow6nunBmPyLHvyERGeABpyPQyWRN0R6DaflKyYpmUn_UohjxcfYl8AQYJkf6cAXLJAeWnQ"
 
-            calendarPlugins: [ dayGridPlugin ],
+    const pspdfkit = Vue.component('pspdfkit', {
+    template:           
+        `
+        <div class="container" style="height:100%; width:97%;">
+            <!--<button class="btn btn-lg" text v-on:click="closePDF = !closePDF;" style="color:green; ">CLOSE</button> -->               
+        </div>  
+        `,
+    name: 'pspdfkit',
+    props: ['pdfUrl', 'licenseKey', 'baseUrl'],
+    _instance: null,
 
-            requestUserLogin : [],
-            userInfo : [],
-            dashboardMenuList : [],
-            eventArray: [],
-            companyDetail: [],
-            userLanguage: [],
-            allLanguages: [],
-            companyList: [],
-            companyListId: "",
+    mounted: function mounted() {
+        // this.load();
+        this.getImportedData((annotations)=>{
+            // console.log(annotations.length)
+            //annotations= annotations.length>0?annotations:null;
+            try{
+            // if(annotations.length > 0){
+                this.load(JSON.parse(annotations))
+            }
+            catch(error){
+            // else{
+                this.load(JSON.parse(null))
+            }
+        }); 
+    },
 
-            moment: moment,
+    data: () => ({
+        quay: ";oihugvjk"
+    }),
 
-            date: 1570064727,
+    methods: {       
+        load: function load(annotations) {
+            const that = this;
+            PSPDFKit.load({                
+                disableWebAssemblyStreaming: true,
+                pdf: this.pdfUrl,
+                pdf2: "example.pdf",
+                container: '.container',
+                licenseKey: this.licenseKey,
+                baseUrl: this.baseUrl,
+                instantJSON:annotations,
+                // toolbarItems: items,
+                // instantJSON: {
+                //     "annotations":[
+                //         {
+                //             "bbox":[230,259,184,77],
+                //             "blendMode":"normal",
+                //             "createdAt":"2020-02-20T10:32:35Z",
+                //             "id":"01E1H2G27QDK4STYPKJK4Y2S0M",
+                //             "isDrawnNaturally":false,
+                //             "lineWidth":5,
+                //             "lines":{
+                //                 intensities:[[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]],
+                //                 points:[[[232.83749389648438,261.6500244140625],[244.03750610351562,265.6500244140625],[252.03750610351562,266.45001220703125],[267.23748779296875,267.25],[276.0375061035156,269.6500244140625],[284.8374938964844,272.04998779296875],[292.8374938964844,272.8499755859375],[300.8374938964844,274.45001220703125],[314.4375,278.45001220703125],[323.23748779296875,283.25],[330.4375,288.8500061035156],[336.8374938964844,297.6499938964844],[343.23748779296875,304.8500061035156],[351.23748779296875,312.04998779296875],[357.63751220703125,316.8500061035156],[368.8374938964844,323.25],[380.8374938964844,328.04998779296875],[394.4375,331.25],[406.4375,332.8500061035156],[411.23748779296875,332.8500061035156]]]
+                //                 },
+                //             "name":"01E1H2G27QDK4STYPKJK4Y2S0M",
+                //             "opacity":1,
+                //             "pageIndex":0,"strokeColor":"#2483C7","type":"pspdfkit/ink","updatedAt":"2020-02-20T10:32:38Z","v":1
+                //         }
+                //     ],
+                //     "format":"https://pspdfkit.com/instant-json/v1",
+                //     "pdfId":{
+                //         "changing":"7mx+shix20m1Vn+qCsWSKg==",
+                //         "permanent":"7mx+shix20m1Vn+qCsWSKg=="
+                //     }
+                // }
+            })
+            .then(function (instance) {
+                that._instance = instance;
+                that.$parent.errorMsg = ''
+                // const items = PSPDFKit.defaultToolbarItems;
+                // console.log(items);
+                // const item = {
+                //     type: "custom",
+                //     id: "my-button",
+                //     title: "My Button",
+                //     onPress: event => {
+                //         alert("this.quay");
+                //     }
+                // };
+                // instance.setToolbarItems(items => {
+                //     items.push(item);
+                //     return items;
+                // });
+                instance.addEventListener("annotations.didSave", async () => {
+                instance.exportInstantJSON().then(function (instantJSON) {
+                    console.log(instantJSON)
+                    //filter ids for old anootations  e.g ["id":"gfhfgf758",...]
+                    // var oldAnnotations=annotations.annotations.map(oldAnnotation=>{
+                    //     return oldAnnotation.id;
+                    // });
+                    // var newAnnotation=instantJSON.annotations.filter(annotation=>{
+                    //     if(!oldAnnotations.includes(annotation.id)){
+                    //         return annotation;
+                    //     }
+                    // })
+                    // var newAnnotionWrapped={
+                    //     "format":instantJSON.format,
+                    //     "annotations":newAnnotation,
+                    //     "pdfId":instantJSON.pdfId
+                    // }
+                    // console.log(newAnnotionWrapped)
+                    //console.log("annotitions to send",instantJSON)
+                // Persist it to a server
+                const form = new FormData();
+                // form.append("payload", JSON.stringify(newAnnotionWrapped));
+                form.append("payload", JSON.stringify(instantJSON));
+                form.append("document_id", UserData.getDocumentId());
+                form.append("user_id", UserData.getUserId());
+                form.append("company_code", UserData.getCompanyCode());
 
-        }),
-
-      
-        filters: {
-              moment: function(date){
-                return moment(date).format('YYYY-MM-DD');
-            },
-        },
-
-
-        methods: {
-            openPdf(itemUrl){
-                window.open(itemUrl);
-            },
-          
-            reloadPage(){
-                window.location.reload();
-            },          
-
-            convertDate(date, format) {
-                return moment(this.date).format(format)
-            },
-
-            convertToUtc(date, format) {
-                return moment(this.date).utc().format(format)
-            },
-
-            logout(){
-                this.$store.commit("setAuthentication", false)
-                this.$router.replace('/')
-            },
-          
-            getRequestUserLogin(){
-                const formData = new FormData();
-                    formData.append('userName', UserData.getUserName());
-                    formData.append('userPassword', UserData.getUserPassword());
-                    formData.append('companyCode', UserData.getCompanyCode()); 
-                    formData.append('model', "requestUserLogin");
-                    formData.append('mobileVersion', "11.4.1");
-                    formData.append('deviceName', "ipad air 2");
-                    formData.append('deviceToken', "b41dfaf1ba018196d5068a0ecc3bde33f83c94131ecf71d053260b944da14612"); 
-                    formData.append('eboardVersion', "2.5.7"); 
-
-                axios.post(UserData.getBaseUrl(), formData)
-                    .then(response => {
-                        this.requestUserLogin = response.data;  
-                        this.dashboardMenuList = this.requestUserLogin.dashboardMenuList;
-                        this.allLanguages = this.requestUserLogin.allLanguages;
-                        this.userInfo = (JSON.parse(JSON.stringify(this.requestUserLogin.userInfo)));
-                        this.companyDetail = (JSON.parse(JSON.stringify(this.requestUserLogin.companyDetail)));
-                        this.userLanguage = (JSON.parse(JSON.stringify(this.requestUserLogin.userLanguage)));
-                    })
-                    .catch(error => {
-                        console.log(error);
+                    axios.post("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", form)
+                    .then(response=>{
+                        console.log(response);
                     });
-            },
-
-            getCompanyList(){
-                //check response
-                //check if there is data inside the response object
-                //remove console logging
-                //error handling using user friendly language
-                //sync, async
-                //fd
-                //axios interceptors
-                //Vuex, redux
-                //es6
-                //developer edition of firefox
-
-                const formData = new FormData();
-                formData.append('userId', UserData.getUserId());
-                formData.append('companyCode', UserData.getCompanyCode());
-                formData.append('accessToken', UserData.getAccessToken());
-                formData.append('model', "getCompanyList");
-                formData.append('companyId', UserData.getCompanyId());
-
-                axios.post(UserData.getBaseUrl(), formData)
-                    .then(response => {
-                        this.getCompanyList = response.data;
-                        this.companyList = this.getCompanyList.companyList;
-                        // let companyId = this.companyList.companyId;
-                        this.$localStorage.set('getCompanyList', JSON.stringify(this.getCompanyList))
-                    })
-                    .catch(e => {
-                        console.log('Error', e);
-                    })
-            },
-
-            getLatestNotifications(){
-                const formData = new FormData();
-                formData.append('userId', UserData.getUserId());
-                formData.append('companyCode', UserData.getCompanyCode());
-                formData.append('accessToken', UserData.getAccessToken());
-                formData.append('model', "getLatestNotifications");
-                formData.append('companyId', UserData.getCompanyId());
-
-                axios.post(UserData.getBaseUrl(), formData)
-                    .then(response => {
-                        this.getLatestNotifications = response.data;
-                        this.$localStorage.set('getLatestNotifications', JSON.stringify(this.getLatestNotifications))
-                    })
-                    .catch(e => {
-                        console.log('Error', e);
-                    })
-            },
-
-            getEboardUpdates(){
-                axios.get("../assets/json-APIs/getEboardUpdates.json")
-                    .then(response => {
-                        this.getEboardUpdates = response.data;
-                    })
-                    .catch(e => {
-                        console.log('Error', e);
-                })
-            },
-
-            getRecentDocuments(){
-                // this.setCompanyId(companyId);
-                const formData = new FormData();
-                formData.append('userId', UserData.getUserId());
-                formData.append('companyCode', UserData.getCompanyCode());
-                formData.append('accessToken', UserData.getAccessToken());
-                formData.append('model', "getRecentDocuments");
-                formData.append('companyId', UserData.getCompanyId());
-                // formData.append('companyId', UserData.getCompanyListId());
-
-                axios.post(UserData.getBaseUrl(), formData)
-                    .then(response => {
-                        this.getRecentDocuments = response.data;
-                        this.$localStorage.set('getRecentDocuments', JSON.stringify(this.getRecentDocuments))
-                        })
-                    .catch(e => {
-                        console.log('Error', e);
-                    })
-            },
-
-            getCalendarEvents(){
-                const formData = new FormData();
-                formData.append('userId', UserData.getUserId());
-                formData.append('companyCode', UserData.getCompanyCode());
-                formData.append('accessToken', UserData.getAccessToken());
-                formData.append('model', "getCalendarEvents");  
-                formData.append('companyId', UserData.getCompanyId());
-
-                axios.post(UserData.getBaseUrl(), formData)
-                    .then(response => {
-                        this.getCalendarEvents = response.data;
-                        this.eventArray = this.getCalendarEvents.eventList;
-                        this.$localStorage.set('getCalendarEvents', JSON.stringify(this.getCalendarEvents));
-                        this.eventArray=this.eventArray.map((element)=>{                     
-                            return { 
-                                title:element.eventTitle, 
-                                date:moment(parseInt(element.eventBeginDate*1000, 10)).format('YYYY-MM-DD'),
-                                color:`rgb(element.eventColor)`, 
-                                textColor:'#fff' 
-                            }
-                        })
-                    })
-                    .catch(e => {
-                        console.log('Error', e);
-                })
-            },
-
-            changeCompanyDetails(){
-                // alert (UserData.getCompanyListId());
-                // let companyId = this.companyList;
-                // alert(this.companyListId);
-            },
-
-            setCompanyId(companyId){
-                UserData.setCompanyId(companyId);
-                // window.location.reload();
-                // alert (UserData.getCompanyId());
-            },
-          
-            getLink(){
-                let routeData = this.$router.resolve({name: this.getRecentDocuments.recentDocumentsList.itemUrl, query: {data: this.getRecentDocuments.recentDocumentsList.itemUrl}});
-                window.open(routeData.href, '_blank');
-            },  
-
-            even: function(dashboardMenuList) {
-                // Set slice() to avoid to generate an infinite loop!
-                return dashboardMenuList.slice().sort(function(a, b) {
-                    return a.menuId - b.menuId;
                 });
+            })
+            })
+            .catch(function (err) {
+                PSPDFKit.unload('.container')
+                that.$parent.errorMsg = err.message
+            });
+        },
+
+        unload: function unload() {
+            if (this._instance) {
+                PSPDFKit.unload(this._instance || '.container')
+                this._instance = null
+            }
+        },
+
+        getImportedData: function getImportedData(annotationsCallBack) {
+            const form = new FormData();
+                form.append("document_id", UserData.getDocumentId());
+                form.append("user_id", UserData.getUserId());
+                form.append("company_code", UserData.getCompanyCode());
+
+            axios.post('https://eserver1.stl-horizon.com/pspdfkit/importAnnotation.php', form)
+                .then(response => {
+                    // this.res = response;
+                    var data = response.data;
+                    // alert(data.length);
+                    if(data){
+                        if(annotationsCallBack instanceof Function){
+                            annotationsCallBack(data.replace(/\\"/g, '"'))
+                        }
+                    }
+                    else{
+                       if(annotationsCallBack instanceof Function){
+                            annotationsCallBack(data)
+                        } 
+                    }
+                   //alert(response.data)
+                })
+                
             },
 
-            postData(){
-                const dt = { data: { value: "gdfg1df2g2121dgfdg" }};
-                const request = axios.post("../assets/json-APIs/requestUserLogin.json", dt);
-                console.log(request);
-            },
+            // getImportedData: function getImportedData() {
+            // axios.get('https://eserver1.stl-horizon.com/pspdfkit/importAnnotation.php')
+            //     .then(response => {
+            //         var data = response.data;
+            //         data.replace(/\\"/g, '"');
+            //     })
+            // },
+    },
+    
+    watch: {
+        pdfUrl: function pdfUrl() {
+            this.unload()
+            this.load()
+        }
+    },
 
-            swapComponent: function(component) {
-                this.currentComponent = component;
-            }
-        
-        },
-      
-        beforeMount(){
-            this.getRequestUserLogin();
-            this.getCompanyList();
-            this.getLatestNotifications();
-            this.getEboardUpdates();
-            this.getRecentDocuments();
-            this.getCalendarEvents();
-        },
+    beforeMount: function beforeMount(){
+       
+    },
 
-        mounted() {
-            const getRecentDocuments = JSON.parse(this.$localStorage.get('getRecentDocuments'));
-            const getLatestNotifications = JSON.parse(this.$localStorage.get('getLatestNotifications'))
-            
-            if (getRecentDocuments) {  
-                this.getRecentDocuments = getRecentDocuments;
-            }
-
-            if (getLatestNotifications) {  
-                this.getLatestNotifications = getLatestNotifications;
-            }
-        },
-
-        template: `
-            <div class="right" style="width:77%; height:900px; overflow:hidden; margin-right:1%; margin-top:1%; float:left; position:relative; z-index:-1">        
-            <div class="col-right-top" style="padding:1%; width:100%; height:35%;">
-                <div class="input-group" style="color: #27ae60; font-weight:bold;">
-                        <span class="input-group-addon"><v-icon color="#27ae60">mdi-file-document</v-icon></span>
-                    <p style="margin-left:20px; margin-right:20px;">My Inbox</p> 
-                    <v-spacer></v-spacer>                        
-                    <button class="btn btn-lg" text v-on:click="swapComponent('pspdfkitRight')" style="color:green">PSPDF</button>
-                    <button class="btn btn-lg" text @click="reloadPage"><v-icon color="#27ae60">mdi-refresh</v-icon></button>
-                </div>
-
-            <div style="width:100%;">
-                <table width="100%" style="overflow-y:auto; overflow-x:auto;">
-                    <tr>
-                        <td>
-                            <div style="width:100%;">
-                                <table width="100%">
-                                    <tr style="color:#fff; background-color:#27ae60;">
-                                        <th style="width:5%; padding:7px;">No.</th>
-                                        <th style="width:5%;"></th>
-                                        <th style="width:60%;">Name</th>
-                                        <th style="width:15%;">Size</th>
-                                        <th style="width:15%;">Created_on</th>
-                                    </tr>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div style="width:100%; height:190px; overflow:auto;">
-                                <table class="table-striped" width="100%">
-                                    <tbody>
-                                        <tr v-for="(item, index) in getRecentDocuments.recentDocumentsList" :key="index">
-                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:5%; padding:7px;">{{ index + 1 + "." }}</td>
-                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:5%">    
-                                                <span class="input-group-addon"><v-icon color="#27ae60" style="margin-right:5px;">mdi-file-pdf-outline</v-icon></span>
-                                            </td>
-                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:60%">
-                                                <a href="#" v-on:click="openPdf(item.itemUrl)">
-                                                    {{ item.itemName }}
-                                                </a>
-                                            </td>
-                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%">
-                                                {{ item.itemSize | prettyBytes }} 
-                                            </td>
-                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:15%">
-                                                {{ parseInt(item.itemCreatedOn*1000, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>  
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+    beforeDestroy: function beforeDestroy() {
+        this.unload()
+    }
+    });
+    
+    
+    /*
+    //Beginning of Annotated PDF
+    
+    const pspdfkit2 = Vue.component('pspdfkit2', {
+    template: 
+        `<div class="containy" style="height:100%; width:97%;">
         </div>
-        
-            <div class="right-bottom" style="width:100%; height:64%; margin-top:1%;">
-                <div class="col-right-bottom-left" style="background-color:#f5f5f5; width:35%; height:100%; margin-right:1%; float:left; position:relative;">
-                        <div v-if="test" class="input-group" style="width:100%;">
-                            <div class="parent" style="display:flex; width:100%; height:auto; padding:2%;">
-                                <div class="left-buttons">
-                                    <v-icon size="40" style="color: #e33333; margin-top:4px; font-weight:bold; display:inline;">mdi-bell-outline</v-icon>
-                                    <p v-on:click="test = !test" style="margin-left:9px; font-size:25px; color: #e33333; font-weight:bold; cursor: pointer; display:inline;">Notifications</p> 
-                                </div>
-                                <div class="filler" style="flex-grow: 1;"></div>   
-                                <div class="right-buttons">                                    
-                                    <p v-on:click="test = !test" style="margin-right:9px; font-size:20px; color: #e33333; cursor: pointer; display:inline;">Tasks</p> 
-                                    <span class="input-group-addon" style="font-size:17px; font-weight:bold; color: #e33333; margin-top:4px; display:inline;"><i class="fa fa-chevron-right"></i></span>
-                                </div>
-                            </div>
+        `,
+    name: 'pspdfkit2',
+    props: ['pdfUrl', 'licenseKey', 'baseUrl'],
+    _instance: null,
 
-                            <div style = "height:500px; overflow:auto; width:100%;">
-                                <div class="parent" style="display:flex; width:100%; height:auto; padding:4%; padding-bottom:1%;" v-for="(notification, index) in getLatestNotifications.notificationsList" :key="index">
-                                    <div class="left-buttons">
-                                        <v-icon color="#E74343" style="margin-top:25px; margin-right:70px; ">mdi-square</v-icon>
-                                    </div>
-                                    <div class="right-buttons">    
-                                        <p style="font-size:21.5px;">{{ notification.notificationTitle }}</p>
-                                        <p style="font-size:17px;">{{"Due on "}} {{ parseInt(notification.notificationDateTime*1000, 10) | moment('DD-MMM-YYYY') }}</p>
-                                        <p style="font-size:17px;">{{ notification.companyName }}</p>
-                                    </div>
-                                    <hr>
-                                </div>
-                            </div>                                                              
-                        </div>
+    mounted: function mounted() {
+       this.load(); 
+    },
 
-                    <div v-else class="input-group" style="width:100%;">
-                        <div class="parent" style="display:flex; width:100%; height:auto; padding:2%;">
-                            <div class="left-buttons">
-                                <v-icon size="40" style="color: #e33333; margin-top:4px; font-weight:bold; display:inline;">mdi-bell-outline</v-icon>
-                                <p v-on:click="test = !test" style="margin-left:9px; font-size:25px; color: #e33333; font-weight:bold; cursor: pointer; display:inline;">Tasks</p> 
-                            </div>
-                            <div class="filler" style="flex-grow: 1;"></div>   
-                            <div class="right-buttons">                                    
-                                <p v-on:click="test = !test" style="margin-right:9px; font-size:20px; color: #e33333; cursor: pointer; display:inline;">Notifications</p> 
-                                <span class="input-group-addon" style="font-size:17px; font-weight:bold; color: #e33333; margin-top:4px; display:inline;"><i class="fa fa-chevron-right"></i></span>
-                            </div>
-                        </div>
+    methods: {
+        load: function load() {
+            const that = this;
+            PSPDFKit.load({
+                // disableWebAssemblyStreaming: true,
+                pdf: this.pdfUrl,
+                container: '.containy',
+                licenseKey: this.licenseKey,
+                baseUrl: this.baseUrl,
+            })
+            .then(function (instance) {
+                that._instance = instance;
+                that.$parent.errorMsg = ''
+        //         instance.addEventListener("annotations.didSave", async () => {
+        //         instance.exportInstantJSON().then(function (instantJSON) {
+        //             console.log(instantJSON)
+                    
+        //         const form = new FormData();
+        //         form.append("payload", JSON.stringify(instantJSON));
+        //         form.append("document_id", UserData.getDocumentId());
+        //         form.append("user_id", UserData.getUserId());
+        //         form.append("company_code", UserData.getCompanyCode());
 
-                        <div style = "height:500px; overflow:auto; width:100%;">
-                            <div class="parent" style="display:flex; width:100%; height:auto; padding:4%; padding-bottom:1%;" v-for="(task, index) in getLatestNotifications.taskList" :key="index">
-                                <div class="left-buttons">
-                                    <v-icon color="#E74343" style="margin-top:25px; margin-right:70px; ">mdi-radiobox-marked</v-icon>
-                                </div>
-                                <div class="right-buttons">    
-                                    <p style="font-size:21.5px;">{{ task.taskTitle }}</p>
-                                    <p style="font-size:17px;">{{ task.companyName }}</p>
-                                </div>
-                                <hr>    
-                            </div>
-                        </div>                                                              
-                    </div>
-                </div>
+        //             axios.post("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", form)
+        //             .then(response=>{
+        //                 console.log(response);
+        //             });
+        //         });
+        //  })
+            })
+            .catch(function (err) {
+                PSPDFKit.unload('.containy')
+                that.$parent.errorMsg = err.message
+            });
+        },
 
-                <div class="col-right-bottom-right" style="background-color:pink; padding:1%; width:64%; height:100%; float:left; position:relative; overflow:auto;">
-                    <!--<FullCalendar                             
-                        defaultView="dayGridMonth" 
-                        :plugins="calendarPlugins"  
-                        :events="eventArray"
-                    />   -->                   
-                </div>
-            </div>
-            </div>
-        `
+        unload: function unload() {
+            if (this._instance) {
+                PSPDFKit.unload(this._instance || '.containy')
+                this._instance = null
+            }
+        },
+    },
+    
+    watch: {
+        pdfUrl: function pdfUrl() {
+            this.unload()
+            this.load()
+        }
+    },
+
+    beforeDestroy: function beforeDestroy() {
+        this.unload()
     }
+    })
 
-    var pspdfkitRight = {
-        props: ['swapComponent', 'swapComponent1'],
-        data: () => ({}),
-        methods: {},
-        template: `
-        <div>
-            <button class="btn btn-lg" text v-on:click="swapComponent('mainContentRight')" style="color:green">Main Content</button>
-        </div>    
-        `
-    }
+    //END
+    */
+    
 
     export default{            
         data: () => ({
@@ -786,13 +745,13 @@
                 { title: 'Finserve Africa' },
                 { title: 'Deloite' },
             ],
-             languages: [
+            languages: [
                 { title: 'English' },
                 { title: 'French' },
                 { title: 'Amharic' },
                 { title: 'Portugese' }
             ],
-             navDrawer: [
+            navDrawer: [
                 { title: 'Home', icon: 'mdi-home-city' },
                 { title: 'My Account', icon: 'mdi-account' },
                 { title: 'Users', icon: 'mdi-account-group-outline' },
@@ -818,11 +777,12 @@
             seen5: false,
             seen6: false,
             test: true,
-            
+            closePDF: false,
+            closePDF2: false,
+            shareDocument: false,
             showMessages: false,
-
+            dialog: false,
             calendarPlugins: [ dayGridPlugin ],
-
             requestUserLogin : [],
             userInfo : [],
             dashboardMenuList : [],
@@ -831,26 +791,67 @@
             userLanguage: [],
             allLanguages: [],
             companyList: [],
-            companyListId: "",
-
+            getLatestNotificationsArr: [],
+            getRecentDocumentsArr: [],
+            getCalendarEventsArr: [],
+            checkNames: [],
+            companyListId: '',
+            selectedCompanyName: '',
             moment: moment,
-
             date: 1570064727,
-
-            currentComponent: 'mainContentRight'
-
+            pdf:'example.pdf',
+            LICENSE_KEY: LICENSE_KEY,
+            baseUrl: '',
+            errorMsg: '',
         }),
 
         filters: {
-              moment: function(date){
+            moment: function(date){
                 return moment(date).format('YYYY-MM-DD');
             },
         },
 
+        computed: {
+            isLoggedIn: function () {
+                return this.$store.getters.isLoggedIn
+            } 
+        },
 
         methods: {
-            openPdf(itemUrl){
-                window.open(itemUrl);
+            // logout: function () {
+            //     this.$store.dispatch('logout')
+            //         .then(() => {
+            //             this.$router.push('/')
+            //         })
+            // },
+
+            logout(){
+                this.$store.commit("setAuthentication", false)
+                this.$router.replace('/')
+            },
+
+            openPdfAnnotated(item){
+                if(item.itemExtension == 'pdf'){
+                    this.closePDF = !this.closePDF
+                    this.pdf=item.itemUrl;
+                    UserData.setDocumentId(item.itemId);
+                    return
+                }
+                if(item.itemExtension == ('docx')){
+                    window.open(item.itemUrl);
+                }
+                if(item.itemExtension == ('pptx')){
+                    window.open(item.itemUrl);
+                }
+                if(item.itemExtension == ('xlsx')){
+                    window.open(item.itemUrl);
+                }
+            },
+
+            openPdfOriginal(item){
+                this.closePDF = !this.closePDF
+                this.pdf=item.itemUrl;
+                // UserData.setDocumentId(item.itemId);
             },
           
             reloadPage(){
@@ -863,11 +864,6 @@
 
             convertToUtc(date, format) {
                 return moment(this.date).utc().format(format)
-            },
-
-            logout(){
-                this.$store.commit("setAuthentication", false)
-                this.$router.replace('/')
             },
           
             getRequestUserLogin(){
@@ -888,6 +884,7 @@
                         this.allLanguages = this.requestUserLogin.allLanguages;
                         this.userInfo = (JSON.parse(JSON.stringify(this.requestUserLogin.userInfo)));
                         this.companyDetail = (JSON.parse(JSON.stringify(this.requestUserLogin.companyDetail)));
+                        this.selectedCompanyName = this.companyDetail.companyName;
                         this.userLanguage = (JSON.parse(JSON.stringify(this.requestUserLogin.userLanguage)));
                     })
                     .catch(error => {
@@ -896,17 +893,6 @@
             },
 
             getCompanyList(){
-                //check response
-                //check if there is data inside the response object
-                //remove console logging
-                //error handling using user friendly language
-                //sync, async
-                //fd
-                //axios interceptors
-                //Vuex, redux
-                //es6
-                //developer edition of firefox
-
                 const formData = new FormData();
                 formData.append('userId', UserData.getUserId());
                 formData.append('companyCode', UserData.getCompanyCode());
@@ -916,10 +902,9 @@
 
                 axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
-                        this.getCompanyList = response.data;
-                        this.companyList = this.getCompanyList.companyList;
-                        // let companyId = this.companyList.companyId;
-                        this.$localStorage.set('getCompanyList', JSON.stringify(this.getCompanyList))
+                        this.getCompanyListArr = response.data;
+                        this.companyList = this.getCompanyListArr.companyList;
+                        this.$localStorage.set('getCompanyList', JSON.stringify(this.getCompanyListArr))
                     })
                     .catch(e => {
                         console.log('Error', e);
@@ -936,8 +921,8 @@
 
                 axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
-                        this.getLatestNotifications = response.data;
-                        this.$localStorage.set('getLatestNotifications', JSON.stringify(this.getLatestNotifications))
+                        this.getLatestNotificationsArr = response.data;
+                        this.$localStorage.set('getLatestNotifications', JSON.stringify(this.getLatestNotificationsArr))
                     })
                     .catch(e => {
                         console.log('Error', e);
@@ -955,19 +940,17 @@
             },
 
             getRecentDocuments(){
-                // this.setCompanyId(companyId);
                 const formData = new FormData();
                 formData.append('userId', UserData.getUserId());
                 formData.append('companyCode', UserData.getCompanyCode());
                 formData.append('accessToken', UserData.getAccessToken());
                 formData.append('model', "getRecentDocuments");
                 formData.append('companyId', UserData.getCompanyId());
-                // formData.append('companyId', UserData.getCompanyListId());
 
                 axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
-                        this.getRecentDocuments = response.data;
-                        this.$localStorage.set('getRecentDocuments', JSON.stringify(this.getRecentDocuments))
+                        this.getRecentDocumentsArr = response.data;
+                        this.$localStorage.set('getRecentDocuments', JSON.stringify(this.getRecentDocumentsArr))
                         })
                     .catch(e => {
                         console.log('Error', e);
@@ -984,9 +967,9 @@
 
                 axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
-                        this.getCalendarEvents = response.data;
-                        this.eventArray = this.getCalendarEvents.eventList;
-                        this.$localStorage.set('getCalendarEvents', JSON.stringify(this.getCalendarEvents));
+                        this.getCalendarEventsArr = response.data;
+                        this.eventArray = this.getCalendarEventsArr.eventList;
+                        this.$localStorage.set('getCalendarEvents', JSON.stringify(this.getCalendarEventsArr));
                         this.eventArray=this.eventArray.map((element)=>{                     
                             return { 
                                 title:element.eventTitle, 
@@ -1001,20 +984,106 @@
                 })
             },
 
-            changeCompanyDetails(){
-                // alert (UserData.getCompanyListId());
-                // let companyId = this.companyList;
-                // alert(this.companyListId);
-            },
+            changeCompanyDetails(item){
+                this.seen1 = false;
+                this.dashboardMenuList = 0;
+                this.dashboardMenuList = item.dashboardMenuList;
+                
+                UserData.setCompanyId(item.companyId);
+                this.selectedCompanyName = item.companyName;
+                // alert(item.companyId);
+                // alert(this.selectedCompanyName);
 
-            setCompanyId(companyId){
-                UserData.setCompanyId(companyId);
-                // window.location.reload();
-                // alert (UserData.getCompanyId());
+                this.getCompanyList();
+                this.getLatestNotifications();
+                this.getRecentDocuments();
+                this.getCalendarEvents();
+                
+                //GET COMPANY LIST
+                
+                // const formData = new FormData();
+                // formData.append('userId', UserData.getUserId());
+                // formData.append('companyCode', UserData.getCompanyCode());
+                // formData.append('accessToken', UserData.getAccessToken());
+                // formData.append('model', "getCompanyList");
+                // formData.append('companyId', UserData.getCompanyId());
+
+                // axios.post(UserData.getBaseUrl(), formData)
+                //     .then(response => {
+                //         this.getCompanyList = response.data;
+                //         this.companyList = this.getCompanyList.companyList;
+                //         this.$localStorage.set('getCompanyList', JSON.stringify(this.getCompanyList))
+                //     })
+                //     .catch(e => {
+                //         console.log('Error', e);
+                //     });
+                
+
+                // //GET NOTIFICATIONS/TASKS
+                // const formData2 = new FormData();
+                // formData.append('userId', UserData.getUserId());
+                // formData.append('companyCode', UserData.getCompanyCode());
+                // formData.append('accessToken', UserData.getAccessToken());
+                // formData.append('model', "getLatestNotifications");
+                // formData.append('companyId', UserData.getCompanyId());
+
+                // axios.post(UserData.getBaseUrl(), formData2)
+                //     .then(response => {
+                //         this.getLatestNotifications = response.data;
+                //         this.$localStorage.set('getLatestNotifications', JSON.stringify(this.getLatestNotifications))
+                //     })
+                //     .catch(e => {
+                //         console.log('Error', e);
+                //     });
+
+                // // RECENT DOCUMENTS
+                // const formData3 = new FormData();
+                // formData.append('userId', UserData.getUserId());
+                // formData.append('companyCode', UserData.getCompanyCode());
+                // formData.append('accessToken', UserData.getAccessToken());
+                // formData.append('model', "getRecentDocuments");
+                // formData.append('companyId', UserData.getCompanyId());
+
+                // axios.post(UserData.getBaseUrl(), formData3)
+                //     .then(response => {
+                //         this.getRecentDocuments = response.data;
+                //         this.$localStorage.set('getRecentDocuments', JSON.stringify(this.getRecentDocuments))
+                //         })
+                //     .catch(e => {
+                //         console.log('Error', e);
+                //     });
+
+                // // CALENDAR
+                // const formData4 = new FormData();
+                // formData.append('userId', UserData.getUserId());
+                // formData.append('companyCode', UserData.getCompanyCode());
+                // formData.append('accessToken', UserData.getAccessToken());
+                // formData.append('model', "getCalendarEvents");  
+                // formData.append('companyId', UserData.getCompanyId());
+
+                // axios.post(UserData.getBaseUrl(), formData4)
+                //     .then(response => {
+                //         this.getCalendarEvents = response.data;
+                //         this.eventArray = this.getCalendarEvents.eventList;
+                //         this.$localStorage.set('getCalendarEvents', JSON.stringify(this.getCalendarEvents));
+                //         this.eventArray=this.eventArray.map((element)=>{                     
+                //             return { 
+                //                 title:element.eventTitle, 
+                //                 date:moment(parseInt(element.eventBeginDate*1000, 10)).format('YYYY-MM-DD'),
+                //                 color:`rgb(element.eventColor)`, 
+                //                 textColor:'#fff' 
+                //             }
+                //         })
+                //     })
+                //     .catch(e => {
+                //         console.log('Error', e);
+                //     })                
+
+                    // alert("Changed company to: " + this.selectedCompanyName);
             },
           
             getLink(){
-                let routeData = this.$router.resolve({name: this.getRecentDocuments.recentDocumentsList.itemUrl, query: {data: this.getRecentDocuments.recentDocumentsList.itemUrl}});
+                let routeData = this.$router.resolve({name: this.getRecentDocumentsArr.recentDocumentsList.itemUrl, query: {data: this.getRecentDocumentsArr.recentDocumentsList.itemUrl}});
                 window.open(routeData.href, '_blank');
             },  
 
@@ -1031,38 +1100,102 @@
                 console.log(request);
             },
 
+            // getSharePeople(){
+            //     axios.get("https://eserver1.stl-horizon.com/pspdfkit/shareAnnotation.php")
+            //         .then(response => {
+            //             this.sharePeople = response.data;
+            //             console.log(this.sharePeople);
+            //         })
+            //         .catch(e => {
+            //             console.log('Error', e);
+            //         })
+            // },
+
+            sendSharePeople(){
+                // this.checkNames.length = 0;
+                // alert(this.checkNames);
+                if(this.checkNames == 0){
+                    alert("Select persons to share to!");
+                }
+                else{
+                    const formData = new FormData;
+                    formData.append("document_id", UserData.getDocumentId());
+                    formData.append("company_code", UserData.getCompanyCode());
+                    formData.append("id_users", this.checkNames);
+
+                    axios.post("https://eserver1.stl-horizon.com/pspdfkit/shareAnnotation.php", formData)
+                        .then(response => {
+                            this.sendSharePeopleArray = response.data;
+                        })
+                        .catch(e => {
+                            console.log('Error', e);
+                        })
+                        this.checkNames.length=0;
+                        this.shareDocument = false;
+                    // alert(this.checkNames);
+                }
+            },
+
+            openShareButton(){
+                const formData = new FormData();
+                formData.append("company_code", UserData.getCompanyCode());
+                formData.append("document_id", UserData.getDocumentId());
+
+                axios.post("https://eserver1.stl-horizon.com/pspdfkit/shareAnnotation.php", formData)
+                    .then(response => {
+                        this.sharePeople = response.data;
+                        console.log(this.sharePeople);  
+                        this.shareDocument = !this.shareDocument;
+                    })
+                    .catch(e => {
+                        console.log('Error', e);
+                    })
+
+                // shareDocument = !shareDocument;
+            },
+
+            
+
+    //    input(input){
+    //    var output= input.replace(/[.*+?^$()|[\.]\\]/g, '\\$&')
+    //         return output;
+    //           },
+  
+
+            openPDF: function openPDF(e) {
+                this.pdf = window.URL.createObjectURL(e.target.files[0])
+            },
+
             swapComponent: function(component) {
                 this.currentComponent = component;
-            }
-        
+            }        
         },
       
         beforeMount(){
             this.getRequestUserLogin();
             this.getCompanyList();
             this.getLatestNotifications();
-            this.getEboardUpdates();
             this.getRecentDocuments();
             this.getCalendarEvents();
         },
 
         mounted() {
-            const getRecentDocuments = JSON.parse(this.$localStorage.get('getRecentDocuments'));
-            const getLatestNotifications = JSON.parse(this.$localStorage.get('getLatestNotifications'))
+            // const getRecentDocuments = JSON.parse(this.$localStorage.get('getRecentDocuments'));
+            // const getLatestNotifications = JSON.parse(this.$localStorage.get('getLatestNotifications'))
             
-            if (getRecentDocuments) {  
-                this.getRecentDocuments = getRecentDocuments;
-            }
+            // if (getRecentDocuments) {  
+            //     this.getRecentDocuments = getRecentDocuments;
+            // }
 
-            if (getLatestNotifications) {  
-                this.getLatestNotifications = getLatestNotifications;
-            }
+            // if (getLatestNotifications) {  
+            //     this.getLatestNotifications = getLatestNotifications;
+            // }
         },
 
         components: {
-            FullCalendar, // make the <FullCalendar> tag available,
-            'mainContentRight': mainContentRight,
-            'pspdfkitRight': pspdfkitRight
+            FullCalendar, // make the <FullCalendar> tag available
+            pspdfkit: pspdfkit,
+            // pspdfkit2: pspdfkit2
         },
     }
 
@@ -1071,6 +1204,7 @@
 <style scoped>
 @import '~@fullcalendar/core/main.css';
 @import '~@fullcalendar/daygrid/main.css';
+
 
     body{
         padding: 0px;
@@ -1086,7 +1220,6 @@
     .fixed_header tbody{
         display:block;
         width: 100%;
-        /* overflow: auto; */
         height: 190px;
         overflow-y: scroll;  
         overflow-x: hidden; 
@@ -1102,10 +1235,8 @@
     }
 
     .fixed_header th, .fixed_header td {
-        /* padding: 5px; */
         text-align: left;
         height:40px;
-        /* width: 200px; */
     }
 
     .nav-menu{
@@ -1186,21 +1317,6 @@
         padding:0px;
         color:#e33333;
     }
-
-    /* table.scroll {
-        width: 100%; 
-        border-spacing: 0;
-    }
-
-    tbody tr td {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    tbody td:last-child, thead th:last-child {
-        border-right: none;
-    } */
 
     button:focus {
         outline: 0 !important;

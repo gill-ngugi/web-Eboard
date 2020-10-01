@@ -8,257 +8,260 @@
         </div>
 
         <!-- COMPONENT -->
-              <div style="height:850px; margin-top:0.5%; margin-bottom:0.5%; background-color:#f8f9f9; border-top:5px solid rgb(86,182,229); width:98%; margin-left:1%; margin-right:1%;">
-                <div class = "parent" style="height:45px; width:100%; margin-top: 7px; background-color:#fff;">
-                    <div class="left-buttons">                
-                        <router-link to=""><v-icon v-on:click="loadItemFromHistory()" style="float:left; margin-left:10px; background-color:rgb(86,182,229); color:#fff" size="30">mdi-chevron-left</v-icon></router-link> 
-                        <p style="float:left; font-weight:bold; font-size:24px; text-align:left; margin-left:10px; width:250px;">Meeting Packs</p>              
-                    </div>
-                        <div class="filler"></div>
-                    <div class="right-buttons" style="display:inline;">                
-                        
-                        <div class="dropdown-table" style="display:inline;">
-                                <v-menu>
-                                    <template v-slot:activator="{ on }">
-                                        <v-btn
-                                            color="primary" 
-                                            text
-                                            v-on="on"
-                                        >
-                                            Ascending
-                                            <v-icon>mdi-swap-vertical-bold</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <v-list>
-                                        <v-list-item style="display:block;">     
-                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                                v-on:click="doSort('itemName')" href="javascript:">Name
-                                                <span v-if="sort.field=='itemName'">({{sort.desc?'desc':'asc'}})</span>
-                                            </v-list-item-title>
-
-                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                                v-on:click="doSort('itemSize')" href="javascript:">Size
-                                                <span v-if="sort.field=='itemSize'">({{sort.desc?'desc':'asc'}})</span>
-                                            </v-list-item-title>
-
-                                            <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
-                                                v-on:click="doSort('itemLastUpdatedOn')" href="javascript:">Modified On
-                                                <span v-if="sort.field=='itemLastUpdatedOn'">({{sort.desc?'desc':'asc'}})</span>
-                                            </v-list-item-title>
-
-                                            <v-list-item-title style="padding: 12px; font-size:16px; cursor:pointer" 
-                                                v-on:click="doSort('itemUploadedBy')" href="javascript:">Submitted By
-                                                <span v-if="sort.field=='itemUploadedBy'">({{sort.desc?'desc':'asc'}})</span>
-                                            </v-list-item-title>
-                                        </v-list-item>
-                                    </v-list>
-                                </v-menu>       
-                            </div> 
-                        
-                        <div style="display:inline;">
-                            <button class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">Name</button>
-                        </div>
-                        </div> 
-                </div> 
-
-                <div  v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:98%; height:850px; padding:1%; margin-right:1%; z-index:2;">
-                <!-- <div v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:77%; height:900px; padding:1%; overflow:hidden; margin-top:1%; margin-right:1%; margin-left:22%; z-index:-1"> -->
-                    <button class="btn btn-lg" v-on:click="closePDF = !closePDF;" style="background-color:red; float:right; margin-right:10px;">
-                        <v-icon>mdi-close-outline</v-icon>
-                    </button>              
-                    <pspdfkit :pdf-url="pdf" :license-key="LICENSE_KEY" :base-url="baseUrl">
-                    </pspdfkit> 
+        <div style="height:850px; margin-top:0.5%; margin-bottom:0.5%; background-color:#f8f9f9; border-top:5px solid rgb(86,182,229); width:98%; margin-left:1%; margin-right:1%;">
+            <div class = "parent" style="height:45px; width:100%; margin-top: 7px; background-color:#fff;">
+                <div class="left-buttons">                
+                    <router-link to=""><v-icon v-on:click="loadItemFromHistory()" style="float:left; margin-left:10px; background-color:rgb(86,182,229); color:#fff" size="30">mdi-chevron-left</v-icon></router-link> 
+                    <p style="float:left; font-weight:bold; font-size:24px; text-align:left; margin-left:10px; width:250px;">Meeting Packs</p>              
                 </div>
-            
-                <div class = "parent" style="height:55px; width:100%; background-color:#f1f1f1;">
-                    <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">{{joinNames()}}</p>            
-                </div>
-
-                <div class="blackish" style="width:100%;">
+                    <div class="filler"></div>
+                <div class="right-buttons" style="display:inline;">                
                     
-                    <table width="100%" style="overflow-y:auto; overflow-x:auto;">
-                        <tr>
-                            <td>
-                                <div style="width:100%;">
-                                    <table style="width:100%;">
-                                        <tr style="color:#fff; background-color:rgb(86,182,229);">
-                                            <th style="padding:7px; width:5%;">No.</th>
-                                            <th style="width:5%;"></th> 
-                                            <th style="width:60%;">Name</th>
-                                            <th style="width:10%;">Size</th>
-                                            <th style="width:10%;">Modified_On</th>
-                                            <th style="width:10%;">Submitted_By</th>
+                    <div class="dropdown-table" style="display:inline;">
+                            <v-menu>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn
+                                        color="primary" 
+                                        text
+                                        v-on="on"
+                                    >
+                                        Ascending
+                                        <v-icon>mdi-swap-vertical-bold</v-icon>
+                                    </v-btn>
+                                </template>
+                                <v-list>
+                                    <v-list-item style="display:block;">     
+                                        <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
+                                            v-on:click="doSort('itemName')" href="javascript:">Name
+                                            <span v-if="sort.field=='itemName'">({{sort.desc?'desc':'asc'}})</span>
+                                        </v-list-item-title>
+
+                                        <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
+                                            v-on:click="doSort('itemSize')" href="javascript:">Size
+                                            <span v-if="sort.field=='itemSize'">({{sort.desc?'desc':'asc'}})</span>
+                                        </v-list-item-title>
+
+                                        <v-list-item-title style="padding:12px; font-size:16px; cursor:pointer" 
+                                            v-on:click="doSort('itemLastUpdatedOn')" href="javascript:">Modified On
+                                            <span v-if="sort.field=='itemLastUpdatedOn'">({{sort.desc?'desc':'asc'}})</span>
+                                        </v-list-item-title>
+
+                                        <v-list-item-title style="padding: 12px; font-size:16px; cursor:pointer" 
+                                            v-on:click="doSort('itemUploadedBy')" href="javascript:">Submitted By
+                                            <span v-if="sort.field=='itemUploadedBy'">({{sort.desc?'desc':'asc'}})</span>
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>       
+                        </div> 
+                    
+                    <div style="display:inline;">
+                        <button class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">Name</button>
+                    </div>
+                    </div> 
+            </div> 
+
+            <div  v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:98%; height:850px; padding:1%; margin-right:1%; z-index:2;">
+            <!-- <div v-if="closePDF" style="position:absolute; background-color:#f5f5f5; width:77%; height:900px; padding:1%; overflow:hidden; margin-top:1%; margin-right:1%; margin-left:22%; z-index:-1"> -->
+                <button class="btn btn-lg" v-on:click="closePDF = !closePDF;" style="background-color:red; float:right; margin-right:10px;">
+                    <v-icon>mdi-close-outline</v-icon>
+                </button>              
+                <pspdfkit :pdf-url="pdf" :license-key="LICENSE_KEY" :base-url="baseUrl">
+                </pspdfkit> 
+            </div>
+        
+            <div class = "parent" style="height:55px; width:100%; background-color:#f1f1f1;">
+                <p style="font-weight:bold; font-size:24px; margin-left:10px; float:left;">{{joinNames()}}</p>            
+            </div>
+
+            <div class="blackish" style="width:100%;">
+                
+                <table width="100%" style="overflow-y:auto; overflow-x:auto;">
+                    <tr>
+                        <td>
+                            <div style="width:100%;">
+                                <table style="width:100%;">
+                                    <tr style="color:#fff; background-color:rgb(86,182,229);">
+                                        <th style="padding:7px; width:5%;">No.</th>
+                                        <th style="width:5%;"></th> 
+                                        <th style="width:60%;">Name</th>
+                                        <th style="width:10%;">Size</th>
+                                        <th style="width:10%;">Modified_On</th>
+                                        <th style="width:10%;">Submitted_By</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="width:100%; height:600px; overflow:auto;">
+                                <table class="table-striped" style="width:100%;">
+                                    <tbody>
+                                        <tr v-for="(item, index) in sortedData2" :key="index">
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:5%;">{{ index + 1 + "." }}</td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:5%;">    
+                                                <span class="input-group-addon">
+                                                    <v-icon v-if="item.itemExtension" color="rgb(86,182,229)" style="margin-right:5px;">mdi-file-pdf-outline</v-icon>                                                        
+                                                    <v-icon v-else color="rgb(86,182,229)" style="margin-right:5px;">mdi-folder-open</v-icon>
+                                                </span>
+                                            </td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:60%;">
+                                                <a href="#"  v-on:click="getMeetingPack(item)">
+                                                    {{ item.itemName }}
+                                                </a>                                                    
+                                            </td>
+                                            <td v-if="item.itemSize == 0" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                {{ "0.00 KB" }} 
+                                            </td>
+                                            <td v-else style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                {{ item.itemSize | prettyBytes }} 
+                                            </td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                {{ parseInt(item.itemLastUpdatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                            </td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                {{ item.itemUploadedBy }}                                 
+                                            </td>
                                         </tr>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <td>
+                            <div style="width:100%; height:190px; overflow:auto; position:absolute;">
+                                <table class="table-striped" width="100%">
+                                    <tbody width  = "100%">
+                                        <tr v-for="(item, index) in sortedData2" :key="index">
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:5%;">{{ index + 1 + "." }}</td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:5%;">    
+                                                <span class="input-group-addon"><v-icon color="rgb(86,182,229)" style="margin-right:5px;">mdi-folder-open</v-icon></span>
+                                            </td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:60%;">
+                                                <a href="#"  v-on:click="getMeetingPack(item)">
+                                                    {{ item.itemName }}
+                                                </a>
+                                                
+                                            </td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                {{ item.itemSize | prettyBytes }} 
+                                            </td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                {{ parseInt(item.itemLastUpdatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
+                                            </td>
+                                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                {{ item.itemUploadedBy }}                                 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>  
+                            </div>
+                        </td>
+                    </tr> -->
+                </table>
+
+                <!-- <table width="100%" border="1">
+                    <tr style="background-color:rgb(86,182,229); display:block; line-height:30px; overflow-y:hidden; overflow-x:hidden; color:#ffffff;">
+                    <tr style="background-color:rgb(86,182,229); overflow-y:auto; overflow-x:auto;">    
+                        <td style="width:5%;">No.</td>
+                        <td style="width:5%;"></td> 
+                        <td style="width:70%;">Name</td>
+                        <td style="width:10%;">Size</td>
+                        <td style="width:10%;">Modified_On</td>
+                        <td style="width:10%;">Submitted_By</td>
+                    </tr>
+
+                    <tbody>
                         <tr>
-                            <td>
-                                <div style="width:100%; height:600px; overflow:auto;">
-                                    <table class="table-striped" style="width:100%;">
-                                        <tbody>
-                                            <tr v-for="(item, index) in sortedData2" :key="index">
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:5%;">{{ index + 1 + "." }}</td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:5%;">    
-                                                    <span class="input-group-addon">
-                                                        <v-icon v-if="item.itemExtension" color="rgb(86,182,229)" style="margin-right:5px;">mdi-file-pdf-outline</v-icon>                                                        
-                                                        <v-icon v-else color="rgb(86,182,229)" style="margin-right:5px;">mdi-folder-open</v-icon>
-                                                    </span>
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:60%;">
-                                                    <a href="#"  v-on:click="getMeetingPack(item)">
-                                                        {{ item.itemName }}
-                                                    </a>                                                    
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                    {{ item.itemSize | prettyBytes }} 
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                    {{ parseInt(item.itemLastUpdatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                    {{ item.itemUploadedBy }}                                 
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <td style="width:5%">Just a Test</td>
+                            <td style="width:5%"></td>
+                            <td style="width:70%">Just a Test</td>
+                            <td style="width:10%">Just a Test</td>
+                            <td style="width:10%">Just a Test</td>
+                            <td style="width:10%">Just a Test</td>
+                        </tr>
+                    </tbody>
+                </table> -->
+
+                <!-- <table class="table-striped" style="width:100%; display:block; overflow-y:auto; overflow-x:auto;">
+                        <tr style="background-color:rgb(86,182,229); width:100%; height:auto; display:block; line-height:30px; overflow-y:hidden; overflow-x:hidden; color:#ffffff;">
+                        <th style="padding:7px; width:5%;">No.</th>
+                        <th style="padding:7px; width:8%;"></th> 
+                        <th style="padding:7px; width:70%;">Name</th>
+                        <th style="padding:7px; width:10%;">Size</th>
+                        <th style="padding:7px; width:10%;">Modified_On</th>
+                        <th style="padding:7px; width:10%;">Submitted_By</th>
+                    </tr>
+
+                    <tbody style="overflow-y:auto; overflow-x:auto; height:670px; display:block;">
+                        <tr v-for="(item, index) in sortedData2" :key="index" 
+                            style="width:100%;">
+                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:5%;">{{ index + 1 + "." }}</td>
+                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:5%;">    
+                                <span class="input-group-addon"><v-icon color="rgb(86,182,229)" style="margin-right:5px;">mdi-folder-open</v-icon></span>
+                            </td>
+                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:40%;">
+                                <a href="#"  v-on:click="getMeetingPack(item)">
+                                    {{ item.itemName }}
+                                </a>
+                                
+                            </td>
+                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">
+                                {{ item.itemSize | prettyBytes }} 
+                            </td>
+                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">
+                                {{ parseInt(item.itemLastUpdatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
+                            </td>
+                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">
+                                {{ item.itemUploadedBy }}                                 
                             </td>
                         </tr>
-                        <!-- <tr>
-                            <td>
-                                <div style="width:100%; height:190px; overflow:auto; position:absolute;">
-                                    <table class="table-striped" width="100%">
-                                        <tbody width  = "100%">
-                                            <tr v-for="(item, index) in sortedData2" :key="index">
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:5%;">{{ index + 1 + "." }}</td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:5%;">    
-                                                    <span class="input-group-addon"><v-icon color="rgb(86,182,229)" style="margin-right:5px;">mdi-folder-open</v-icon></span>
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:60%;">
-                                                    <a href="#"  v-on:click="getMeetingPack(item)">
-                                                        {{ item.itemName }}
-                                                    </a>
-                                                    
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                    {{ item.itemSize | prettyBytes }} 
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                    {{ parseInt(item.itemLastUpdatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                                </td>
-                                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                    {{ item.itemUploadedBy }}                                 
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>  
-                                </div>
+                    </tbody> -->
+
+                    
+                    <!-- <tr style="background-color:rgb(86,182,229); width:100%; height:auto; display:block; line-height:30px; overflow-y:hidden; overflow-x:hidden; color:#ffffff;">
+                        <th style="padding:7px; min-width:70px;">No.</th>
+                        <th style="padding:7px; min-width:70px;"></th> 
+                        <th style="padding:7px; min-width:650px;">Name</th>
+                        <th style="padding:7px; min-width:200px;">Size</th>
+                        <th style="padding:7px; min-width:200px;">Modified On</th>
+                        <th style="padding:7px; min-width:200px;">Submitted By</th>
+                        <th style="padding:7px; min-width:200px;">Briefcase</th>
+                    </tr>
+
+                    <tbody style="overflow-y:auto; overflow-x:auto; height:670px; display:block;">
+                        <tr v-for="(item, index) in sortedData2" :key="index" 
+                            style="width:100%;">
+                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:70px; max-width:70px;">{{ index + 1 + "." }}</td>
+                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:70px; max-width:70px;">    
+                                <span class="input-group-addon"><v-icon color="rgb(86,182,229)" style="margin-right:5px;">mdi-folder-open</v-icon></span>
                             </td>
-                        </tr> -->
-                    </table>
-
-                   <!-- <table width="100%" border="1">
-                        <tr style="background-color:rgb(86,182,229); display:block; line-height:30px; overflow-y:hidden; overflow-x:hidden; color:#ffffff;">
-                        <tr style="background-color:rgb(86,182,229); overflow-y:auto; overflow-x:auto;">    
-                            <td style="width:5%;">No.</td>
-                            <td style="width:5%;"></td> 
-                            <td style="width:70%;">Name</td>
-                            <td style="width:10%;">Size</td>
-                            <td style="width:10%;">Modified_On</td>
-                            <td style="width:10%;">Submitted_By</td>
+                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:650px; max-width:650px;">
+                                <a href="#"  v-on:click="getMeetingPack(item)">
+                                    {{ item.itemName }}
+                                </a>
+                                
+                            </td>
+                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
+                                {{ item.itemSize | prettyBytes }} 
+                            </td>
+                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
+                                {{ parseInt(item.itemLastUpdatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
+                            </td>
+                            <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
+                                {{ item.itemUploadedBy }}                                 
+                            </td>
+                            <td style="padding-right:10px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
+                                <button class="btn btn-danger">Remove</button>
+                            </td>
                         </tr>
+                    </tbody> 
+                </table> -->
 
-                        <tbody>
-                            <tr>
-                                <td style="width:5%">Just a Test</td>
-                                <td style="width:5%"></td>
-                                <td style="width:70%">Just a Test</td>
-                                <td style="width:10%">Just a Test</td>
-                                <td style="width:10%">Just a Test</td>
-                                <td style="width:10%">Just a Test</td>
-                            </tr>
-                        </tbody>
-                    </table> -->
-
-                    <!-- <table class="table-striped" style="width:100%; display:block; overflow-y:auto; overflow-x:auto;">
-                         <tr style="background-color:rgb(86,182,229); width:100%; height:auto; display:block; line-height:30px; overflow-y:hidden; overflow-x:hidden; color:#ffffff;">
-                            <th style="padding:7px; width:5%;">No.</th>
-                            <th style="padding:7px; width:8%;"></th> 
-                            <th style="padding:7px; width:70%;">Name</th>
-                            <th style="padding:7px; width:10%;">Size</th>
-                            <th style="padding:7px; width:10%;">Modified_On</th>
-                            <th style="padding:7px; width:10%;">Submitted_By</th>
-                        </tr>
-
-                        <tbody style="overflow-y:auto; overflow-x:auto; height:670px; display:block;">
-                            <tr v-for="(item, index) in sortedData2" :key="index" 
-                                style="width:100%;">
-                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:5%;">{{ index + 1 + "." }}</td>
-                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:5%;">    
-                                    <span class="input-group-addon"><v-icon color="rgb(86,182,229)" style="margin-right:5px;">mdi-folder-open</v-icon></span>
-                                </td>
-                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:40%;">
-                                    <a href="#"  v-on:click="getMeetingPack(item)">
-                                        {{ item.itemName }}
-                                    </a>
-                                    
-                                </td>
-                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">
-                                    {{ item.itemSize | prettyBytes }} 
-                                </td>
-                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">
-                                    {{ parseInt(item.itemLastUpdatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                </td>
-                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:15%;">
-                                    {{ item.itemUploadedBy }}                                 
-                                </td>
-                            </tr>
-                        </tbody> -->
-
-                        
-                        <!-- <tr style="background-color:rgb(86,182,229); width:100%; height:auto; display:block; line-height:30px; overflow-y:hidden; overflow-x:hidden; color:#ffffff;">
-                            <th style="padding:7px; min-width:70px;">No.</th>
-                            <th style="padding:7px; min-width:70px;"></th> 
-                            <th style="padding:7px; min-width:650px;">Name</th>
-                            <th style="padding:7px; min-width:200px;">Size</th>
-                            <th style="padding:7px; min-width:200px;">Modified On</th>
-                            <th style="padding:7px; min-width:200px;">Submitted By</th>
-                            <th style="padding:7px; min-width:200px;">Briefcase</th>
-                        </tr>
-
-                        <tbody style="overflow-y:auto; overflow-x:auto; height:670px; display:block;">
-                            <tr v-for="(item, index) in sortedData2" :key="index" 
-                                style="width:100%;">
-                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:70px; max-width:70px;">{{ index + 1 + "." }}</td>
-                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:70px; max-width:70px;">    
-                                    <span class="input-group-addon"><v-icon color="rgb(86,182,229)" style="margin-right:5px;">mdi-folder-open</v-icon></span>
-                                </td>
-                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:650px; max-width:650px;">
-                                    <a href="#"  v-on:click="getMeetingPack(item)">
-                                        {{ item.itemName }}
-                                    </a>
-                                    
-                                </td>
-                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
-                                    {{ item.itemSize | prettyBytes }} 
-                                </td>
-                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
-                                    {{ parseInt(item.itemLastUpdatedOn, 10) |  moment('DD-MMM-YYYY') }}                                 
-                                </td>
-                                <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
-                                    {{ item.itemUploadedBy }}                                 
-                                </td>
-                                <td style="padding-right:10px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
-                                    <button class="btn btn-danger">Remove</button>
-                                </td>
-                            </tr>
-                        </tbody> 
-                    </table> -->
-
-                </div>
-            </div>  
+            </div>
+        </div>  
         <!-- END OF COMPONENT -->
 
         <!-- FOOTER -->
@@ -467,14 +470,52 @@
                     })
             },
 
+            // getMeetingPack(item){
+            //     if(item.hasOwnProperty("itemExtension")){
+            //         // window.open(item.itemUrl);
+            //         this.closePDF = !this.closePDF;
+            //         this.pdf=item.itemUrl;
+            //         UserData.setDocumentId(item.itemId);
+            //         return   
+            //     }                   
+            //     let baseUrl = UserData.getBaseUrl();
+            //     axios.post(baseUrl,this.getUserData(item.itemId, item.itemParentId))
+            //         .then(response => {  
+            //             this.getMeetingPackFolder = response.data;
+            //             this.itemSubArray = this.getMeetingPackFolder.data.itemSubArray;                    
+            //                 this.parentUrl=baseUrl;                            
+            //                 this.navigationPath.push({"itemName":this.getMeetingPackFolder.data.itemName,"itemId":this.parentItemId})
+            //             })
+            //         .catch(e => {
+            //             console.log('Error', e);
+            //     })
+            // },
+
             getMeetingPack(item){
-                if(item.hasOwnProperty("itemExtension")){
-                    // window.open(item.itemUrl);
+                if(item.itemExtension == 'pdf'){
                     this.closePDF = !this.closePDF;
                     this.pdf=item.itemUrl;
                     UserData.setDocumentId(item.itemId);
-                    return   
-                }                   
+                    return  
+                }
+                if(item.itemExtension == ('docx')){
+                    window.open(item.itemUrl);
+                }
+                if(item.itemExtension == ('pptx')){
+                    window.open(item.itemUrl);
+                }
+                if(item.itemExtension == ('xlsx')){
+                    window.open(item.itemUrl);
+                }
+                
+
+                // if(item.hasOwnProperty("itemExtension")){
+                //     // window.open(item.itemUrl);
+                //     this.closePDF = !this.closePDF;
+                //     this.pdf=item.itemUrl;
+                //     UserData.setDocumentId(item.itemId);
+                //     return   
+                // }                   
                 let baseUrl = UserData.getBaseUrl();
                 axios.post(baseUrl,this.getUserData(item.itemId, item.itemParentId))
                     .then(response => {  

@@ -48,12 +48,35 @@
 
               <div class="form-group">
                   <!-- <button type="submit" class="btn btn-danger" style="color:#fff; margin-bottom:15px;" v-on:click="sendData()">Log In</button> -->
-                  <button type="submit" class="btn btn-danger" style="color:#fff; margin-bottom:15px;">Log In</button>
+                  <button type="submit" class="btn btn-danger" style="color:#fff; margin-bottom:10px;">Log In</button>
               </div>    
             
-              <div class="forgot">
-                  <!-- <p>Forgot Password?</p> -->
+              <div class="forgot" v-on:click="pword = !pword" style="cursor:pointer;" onMouseOver="this.style.color='#000'" onMouseOut="this.style.color='red'">
+                  <p>Forgot Password?</p>
               </div>
+          </form>
+        </div>
+
+        <div class="forgot-password" v-if="pword" style="width:300px; margin-left:37%; height:auto; top:36%; background-color:#f5f5f5; position:absolute; padding:1.5%;">
+          <h4>Forgot Password?</h4>
+          <p style="font-weight:bold;">{{message}}</p>
+          <form>
+          <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+                <input type="text" class="form-control" name="uname" id="uname" placeholder="Username or Email" v-model="uname" />
+            </div>  
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input class="form-control" name="compCode" id="compCode" placeholder="Company Code" v-model="compCode" />
+            </div>
+          </div>
+          <div>
+            <v-btn @click="pword = !pword; clear();" text color="red" style="float:left; padding:0px;">Cancel</v-btn>
+            <v-btn @click="forgetPassword()" text color="red" style="float:right; padding:0px;">Submit</v-btn>
+          </div>
           </form>
         </div>
     </v-app>
@@ -76,7 +99,11 @@ import UserData from '../repository/UserData';
           userName : "",
           userPassword : "",
         },
-        error: UserData.getLoginErrors(),        
+        uname: "",
+        compCode: "",
+        message: "",
+        error: "", 
+        pword: false,       
         // stl: {},
       }
     },
@@ -150,6 +177,9 @@ import UserData from '../repository/UserData';
                       UserData.setUserId(userId);
                         let companyId = this.response.companyDetail.companyId;
                         UserData.setCompanyId(companyId);
+                        this.companyDetail = (JSON.parse(JSON.stringify(this.response.companyDetail)));
+                        this.companyTitle = this.companyDetail.companyName;
+                        UserData.setCompanyName(this.companyTitle);
                           this.$router.replace({ name: "dashboard" });
                           this.$router.push("/dashboard");  
               }
@@ -182,6 +212,25 @@ import UserData from '../repository/UserData';
       //       console.log("Fill in all credentials");
       //     }
       //   },
+
+        clear(){
+          this.compCode = "";
+          this.uname = "";
+          this.message = "";
+        },
+
+        forgetPassword(){
+          const formData = new FormData;
+          formData.append('model', 'forgetPassword');
+          formData.append('userName', this.uname);
+          formData.append('companyCode', this.compCode);
+
+          axios.post(UserData.getBaseUrl(), formData)
+            .then(response => {
+              this.forgetPasswordArr = response.data;
+              this.message = this.forgetPasswordArr.message;
+            })
+        },
 
         reloadPage(){
           window.location.reload();
@@ -254,7 +303,7 @@ import UserData from '../repository/UserData';
  .login-form{
     position: absolute;
     height:auto;
-    background: #fff;
+    background: #f5f5f5;
     border-radius: 5px;
     top:29%;
   }
@@ -285,9 +334,10 @@ import UserData from '../repository/UserData';
   .login-form .forgot{
     float: right;
     color: red;
-    margin-right:10%;
-    margin-top: 4%;
-    margin-bottom:4%;
+    margin-right:30%;
+    margin-top: 3%;
+    margin-bottom: 2%;
+    text-align: center;
   }
 
   .input-group-addon {

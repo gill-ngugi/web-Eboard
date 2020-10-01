@@ -111,9 +111,9 @@
                                 <!-- <a v-bind:href="item.itemUrl">
                                     {{ item.itemName }}
                                 </a> -->
-                                 <a href="#"  v-on:click="getMeetingPack(item)">
-                                        {{ item.itemName }}
-                                    </a>
+                                <a href="#"  v-on:click="getMeetingPack(item)">
+                                    {{ item.itemName }}
+                                </a>
                             </td>
                             <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; min-width:200px; max-width:200px;">
                                 {{ item.itemSize | prettyBytes }} 

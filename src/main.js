@@ -17,7 +17,13 @@ import router from './router';
 import GraphLine3D from 'vue-graph/src/components/line3d.js'
 import NoteWidget from 'vue-graph/src/widgets/note.js'
 import LegendWidget from 'vue-graph/src/widgets/legends.js'
- 
+import "jquery-ui/themes/base/all.css";
+import "devextreme/dist/css/dx.common.css";
+import "devextreme/dist/css/dx.light.css";
+import "@devexpress/analytics-core/dist/css/dx-analytics.common.css";
+import "@devexpress/analytics-core/dist/css/dx-analytics.light.css";
+import "devexpress-reporting/dist/css/dx-webdocumentviewer.css";
+
 Vue.component(GraphLine3D.name, GraphLine3D);
 Vue.component(NoteWidget.name, NoteWidget);
 Vue.component(LegendWidget.name, LegendWidget);
