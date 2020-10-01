@@ -22,7 +22,7 @@
     "devextreme": "^20.1.4",
     "docxtemplater": "^3.17.6",
     "file-saver": "^2.0.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "json-pretty-parse-cli": "^2.0.0",
     "jszip": "^2.6.1",
     "jszip-utils": "^0.1.0",
