@@ -24,33 +24,32 @@
         <h4>Login to your account: </h4>
         <hr>
           <form class="login" @submit.prevent="login">
-            <p style="text-align:center; color:red; font-weight:bold;">{{error}}</p>
+            <p style="text-align:center; color:red; font-weight:bold;">{{ error }}</p>
+              <div v-if="passExpiry == 1" @click="expiredDiv = !expiredDiv" class="form-group">
+                <v-btn class="">Click to recover password.</v-btn>
+              </div>
               <div class="form-group">
                   <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
                       <input type="text" class="form-control" name="userName" id="userName" placeholder="Username" v-model="input.userName" />
                   </div>
               </div>
-
               <div class="form-group">
                   <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                       <input type="password" class="form-control" name="userPassword" id="userPassword" placeholder="Password" v-model="input.userPassword" />
                   </div>
               </div>
-
               <div class="form-group">
                   <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                       <input class="form-control" name="companyCode" id="companyCode" placeholder="Company Code" v-model="input.companyCode" />
                   </div>
               </div>    
-
               <div class="form-group">
                   <!-- <button type="submit" class="btn btn-danger" style="color:#fff; margin-bottom:15px;" v-on:click="sendData()">Log In</button> -->
                   <button type="submit" class="btn btn-danger" style="color:#fff; margin-bottom:10px;">Log In</button>
               </div>    
-            
               <div class="forgot" v-on:click="pword = !pword" style="cursor:pointer;" onMouseOver="this.style.color='#000'" onMouseOut="this.style.color='red'">
                   <p>Forgot Password?</p>
               </div>
@@ -59,24 +58,55 @@
 
         <div class="forgot-password" v-if="pword" style="width:300px; margin-left:37%; height:auto; top:36%; background-color:#f5f5f5; position:absolute; padding:1.5%;">
           <h4>Forgot Password?</h4>
-          <p style="font-weight:bold;">{{message}}</p>
-          <form>
-          <div class="form-group">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
-                <input type="text" class="form-control" name="uname" id="uname" placeholder="Username or Email" v-model="uname" />
-            </div>  
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                <input class="form-control" name="compCode" id="compCode" placeholder="Company Code" v-model="compCode" />
+          <p v-if="forgotSuccess == 1" style="font-weight:bold; color:green;">{{ message }}</p>
+          <p v-else style="font-weight:bold; color:red;">{{ message }}</p>
+          <form @submit.prevent="forgetPassword">
+            <div class="form-group">
+              <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+                  <input type="text" class="form-control" name="uname" id="uname" placeholder="Username or Email" v-model="uname" />
+              </div>  
             </div>
-          </div>
-          <div>
-            <v-btn @click="pword = !pword; clear();" text color="red" style="float:left; padding:0px;">Cancel</v-btn>
-            <v-btn @click="forgetPassword()" text color="red" style="float:right; padding:0px;">Submit</v-btn>
-          </div>
+            <div class="form-group">
+              <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                  <input class="form-control" name="compCode" id="compCode" placeholder="Company Code" v-model="compCode" />
+              </div>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-danger" @click="pword = !pword; clear();" style="float:left;">Cancel</button>
+              <button type="submit" class="btn btn-danger" style="float:right;">Submit</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="expired-password" v-if="expiredDiv" style="width:300px; margin-left:37%; height:auto; top:36%; background-color:#f5f5f5; position:absolute; padding:1.5%;">
+          <h4>Expired Password?</h4>
+          <p v-if="expiredSuccess == 1" style="font-weight:bold; color:green;">{{ expiredMessage }}</p>
+          <p v-else style="font-weight:bold; color:red;">{{ expiredMessage }}</p>
+          <form @submit.prevent="expiredPassword">
+            <div class="form-group">
+              <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                  <input type="password" class="form-control" name="oldPass" id="oldPass" placeholder="Old Password" v-model="oldPass" />                 
+              </div>  
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                  <input type="password" class="form-control" name="newPass" id="newPass" placeholder="New Password" v-model="newPass" />                 
+              </div>  
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                  <input type="password" class="form-control" name="confirmPass" id="confirmPass" placeholder="Confirm Password" v-model="confirmPass" />
+              </div>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-danger" @click="expiredDiv = !expiredDiv; clearExpired();" style="float:left;">Cancel</button>
+              <button class="btn btn-danger" type="submit" style="float:right;">Submit</button>
+            </div>
           </form>
         </div>
     </v-app>
@@ -103,17 +133,26 @@ import UserData from '../repository/UserData';
         compCode: "",
         message: "",
         error: "", 
+        passExpiry: "",
+        oldPass: "",
+        newPass: "",
+        confirmPass: "",
+        expiredMessage: "",
+        cCode: "",
+        forgotSuccess: "",
+        expiredSuccess: "",
         pword: false,       
-        // stl: {},
+        expiredDiv: false
       }
     },
 
     mounted(){
-       axios({ method: "GET", "url": "https://httpbin.org/ip" }).then(result => {
-                this.ip = result.data.origin;
-            }, error => {
-                console.error(error);
-            });
+       axios({ method: "GET", "url": "https://httpbin.org/ip" })
+        .then(result => {
+            this.ip = result.data.origin;
+        }, error => {
+            console.error(error);
+        });
       },
 
     methods: {
@@ -169,6 +208,7 @@ import UserData from '../repository/UserData';
           axios.post(UserData.getBaseUrl(), formData)
             .then(result => {
               this.response = result.data;
+              this.passExpiry = this.response.passwordExpiry;
                 if(this.response.success == 1){
                   this.$store.commit("setAuthentication", true);
                     let token = this.response.accessToken;
@@ -182,7 +222,7 @@ import UserData from '../repository/UserData';
                         UserData.setCompanyName(this.companyTitle);
                           this.$router.replace({ name: "dashboard" });
                           this.$router.push("/dashboard");  
-              }
+                }
                 else{
                   this.error = this.response.message;
                 }
@@ -216,7 +256,7 @@ import UserData from '../repository/UserData';
         clear(){
           this.compCode = "";
           this.uname = "";
-          this.message = "";
+          // this.message = "";
         },
 
         forgetPassword(){
@@ -229,6 +269,34 @@ import UserData from '../repository/UserData';
             .then(response => {
               this.forgetPasswordArr = response.data;
               this.message = this.forgetPasswordArr.message;
+              this.forgotSuccess = this.forgetPasswordArr.success;
+              this.clear();
+            })
+        },
+
+        clearExpired(){
+          this.oldPass = '';
+          this.newPass = '';
+          this.confirmPass = '';
+        },
+
+        expiredPassword(){
+          const formData = new FormData;
+          formData.append('oldPassword', this.oldPass);
+          formData.append('newPassword', this.newPass);
+          formData.append('confirmPassword', this.confirmPass);
+          formData.append('companyCode', UserData.getCompanyCode());
+          // formData.append('companyCode', "viz");
+          formData.append('userName', UserData.getUserName());
+          formData.append('model', 'changePassword');
+          formData.append('passwordExpiry', 0);
+
+          axios.post(UserData.getBaseUrl(), formData)
+            .then(response => {
+              this.expiredPasswordArr = response.data;
+              this.expiredMessage = this.expiredPasswordArr.message;
+              this.expiredSuccess = this.expiredPasswordArr.success;
+              this.clearExpired();
             })
         },
 

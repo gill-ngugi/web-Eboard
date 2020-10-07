@@ -35,10 +35,19 @@
                                 <v-card-text v-if="setsttId == 3" style="color:red; font-weight:bold; font-size:19px;">Evaluation Completed!</v-card-text>
                                 <v-tabs grow show-arrows v-model="tab" background-color="rgb(220,220,220)" color="rgb(72,61,139)" style="font-weight:bolder;">
                                 <v-tabs-slider></v-tabs-slider>
-                                    <v-tab v-for="(item, index) in categories" :key="index" style="">
+                                    <!-- <v-tab v-for="(item, index) in categories" :key="index" style="">
                                         <p v-if="item.isComplete == 0" style="margin-top:10px; pointer-events:none;">{{ item.categoryName }}</p>
                                         <p v-else style="margin-top:10px; color:green;">{{ item.categoryName }}</p>
-                                    </v-tab>
+                                    </v-tab> -->
+
+                                    <div v-for="(item, index) in categories" :key="index">
+                                        <v-tab v-if="item.isComplete == 0" style="pointer-events:none;">
+                                            <p style="margin-top:10px;">{{ item.categoryName }}</p>
+                                        </v-tab>
+                                        <v-tab v-else style="">
+                                            <p style="margin-top:10px; color:green;">{{ item.categoryName }}</p>
+                                        </v-tab>
+                                    </div>
                                 </v-tabs>
                                 <v-tabs-items v-model="tab">
                                     <!-- <v-card-text v-if="quesLength != ansLength" style="color:red; font-weight:bold; font-size:19px;">Answer all questions!</v-card-text> -->
@@ -65,9 +74,6 @@
                                                 <div class="text-center">
                                                     <v-dialog v-model="dialogg" width="1200">
                                                         <template v-slot:activator="{ on, attrs }">
-                                                            <!-- <v-btn color="red lighten-2" dark v-bind="attrs" v-on="on">
-                                                                Click Me
-                                                            </v-btn> -->
                                                             <v-btn v-if="(categories[categories.length - 1]) == item" v-bind="attrs" v-on="on" @click="setCategoryId(item.categoryId); clickMe(item, index, categories);" color="rgb(220,220,220)" style="width:100%; display:flex; padding-top:10px; border:1px solid rgb(72,61,139);">
                                                                 <p style="color:rgb(72,61,139);">Review</p>
                                                             </v-btn>

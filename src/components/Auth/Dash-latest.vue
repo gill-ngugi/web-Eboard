@@ -1,26 +1,13 @@
 <template>    
     <div>
+        <v-app>
         <div class = "nav-menu parent" style=" height:45px; width:98%; padding:0px; padding-top:0.3%; margin-left:1%; margin-right:1%;">
             <div class="left-buttons" style="margin-left:10px;">
-                <v-dialog v-model="dialog" persistent max-width="290">
-                <template v-slot:activator="{ on, attrs }"> 
-                    <button class="btn btn-lg" text v-on:click="seen1 = !seen1; on" v-bind="attrs">
-                        <!-- {{companyDetail.companyName}} -->
-                        {{selectedCompanyName}}
-                        <span class="input-group-addon"><i class="fa fa-chevron-down"></i></span>                            
-                    </button>
-                </template>
-                    <v-card>
-                        <v-card-text>
-                            <h3>Company changed to: {{selectedCompanyName}}</h3>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="green darken-1" text @click="dialog = false">Disagree</v-btn>
-                            <v-btn color="green darken-1" text @click="dialog = false">Agree</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
+                <button class="btn btn-lg" text v-on:click="getCompanyList(); seen1 = !seen1;">
+                    <!-- {{companyDetail.companyName}} -->
+                    {{selectedCompanyName}}
+                    <span class="input-group-addon"><i class="fa fa-chevron-down"></i></span>                            
+                </button>
             </div>    
             <div class="filler"></div>
                 <img class="bgimg-1" src="../img/eboard_Logo_new@2x.png" style="height:75%; width:auto; padding-top:5px">
@@ -35,7 +22,7 @@
         </div>
 
          <!-- Companies -->
-            <div style="height: auto; width: auto; position: absolute; z-index: 1; margin-left:1%;" v-if="seen1">
+            <div style="height:850px; width:auto; position:absolute; z-index:1; margin-left:1%; overflow:auto;" v-if="seen1">
                 <v-list>
                     <v-list-item-title style="color:#e33333; padding:15px;">Company List</v-list-item-title>
                     <v-list-item
@@ -43,7 +30,7 @@
                         :key="index"                                
                     >
                     <!-- START HERE!!! -->
-                    <v-list-item-title v-on:click="changeCompanyDetails(item);" style="cursor:pointer;">
+                    <v-list-item-title onMouseOver="this.style.color='red'" onMouseOut="this.style.color='#000'" v-on:click="changeCompanyDetails(item);" style="cursor:pointer;">
                         {{ item.companyName }} 
                         <v-divider></v-divider>
                     </v-list-item-title>  
@@ -95,7 +82,6 @@
         <!-- OPTIONS -->
             <div style="margin-left:80%; height:auto; width:19%; position:absolute; z-index:1; margin-right:1%;" v-if="seen6">
                 <v-list style="padding:2%; background-color:#ffffff;">
-                 
                     <div><p style="color:#e33333;">Options<span style="float:right;">v3.0.1</span></p></div>
                     
                     <!-- <div class="row" style="margin:0px; padding:0px;">
@@ -178,14 +164,8 @@
                         </div>                       
                     </div>
                     <v-divider style="margin:0px; padding:0px;"></v-divider> -->
-
-                    <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
-                        <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">
-                            Change Password
-                        </div>                       
-                    </div>
-                    <v-divider style="margin:0px; padding:0px;"></v-divider>
-<!-- 
+                    
+                    <!--
                     <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
                         <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">
                             Manage Briefcase
@@ -233,16 +213,137 @@
                     </div>
                     <v-divider style="margin:0px; padding:0px;"></v-divider> -->
 
+
+                    <!-- <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
+                        <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">
+                            <v-dialog v-model="changePassDiv" max-width="400">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <a style="cursor:pointer" @click="changePassDiv = !changePassDiv" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='#000'">Change Password</a>
+                                    <a style="cursor:pointer" v-on="on" v-bind="attrs" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='#000'">Change Password</a>
+                                </template>
+
+                                <div class="expired-password" style="">
+                                    <h4>Change Password?</h4>
+                                    <p v-if="expiredSuccess == 1" style="font-weight:bold; color:green;">{{ expiredMessage }}</p>
+                                    <p v-else style="font-weight:bold; color:red;">{{ expiredMessage }}</p>
+                                    <form>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                                <input type="password" class="form-control" name="oldPass" id="oldPass" placeholder="Old Password" v-model="oldPass" />                 
+                                            </div>  
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                                <input type="password" class="form-control" name="newPass" id="newPass" placeholder="New Password" v-model="newPass" />                 
+                                            </div>  
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                                <input type="password" class="form-control" name="confirmPass" id="confirmPass" placeholder="Confirm Password" v-model="confirmPass" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <v-btn @click="changePassDiv = false; clearExpired();" text color="red" style="float:left; padding:0px;">Cancel</v-btn>
+                                            <v-btn @click="expiredPassword()" text color="red" style="float:right; padding:0px;">Submit</v-btn>
+                                        </div>
+                                    </form>
+                                </div>
+                            </v-dialog>
+                        </div>                       
+                    </div>
+                    <v-divider style="margin:0px; padding:0px;"></v-divider> -->
                     <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
-                        <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">                        
-                        <!-- <div class="col-md-12 col-sm-12" v-if="isLoggedIn" style="margin:0px; padding:0px;">                         -->
-                            <!-- <p style="cursor:pointer" v-on:click="logout()">Logout</p> -->
-                            <a style="cursor:pointer" v-on:click="logout">Logout</a>
+                        <v-dialog
+                            v-model="dialog"
+                            persistent
+                            max-width="290"
+                            >
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                color="primary"
+                                dark
+                                v-bind="attrs"
+                                v-on="on"
+                                >
+                                Open Dialog
+                                </v-btn>
+                            </template>
+                            <v-card>
+                                <v-card-title class="headline">
+                                Use Google's location service?
+                                </v-card-title>
+                                <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+                                <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn
+                                    color="green darken-1"
+                                    text
+                                    @click="dialog = false"
+                                >
+                                    Disagree
+                                </v-btn>
+                                <v-btn
+                                    color="green darken-1"
+                                    text
+                                    @click="dialog = false"
+                                >
+                                    Agree
+                                </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </div>
+                    <v-divider style="margin:0px; padding:0px;"></v-divider>
+
+                    <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
+                        <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">      
+                            <a style="cursor:pointer" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='#000'">Change Password</a>
+                        </div>                       
+                    </div>
+                    <v-divider style="margin:0px; padding:0px;"></v-divider>
+
+                    <div class="row" style="margin:0px; margin-top:3px; margin-bottom:3px; padding:0px;">
+                        <div class="col-md-12 col-sm-12" style="margin:0px; padding:0px;">      
+                            <a style="cursor:pointer" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='#000'" v-on:click="logout">Logout</a>
                         </div>                       
                     </div>
                     <v-divider style="margin:0px; padding:0px;"></v-divider>
                 </v-list>
             </div>
+
+            <!-- <div class="expired-password" v-if="changePassDiv" style="width:300px; margin-left:37%; height:auto; top:36%; background-color:#f5f5f5; position:absolute; padding:1.5%;">
+                <h4>Change Password?</h4>
+                <p v-if="expiredSuccess == 1" style="font-weight:bold; color:green;">{{ expiredMessage }}</p>
+                <p v-else style="font-weight:bold; color:red;">{{ expiredMessage }}</p>
+                <form>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                            <input type="password" class="form-control" name="oldPass" id="oldPass" placeholder="Old Password" v-model="oldPass" />                 
+                        </div>  
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                            <input type="password" class="form-control" name="newPass" id="newPass" placeholder="New Password" v-model="newPass" />                 
+                        </div>  
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                            <input type="password" class="form-control" name="confirmPass" id="confirmPass" placeholder="Confirm Password" v-model="confirmPass" />
+                        </div>
+                    </div>
+                    <div>
+                        <v-btn @click="changePassDiv = !changePassDiv; clearExpired();" text color="red" style="float:left; padding:0px;">Cancel</v-btn>
+                        <v-btn @click="expiredPassword()" text color="red" style="float:right; padding:0px;">Submit</v-btn>
+                    </div>
+                </form>
+            </div> -->
+
   
             <div class="col-left" style="width:20%; height:900px; overflow:auto; margin-left:1%; margin-right:1%; margin-top:1%; float:left; position:relative;">
                 <div v-for="(item, index) in even(dashboardMenuList)" :key="index">
@@ -250,7 +351,7 @@
                         <div class="left-menu" style="border-top: 5px solid; padding:3.3%;">
                             <div class="input-group" >
                                 <span class="input-group-addon">
-                                    <img v-bind:src="item.menuImageUrl"  v-bind:alt="item.menuTitle" v-bind:style="{width:'60px', height:'50px' }">
+                                    <img v-bind:src="item.menuImageUrl" v-bind:alt="item.menuTitle" v-bind:style="{width:'60px', height:'50px' }">
                                     </span>
                                 <v-spacer></v-spacer>       
                                 <p> {{item.menuTitle}}</p>
@@ -445,8 +546,12 @@
                             <!-- </v-card-actions> -->
                         </div>
                         <div style="height:10%; margin-top:13px;">
-                            <v-btn v-on:click="sendSharePeople()" style="margin-left:30%;">
-                                SHARE
+                            <v-btn v-on:click="shareDocument = !shareDocument" style="margin-left:7px; float:left;">
+                                CANCEL
+                            </v-btn>
+                            
+                            <v-btn v-on:click="sendSharePeople()" style="margin-right:7px; float:right;">
+                                SHARE   
                             </v-btn>
                         </div>
                     </v-card>
@@ -457,6 +562,7 @@
             <pspdfkit :pdf-url="pdf" :license-key="LICENSE_KEY" :base-url="baseUrl">
             </pspdfkit>
         </div>
+        </v-app>
     </div>       
 </template>
 
@@ -471,9 +577,10 @@
     import Vue from 'vue';
     import PSPDFKit from "pspdfkit";
 
+    const LICENSE_KEY = "BvTNapxQPkJx5cbOJY84idxLaXU5Od5CVMyJaljuYTO7F6jGDHRia0y7_XMHiCXf4-z1XdtpYYT-C-DMzvAz9i74k8JsIm1wdXCZdK-tnfjopnzBNgdnY2QbVWMJ2bnzBcQKl2NislptTE5FxzH-fH_utm9wXzFIV8LTfB5juyvR4h85T3C-FnTyOTj_WU-qgiqY0daZ9eUjW5vCFnITc7KufPf59_bSIKg7ZG9Q8lpdl6kgR3nnIBxa75VOmL6n7IBvZkqzq9UF1VO6b9VBcVQcTmaOD2H6XthEkCHx3u0lcw-jIJE0qVLHODkfuR2lTdnVzyrFEhzPyTOBql7OFHhFMpQr9Ch3hTkTaRk_rZPQoX3MxFk0TsUf5L2tRbxj7-99jRy9aWBokSPMyI6ySpwQxwx-QA68n3NZ87_qlBGzJX3QIMRIH1bArZ4TfoU4"
     // const LICENSE_KEY = "Ni5LCTkSzrHKL3GnUlgVXV-Nt0-8cc5vbAlHmT6bRZZsheHGsPidBAsVHH7EbGm6krygVYe1_nAyLUlRZ4OUN9xBGmFpOiLJbNNvfnzJFkg3HwNvhVr0pNcug-kq6qFZMefIjdFy6-51sEWAD6nFfaRAFr0ihgzQ_Qf7o43DSWakOaAFFk6THvYiEAiwlDeTR-ggbcRf3orhW58EWXjqc8d1Ez1iy3SJtFsy0ReQcWBlkV2r_0HzjWzc1mvO4fDFSmYJvZ7DiL9MAtoEXyy14hpwaGW4uliBV6-JeCdjz64pzuEqhYql2EgzbG0r2eLGHIeDyrYtkA20c_Zyd_zbf4Vtbd31PPuPymL-75ZIcXtoIhlUcKLxMTEUcL8KiXgx7zEHWU4ajjtH2uPXNHkBnxyUL4K9OH7WxmV5k2nxAjqHLOf9bPIf0q61OJyejnmO";
     // const LICENSE_KEY = "vuF0E1oK-8zmH0-rz6t6lt5x3AowOhR0kRILumR6xH5T9Ctre9Fo8gkBb404wT0dORhQliyk5XuSMMayurmNTJi4GRIuHL92DKOflXw04fv1UWthdwqHGQ0wM-E_0xTt4sk1jk9pWSkN5im3J_XmU8frGN2NYiSu-LP2BF_SFitDv9E-TSJWExDAZJVh4x3djWVg0bKVI-Pv2uS7fTh8ynEe4_7ivc-SoqEldi7evAfvas4X1EPse0VhJYWtgzhIjNs4RoXAazz4j4xPRgAQEYSL4JG6ZnT2fwCNq8uTqsnxi77aP0NvM69CmaOm_h-4yL3xCpVWV0k6HEiwO-fgn0fFQeHHRemKeXlGWnjrCBob4s1bDgjh0VWkTHRmZIbEA3jt6Ehh1VZQrlVusPOJggRF63X3sTowcQM5dPae-bHLMhdOB6pov8PKEOaWoR1pRw64NheynDAaA5elyCbP_xnG5cCuzDekt6U5K9KZ-wdc3kQFgS4kgbA1Ox1n3k2zbag_mqPkNOhzQ9AzDehO8H6W8L49hvQCQtmGAcm6nuA=";    
-    const LICENSE_KEY = "xmnyiKkvzmQ0WIOagPDOdV_GESKnYO6fNa-1Ck87vP0NEExhZQ_DNdRPLVJK1l2M2s30Yt1Sz1J94COZb2TWcvvO2mQRYJBkIZWMYLII-p0daMx3ClCRbSmPJ1yUW0EbvRm50xZC2hzO8lLVP2GRr47Qeceo0Y837a9qyXglGJLiJpKVYl1liSuDzArGi1nPOF1AfbyevOEdBaUVAMiYypx6iIo281tNqkzMV5j4d5eB-yMpn0xnvbXd-RdiGLZXn--8yqGVbwZWSTCjnnPbVkheQqiuAUUrvFPlC0LENI1c94TS_zLzo6RVx03kZF0bxI_vYyyxYx8r7IwghUBKXuBnUJXZHsteNLBMaQg-rIKh-ORAwjFwSM80vLow6nunBmPyLHvyERGeABpyPQyWRN0R6DaflKyYpmUn_UohjxcfYl8AQYJkf6cAXLJAeWnQ"
+    // const LICENSE_KEY = "xmnyiKkvzmQ0WIOagPDOdV_GESKnYO6fNa-1Ck87vP0NEExhZQ_DNdRPLVJK1l2M2s30Yt1Sz1J94COZb2TWcvvO2mQRYJBkIZWMYLII-p0daMx3ClCRbSmPJ1yUW0EbvRm50xZC2hzO8lLVP2GRr47Qeceo0Y837a9qyXglGJLiJpKVYl1liSuDzArGi1nPOF1AfbyevOEdBaUVAMiYypx6iIo281tNqkzMV5j4d5eB-yMpn0xnvbXd-RdiGLZXn--8yqGVbwZWSTCjnnPbVkheQqiuAUUrvFPlC0LENI1c94TS_zLzo6RVx03kZF0bxI_vYyyxYx8r7IwghUBKXuBnUJXZHsteNLBMaQg-rIKh-ORAwjFwSM80vLow6nunBmPyLHvyERGeABpyPQyWRN0R6DaflKyYpmUn_UohjxcfYl8AQYJkf6cAXLJAeWnQ"
 
     const pspdfkit = Vue.component('pspdfkit', {
     template:           
@@ -587,7 +694,7 @@
                 form.append("user_id", UserData.getUserId());
                 form.append("company_code", UserData.getCompanyCode());
 
-                    axios.post("https://eserver1.stl-horizon.com/pspdfkit/saveAnnotation.php", form)
+                    axios.post("                                                                                                                                            ", form)
                     .then(response=>{
                         console.log(response);
                     });
@@ -782,6 +889,7 @@
             shareDocument: false,
             showMessages: false,
             dialog: false,
+            changePassDiv: false,
             calendarPlugins: [ dayGridPlugin ],
             requestUserLogin : [],
             userInfo : [],
@@ -803,6 +911,11 @@
             LICENSE_KEY: LICENSE_KEY,
             baseUrl: '',
             errorMsg: '',
+            expiredMessage: '', 
+            expiredSuccess: '',
+            oldPass: '',
+            newPass: '',
+            confirmPass: '',
         }),
 
         filters: {
@@ -884,12 +997,16 @@
                         this.allLanguages = this.requestUserLogin.allLanguages;
                         this.userInfo = (JSON.parse(JSON.stringify(this.requestUserLogin.userInfo)));
                         this.companyDetail = (JSON.parse(JSON.stringify(this.requestUserLogin.companyDetail)));
-                        this.selectedCompanyName = this.companyDetail.companyName;
+                        // this.selectedCompanyName = this.companyDetail.companyName;
                         this.userLanguage = (JSON.parse(JSON.stringify(this.requestUserLogin.userLanguage)));
                     })
                     .catch(error => {
                         console.log(error);
                     });
+            },
+
+            getCompanyName(){
+                this.selectedCompanyName = UserData.getCompanyName();
             },
 
             getCompanyList(){
@@ -987,20 +1104,21 @@
             changeCompanyDetails(item){
                 this.seen1 = false;
                 this.dashboardMenuList = 0;
-                this.dashboardMenuList = item.dashboardMenuList;
-                
+                this.dashboardMenuList = item.dashboardMenuList;                
                 UserData.setCompanyId(item.companyId);
-                this.selectedCompanyName = item.companyName;
+                UserData.setCompanyName(item.companyName);
+                // this.selectedCompanyName = item.companyName;
                 // alert(item.companyId);
                 // alert(this.selectedCompanyName);
-
                 this.getCompanyList();
                 this.getLatestNotifications();
                 this.getRecentDocuments();
                 this.getCalendarEvents();
-                
+                this.selectedCompanyName = UserData.getCompanyName();
+                alert("Changing company to: " + this.selectedCompanyName);
+
+
                 //GET COMPANY LIST
-                
                 // const formData = new FormData();
                 // formData.append('userId', UserData.getUserId());
                 // formData.append('companyCode', UserData.getCompanyCode());
@@ -1078,10 +1196,33 @@
                 //     .catch(e => {
                 //         console.log('Error', e);
                 //     })                
-
-                    // alert("Changed company to: " + this.selectedCompanyName);
             },
-          
+
+            clearExpired(){
+                this.oldPass = '';
+                this.newPass = '';
+                this.confirmPass = '';
+            },
+
+            expiredPassword(){
+                const formData = new FormData;
+                formData.append('oldPassword', this.oldPass);
+                formData.append('newPassword', this.newPass);
+                formData.append('confirmPassword', this.confirmPass);
+                formData.append('companyCode', UserData.getCompanyCode());
+                formData.append('userName', UserData.getUserName());
+                formData.append('model', 'changePassword');
+                formData.append('passwordExpiry', 0);
+
+                axios.post(UserData.getBaseUrl(), formData)
+                    .then(response => {
+                    this.expiredPasswordArr = response.data;
+                    this.expiredMessage = this.expiredPasswordArr.message;
+                    this.expiredSuccess = this.expiredPasswordArr.success;
+                    this.clearExpired();
+                })
+            },
+
             getLink(){
                 let routeData = this.$router.resolve({name: this.getRecentDocumentsArr.recentDocumentsList.itemUrl, query: {data: this.getRecentDocumentsArr.recentDocumentsList.itemUrl}});
                 window.open(routeData.href, '_blank');
@@ -1173,10 +1314,10 @@
       
         beforeMount(){
             this.getRequestUserLogin();
-            this.getCompanyList();
             this.getLatestNotifications();
             this.getRecentDocuments();
             this.getCalendarEvents();
+            this.getCompanyName();
         },
 
         mounted() {
@@ -1341,7 +1482,7 @@
     }
 
     .filler {
-    flex-grow: 1;
+        flex-grow: 1;
     }
 
    </style>
