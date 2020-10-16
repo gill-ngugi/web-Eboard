@@ -1,11 +1,5 @@
 <template>
   <div class="app">
-
-    <div class = "nav-menu" style="height:45px; width:100%; padding:0px; padding-top:0.3%; text-align:center;">           
-        <router-link to="/dashboard" style="text-decoration:none;"><v-icon color="#fff" size="35" style="margin-left:10px;">mdi-home</v-icon></router-link>
-        <p style="font-weight:bold; font-size:24px; margin-left:40%;">Evaluation</p>
-    </div>
-
     <div class="header__bar">
       <div class="array__container">
         <div class="arrow left array__container"></div>
@@ -72,14 +66,13 @@
             Submit Evalution
           </div>
         </div>
-
         <div v-else>
           <div class="category_top">
             <div class="category__list">
               <div
                 v-for="category in categories"
                 v-bind:key="category.categoryId"
-                class="category"
+                class="category "
                 v-bind:class="{
                   ['category_active']:
                     category.categoryId == activeCategory.categoryId,
@@ -149,19 +142,14 @@ export default {
       showReview: false,
     };
   },
-  components: {
-
-  },
-
+  components: {},
   methods: {
     reviewEvalution: function() {
       this.showReview = true;
     },
-
     answeClicked: () => {
-      alert("dvd");
+      alert("david");
     },
-
     nextCategory: function() {
       //console.log(this.activeCategory)
       var currentIndex = this.categories.findIndex((category) => {
@@ -171,11 +159,7 @@ export default {
       this.submitPerCategory(this.activeCategory);
       this.activeCategory = this.categories[currentIndex + 1];
     },
-
-    previousCategory: () => {
-
-    },
-
+    previousCategory: () => {},
     submitPerCategory: function(activeCategorySubmit) {
       var answers = activeCategorySubmit.questions
         .filter((quiz) => {
@@ -185,7 +169,6 @@ export default {
         .map((quiz) => {
           return quiz.userRate;
         });
-
       var questions = activeCategorySubmit.questions
         .filter((quiz) => {
           console.log(quiz);
@@ -227,7 +210,6 @@ export default {
       console.log(payload)
       alert(":heart:");
     },
-
     answerSelected: function(question, activeCategory, index) {
       var activeCategoryCopy = activeCategory;
       var updatedQuiz = activeCategory.questions.map((quiz) => {
@@ -259,7 +241,6 @@ export default {
       this.categories = categories;
     },
   },
-
   computed: {
     isLastQuiz: function() {
       var currentIndex = this.categories.findIndex((category) => {
@@ -267,7 +248,6 @@ export default {
       });
       return currentIndex == this.categories.length - 1;
     },
-
     currentProgress: function() {
       var index =
         this.categories.findIndex((category) => {
@@ -276,9 +256,8 @@ export default {
       return index + " of " + this.categories.length;
     },
   },
-
   mounted: function() {
-    fetch("../assets/json-APIs/evaluation.json?" + Date(), { method: "get" })
+    fetch("evaluation.json?" + Date(), { method: "get" })
       .then((response) => {
         return response.json();
       })
@@ -449,14 +428,14 @@ export default {
   height: 15px;
   margin: 10px;
 }
-/* .left {
+.left {
   transform: rotate(135deg);
   -webkit-transform: rotate(135deg);
 }
 .right {
   transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg); */
-/* } */
+  -webkit-transform: rotate(-45deg);
+}
 .avator__box {
   display: flex;
   flex-direction: column;
@@ -482,21 +461,4 @@ export default {
   margin-bottom: 20px;
   width: 80px;
 }
-
-
-.nav-menu{
-        margin-top:0px; 
-        background-color: rgb(72,61,139);
-        color:#fff;
-        display:flex;
-    }
-
-    .nav-menu .btn{
-        background-color:rgb(72,61,139);
-        border:none;
-        padding:0px;    
-        margin-right:15px;
-        color:white;
-        outline:none;
-    }
 </style>

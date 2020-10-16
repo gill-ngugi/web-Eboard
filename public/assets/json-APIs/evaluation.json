@@ -1,0 +1,189 @@
+{
+    "success": 1,
+    "InvalidAccessToken": "0",
+    "message": "Found Evaluations",
+    "evaluationDetail": {
+        "categories": [
+            {
+                "categoryId": "60",
+                "isComplete": "1",
+                "categoryName": "Mandate",
+                "canComment": 0,
+                "categoryComment": "",
+                "questions": [
+                    {
+                        "questionId": "72",
+                        "questionNo": "2",
+                        "questionName": "Is the mandate relevant to the national socio-economic development?",
+                        "questionCreationDate": "1536278400",
+                        "questionEvaluationDate": "0",
+                        "isComplete": "1",
+                        "score": "5",
+                        "scale": {
+                            "scaleId": "3",
+                            "scaleName": "1-5",
+                            "scaleInterval": "1",
+                            "scaleLowerLimit": "1",
+                            "scaleUpperLimit": "5"
+                        },
+                        "isOpenEnded": 0
+                    },
+                    {
+                        "questionId": "65",
+                        "questionNo": "3",
+                        "questionName": "Has the Board articulated or reviewed the desired\r\nfuture state of the corporation?",
+                        "questionCreationDate": "1536278400",
+                        "questionEvaluationDate": "0",
+                        "isComplete": "1",
+                        "score": "2",
+                        "scale": {
+                            "scaleId": "3",
+                            "scaleName": "1-5",
+                            "scaleInterval": "1",
+                            "scaleLowerLimit": "1",
+                            "scaleUpperLimit": "5"
+                        },
+                        "isOpenEnded": 0
+                    },
+                    {
+                        "questionId": "62",
+                        "questionNo": "4",
+                        "questionName": "Has the Board reviewed the mandate of the\r\nCorporation to match changes in the environment?",
+                        "questionCreationDate": "1536278400",
+                        "questionEvaluationDate": "0",
+                        "isComplete": "1",
+                        "score": "5",
+                        "scale": {
+                            "scaleId": "3",
+                            "scaleName": "1-5",
+                            "scaleInterval": "1",
+                            "scaleLowerLimit": "1",
+                            "scaleUpperLimit": "5"
+                        },
+                        "isOpenEnded": 0
+                    }
+                ]
+            },
+            {
+                "categoryId": "61",
+                "isComplete": "1",
+                "categoryName": "Comprehension",
+                "canComment": 0,
+                "categoryComment": "",
+                "questions": [
+                    {
+                        "questionId": "60",
+                        "questionNo": "6",
+                        "questionName": "Is the strategic plan integrated with the national development plan and the Kenya vision 2030? ",
+                        "questionCreationDate": "1536278400",
+                        "questionEvaluationDate": "0",
+                        "isComplete": "1",
+                        "score": "1",
+                        "scale": {
+                            "scaleId": "3",
+                            "scaleName": "1-5",
+                            "scaleInterval": "1",
+                            "scaleLowerLimit": "1",
+                            "scaleUpperLimit": "5"
+                        },
+                        "isOpenEnded": 0
+                    },
+                    {
+                        "questionId": "58",
+                        "questionNo": "10",
+                        "questionName": "Is the strategic plan reflected at an operational level\r\nin the business plan?",
+                        "questionCreationDate": "1536278400",
+                        "questionEvaluationDate": "0",
+                        "isComplete": "1",
+                        "score": "4",
+                        "scale": {
+                            "scaleId": "3",
+                            "scaleName": "1-5",
+                            "scaleInterval": "1",
+                            "scaleLowerLimit": "1",
+                            "scaleUpperLimit": "5"
+                        },
+                        "isOpenEnded": 0
+                    },
+                    {
+                        "questionId": "59",
+                        "questionNo": "11",
+                        "questionName": "Has the Board developed a strategy for providing resources\r\nrequired for implementation of the strategy?",
+                        "questionCreationDate": "1536278400",
+                        "questionEvaluationDate": "0",
+                        "isComplete": "1",
+                        "score": "3",
+                        "scale": {
+                            "scaleId": "3",
+                            "scaleName": "1-5",
+                            "scaleInterval": "1",
+                            "scaleLowerLimit": "1",
+                            "scaleUpperLimit": "5"
+                        },
+                        "isOpenEnded": 0
+                    }
+                ]
+            },
+	    {
+                "categoryId": "62",
+                "isComplete": "1",
+                "categoryName": "Strategy 2",
+                "canComment": 0,
+                "categoryComment": "",
+                "questions": [
+                    {
+                        "questionId": "90",
+                        "questionNo": "13",
+                        "questionName": "Is the strategic plan integrated with the national development plan and the Kenya vision 2030? ",
+                        "questionCreationDate": "1536278400",
+                        "questionEvaluationDate": "0",
+                        "isComplete": "1",
+                        "score": "1",
+                        "scale": {
+                            "scaleId": "3",
+                            "scaleName": "1-5",
+                            "scaleInterval": "1",
+                            "scaleLowerLimit": "1",
+                            "scaleUpperLimit": "5"
+                        },
+                        "isOpenEnded": 0
+                    },
+                    {
+                        "questionId": "98",
+                        "questionNo": "14",
+                        "questionName": "Is the strategic plan reflected at an operational level\r\nin the business plan?",
+                        "questionCreationDate": "1536278400",
+                        "questionEvaluationDate": "0",
+                        "isComplete": "1",
+                        "score": "4",
+                        "scale": {
+                            "scaleId": "3",
+                            "scaleName": "1-5",
+                            "scaleInterval": "1",
+                            "scaleLowerLimit": "1",
+                            "scaleUpperLimit": "5"
+                        },
+                        "isOpenEnded": 0
+                    },
+                    {
+                        "questionId": "99",
+                        "questionNo": "15",
+                        "questionName": "Has the Board developed a strategy for providing resources\r\nrequired for implementation of the strategy?",
+                        "questionCreationDate": "1536278400",
+                        "questionEvaluationDate": "0",
+                        "isComplete": "1",
+                        "score": "3",
+                        "scale": {
+                            "scaleId": "3",
+                            "scaleName": "1-5",
+                            "scaleInterval": "1",
+                            "scaleLowerLimit": "1",
+                            "scaleUpperLimit": "5"
+                        },
+                        "isOpenEnded": 0
+                    }
+                ]
+            }
+        ]
+    }
+}

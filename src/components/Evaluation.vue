@@ -11,7 +11,7 @@
             <div style="height:850px; margin-top:0.5%; margin-bottom:0.5%; background-color:#f8f9f9; border-top:5px solid rgb(72,61,139); width:98%; margin-left:1%; margin-right:1%;">
                 <div class="two" v-if="two" style="margin-top:7px; position:absolute; background-color:#f5f5f5; width:98%; height:900px; margin-right:1%; z-index:3;">
                     <div style="display:flex; margin-left:1%; margin-bottom:10px;">
-                        <v-icon @click="two = !two; categories = []; evaluateeName=''; comm=''; categoryId=0;" style="color:#fff; background-color:rgb(72,61,139);">mdi-chevron-left</v-icon>
+                        <v-icon @click="two = !two; categories = []; evaluateeName=''; comm=''; categoryId=0; evaluationId='';" style="color:#fff; background-color:rgb(72,61,139);">mdi-chevron-left</v-icon>
                         <h4 style="margin-left:10px; color:rgb(72,61,139);">{{ evalName }} {{"   => " + evaluateeName }}</h4>
                     </div>
                     <div>
@@ -159,7 +159,7 @@
                                         <tbody>
                                             <v-dialog v-model="commentsDialog" persistent width="390" height="390">
                                                 <template v-slot:activator="{ on, attrs }">
-                                                    <tr v-bind="attrs" v-on="on" onMouseOver="this.style.backgroundColor='#fff';" onMouseOut="this.style.backgroundColor='#cfcfc4';">
+                                                    <tr @click="categoryId = 0" v-bind="attrs" v-on="on" onMouseOver="this.style.backgroundColor='#fff';" onMouseOut="this.style.backgroundColor='#cfcfc4';">
                                                         <td style="padding:14px; font-size:19px; cursor:pointer;">Comment on Evaluation</td>
                                                     </tr>
                                                 </template>
@@ -209,7 +209,7 @@
 
                                             <v-dialog v-if="isChairman == 1" v-model="commentsDialog3" width="390" height="390">
                                                 <template v-slot:activator="{ on, attrs }">
-                                                    <tr v-bind="attrs" v-on="on" onMouseOver="this.style.backgroundColor='#fff';" onMouseOut="this.style.backgroundColor='#cfcfc4';">
+                                                    <tr @click="categoryId = 0" v-bind="attrs" v-on="on" onMouseOver="this.style.backgroundColor='#fff';" onMouseOut="this.style.backgroundColor='#cfcfc4';">
                                                         <td style="padding:14px; font-size:19px; cursor:pointer;">Comment as chairman</td>
                                                     </tr>
                                                 </template>
@@ -278,7 +278,7 @@
                         </v-dialog>
 
                         <!-- REPORTS -->
-                        <v-card style="width:19%; margin-right:1.5%; color:rgb(72,61,139); text-align:center; cursor:pointer; padding-top:7px;">
+                        <v-card @click="getEvaluationReport()" style="width:19%; margin-right:1.5%; color:rgb(72,61,139); text-align:center; cursor:pointer; padding-top:7px;">
                             <v-icon size="45" color="rgb(72,61,139)">mdi-file-document</v-icon>
                             <h6>Reports</h6>
                         </v-card>
@@ -391,7 +391,7 @@
                             <div style="display:inline; margin-right:10px;">
                                 <button style="padding:0px;" class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">Created On</button>
                             </div>
-                            <div style="display:inline; margin-right:10px;">
+                            <!-- <div style="display:inline; margin-right:10px;">
                                 <button style="padding:0px;" class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">All</button>
                             </div>
                             <div style="display:inline; margin-right:10px;">
@@ -402,7 +402,7 @@
                             </div>
                             <div style="display:inline; margin-right:10px;">
                                 <button style="padding:0px;" class="btn btn-lg" text v-on:click="doSort('itemName')" href="javascript:">Completed</button>
-                            </div>
+                            </div> -->
                         </div> 
                     </div> 
 
@@ -446,8 +446,14 @@
                                                         {{ parseInt(item.dateCreated, 10) |  moment('DD-MMM-YYYY') }}                                 
                                                     </td>
                                                     <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:7px; width:10%;">{{ item.donePercent}} {{" %"}}</td>
-                                                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
-                                                        <v-btn color="primary">Open</v-btn>
+                                                    <td v-if="item.stt_id == 1" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                        <v-btn color="primary" style="width:100px;">Open</v-btn>
+                                                    </td>
+                                                    <td v-else-if="item.stt_id == 7" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                        <v-btn color="warning" style="width:100px;">Ongoing</v-btn>
+                                                    </td>
+                                                    <td v-else style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:10%;">
+                                                        <v-btn color="error" style="width:100px;">Completed</v-btn>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -621,6 +627,7 @@
             commentsTextarea: '',
             comm: '',
             commentMessage: '',
+            evaluationId: '',
             success: '',
             navigationPath:[
                 {
@@ -714,8 +721,8 @@
                 console.log(this.categories);
             },
 
-            alerty(itemy){
-                console.log(itemy);
+            alerty(){
+                console.log("itemy");
             },
 
             reloadPage(){
@@ -758,11 +765,11 @@
 
                 axios.post(UserData.getBaseUrl(), formData)
                     .then(response => {
-                        this.getEvaluationList = response.data;
-                        this.evaluationList = this.getEvaluationList.evaluationList;    
+                        this.getEvaluationListArr = response.data;
+                        this.evaluationList = this.getEvaluationListArr.evaluationList;    
                         this.evaluatees = this.evaluationList.map(evaluate => evaluate.evaluatees);
                         this.scaleInformation = this.evaluationList.map(scale => scale.scaleInformation);
-                        this.stt_id = this.getEvaluationList.evaluationList;
+                        this.stt_id = this.getEvaluationListArr.evaluationList;
                         console.log(this.stt_id);
                         console.log(this.scaleInformation);
 
@@ -807,7 +814,7 @@
             }, 
 
             setEvaluationId(item){
-                UserData.setEvaluationId(item);
+                this.evaluationId = UserData.setEvaluationId(item);
                 // console.log(item);
             },
 
@@ -878,7 +885,6 @@
                                     "questions": [...category.questions.map(question => {
                                         return {
                                             ...question,
-
                                             "buttonLoop": [
                                                 {val: "1"},
                                                 {val: "2"},
@@ -890,7 +896,7 @@
                                     })]
                                 }
                             });
-                        console.log(this.categories);
+                        console.log(this.getEvaluationDetailArray);
 
                         //    this.categories =this.getEvaluationDetailArray.evaluationDetail.categories.map((category)=>{
                         //        return {  
@@ -1019,6 +1025,28 @@
                     .catch(e => {
                         console.log("Error", e);
                     });
+            },
+
+            getEvaluationReport(){
+                const formData = new FormData;
+                formData.append("userId", UserData.getUserId());
+                formData.append("companyCode", UserData.getCompanyCode());
+                formData.append("accessToken", UserData.getAccessToken());
+                formData.append("model", "getEvaluationReport");
+                formData.append("companyId", UserData.getCompanyId());
+                formData.append("evaluationId", UserData.getEvaluationId());
+                formData.append("evaluateeId", UserData.getEvaluateeId());
+                
+                axios.post(UserData.getBaseUrl(), formData)
+                    .then(response => {
+                        this.getEvaluationReportArr = response.data;
+                        this.evaluationUrl = this.getEvaluationReportArr.evaluationUrl;
+                        console.log(this.getEvaluationReportArr);
+                        window.open(this.evaluationUrl);
+                    })
+                    .catch(e => {
+                        console.log("Error", e);
+                    })
             },
 
             joinNames(){
