@@ -1,11 +1,6 @@
 <template>
   <div class="app">
-
-    <div class = "nav-menu" style="height:45px; width:100%; padding:0px; padding-top:0.3%; text-align:center;">           
-        <router-link to="/dashboard" style="text-decoration:none;"><v-icon color="#fff" size="35" style="margin-left:10px;">mdi-home</v-icon></router-link>
-        <p style="font-weight:bold; font-size:24px; margin-left:40%;">Evaluation</p>
-    </div>
-
+      <!--
     <div class="header__bar">
       <div class="array__container">
         <div class="arrow left array__container"></div>
@@ -72,14 +67,14 @@
             Submit Evalution
           </div>
         </div>
-
+        
         <div v-else>
           <div class="category_top">
             <div class="category__list">
               <div
                 v-for="category in categories"
                 v-bind:key="category.categoryId"
-                class="category"
+                class="category "
                 v-bind:class="{
                   ['category_active']:
                     category.categoryId == activeCategory.categoryId,
@@ -136,176 +131,163 @@
         </div>
       </div>
     </div>
+    -->
   </div>
 </template>
 
 <script>
-export default {
-  name: "App",
-  data: () => {
-    return {
-      categories: [],
-      activeCategory: {},
-      showReview: false,
-    };
-  },
-  components: {
+// export default {
+//   name: "App",
+//   data: () => {
+//     return {
+//       categories: [],
+//       activeCategory: {},
+//       showReview: false,
+//     };
+//   },
+//   components: {},
+//   methods: {
+//     reviewEvalution: function() {
+//       this.showReview = true;
+//     },
+//     answeClicked: () => {
+//       alert("david");
+//     },
+//     nextCategory: function() {
+//       //console.log(this.activeCategory)
+//       var currentIndex = this.categories.findIndex((category) => {
+//         return this.activeCategory.categoryId == category.categoryId;
+//       });
+//       console.log(currentIndex);
+//       this.submitPerCategory(this.activeCategory);
+//       this.activeCategory = this.categories[currentIndex + 1];
+//     },
+//     previousCategory: () => {},
+//     submitPerCategory: function(activeCategorySubmit) {
+//       var answers = activeCategorySubmit.questions
+//         .filter((quiz) => {
+//           console.log(quiz);
+//           return quiz.userRate != null;
+//         })
+//         .map((quiz) => {
+//           return quiz.userRate;
+//         });
+//       var questions = activeCategorySubmit.questions
+//         .filter((quiz) => {
+//           console.log(quiz);
+//           return quiz.userRate != null;
+//         })
+//         .map((quiz) => {
+//           return quiz.questionId;
+//         });
 
-  },
+//       //console.log("answers",answers);
+//       var payload = {
+//         userId: 45,
+//         companyCode: "010",
+//         accessToken: "97f914eb1ceb1867e3824f647f7e589b",
+//         model: "updateAllQuestions",
+//         companyId: "2",
+//         evaluations: [
+//           {
+//             answer: `${answers.join()}`,
+//             userId: "17",
+//             evaluationId: "408",
+//             question: `${questions.join()}`,
+//           },
+//         ],
+//       };
+//       console.log(payload);
+//     },
 
-  methods: {
-    reviewEvalution: function() {
-      this.showReview = true;
-    },
+//     submitEvaluation: () => {
+//       var payload = {
+//         userId: "45",
+//         companyCode: "viz",
+//         accessToken: "97f914eb1ceb1867e3824f647f7e589b",
+//         model: "submitEvaluation",
+//         companyId: 2,
+//         evaluationId: 408,
+//         evaluateeId: 17,
+//       };
+//       console.log(payload)
+//       alert(":heart:");
+//     },
+//     answerSelected: function(question, activeCategory, index) {
+//       var activeCategoryCopy = activeCategory;
+//       var updatedQuiz = activeCategory.questions.map((quiz) => {
+//         if (question.questionId == quiz.questionId) {
+//           return {
+//             ...quiz,
+//             userRate: index,
+//           };
+//         } else {
+//           return {
+//             ...quiz,
+//           };
+//         }
+//       });
 
-    answeClicked: () => {
-      alert("dvd");
-    },
-
-    nextCategory: function() {
-      //console.log(this.activeCategory)
-      var currentIndex = this.categories.findIndex((category) => {
-        return this.activeCategory.categoryId == category.categoryId;
-      });
-      console.log(currentIndex);
-      this.submitPerCategory(this.activeCategory);
-      this.activeCategory = this.categories[currentIndex + 1];
-    },
-
-    previousCategory: () => {
-
-    },
-
-    submitPerCategory: function(activeCategorySubmit) {
-      var answers = activeCategorySubmit.questions
-        .filter((quiz) => {
-          console.log(quiz);
-          return quiz.userRate != null;
-        })
-        .map((quiz) => {
-          return quiz.userRate;
-        });
-
-      var questions = activeCategorySubmit.questions
-        .filter((quiz) => {
-          console.log(quiz);
-          return quiz.userRate != null;
-        })
-        .map((quiz) => {
-          return quiz.questionId;
-        });
-
-      //console.log("answers",answers);
-      var payload = {
-        userId: 45,
-        companyCode: "010",
-        accessToken: "97f914eb1ceb1867e3824f647f7e589b",
-        model: "updateAllQuestions",
-        companyId: "2",
-        evaluations: [
-          {
-            answer: `${answers.join()}`,
-            userId: "17",
-            evaluationId: "408",
-            question: `${questions.join()}`,
-          },
-        ],
-      };
-      console.log(payload);
-    },
-
-    submitEvaluation: () => {
-      var payload = {
-        userId: "45",
-        companyCode: "viz",
-        accessToken: "97f914eb1ceb1867e3824f647f7e589b",
-        model: "submitEvaluation",
-        companyId: 2,
-        evaluationId: 408,
-        evaluateeId: 17,
-      };
-      console.log(payload)
-      alert(":heart:");
-    },
-
-    answerSelected: function(question, activeCategory, index) {
-      var activeCategoryCopy = activeCategory;
-      var updatedQuiz = activeCategory.questions.map((quiz) => {
-        if (question.questionId == quiz.questionId) {
-          return {
-            ...quiz,
-            userRate: index,
-          };
-        } else {
-          return {
-            ...quiz,
-          };
-        }
-      });
-
-      activeCategoryCopy.questions = updatedQuiz;
-      this.activeCategory = activeCategoryCopy;
-      var categories = this.categories.map((category) => {
-        if (this.activeCategory.categoryId == category.categoryId) {
-          return {
-            ...activeCategory,
-          };
-        } else {
-          return {
-            ...category,
-          };
-        }
-      });
-      this.categories = categories;
-    },
-  },
-
-  computed: {
-    isLastQuiz: function() {
-      var currentIndex = this.categories.findIndex((category) => {
-        return this.activeCategory.categoryId == category.categoryId;
-      });
-      return currentIndex == this.categories.length - 1;
-    },
-
-    currentProgress: function() {
-      var index =
-        this.categories.findIndex((category) => {
-          return this.activeCategory.categoryId == category.categoryId;
-        }) + 1;
-      return index + " of " + this.categories.length;
-    },
-  },
-
-  mounted: function() {
-    fetch("../assets/json-APIs/evaluation.json?" + Date(), { method: "get" })
-      .then((response) => {
-        return response.json();
-      })
-      .then((reponse) => {
-        const categories = reponse.evaluationDetail.categories.map(
-          (category) => {
-            return {
-              ...category,
-              questions: category.questions.map((quiz) => {
-                return {
-                  ...quiz,
-                  userRate: null,
-                };
-              }),
-            };
-          }
-        );
-        this.categories = categories;
-        this.activeCategory = categories.length > 0 ? categories[0] : null;
-        console.log(categories[0].questions);
-      });
-  },
-};
+//       activeCategoryCopy.questions = updatedQuiz;
+//       this.activeCategory = activeCategoryCopy;
+//       var categories = this.categories.map((category) => {
+//         if (this.activeCategory.categoryId == category.categoryId) {
+//           return {
+//             ...activeCategory,
+//           };
+//         } else {
+//           return {
+//             ...category,
+//           };
+//         }
+//       });
+//       this.categories = categories;
+//     },
+//   },
+//   computed: {
+//     isLastQuiz: function() {
+//       var currentIndex = this.categories.findIndex((category) => {
+//         return this.activeCategory.categoryId == category.categoryId;
+//       });
+//       return currentIndex == this.categories.length - 1;
+//     },
+//     currentProgress: function() {
+//       var index =
+//         this.categories.findIndex((category) => {
+//           return this.activeCategory.categoryId == category.categoryId;
+//         }) + 1;
+//       return index + " of " + this.categories.length;
+//     },
+//   },
+//   mounted: function() {
+//     fetch("evaluation.json?" + Date(), { method: "get" })
+//       .then((response) => {
+//         return response.json();
+//       })
+//       .then((reponse) => {
+//         const categories = reponse.evaluationDetail.categories.map(
+//           (category) => {
+//             return {
+//               ...category,
+//               questions: category.questions.map((quiz) => {
+//                 return {
+//                   ...quiz,
+//                   userRate: null,
+//                 };
+//               }),
+//             };
+//           }
+//         );
+//         this.categories = categories;
+//         this.activeCategory = categories.length > 0 ? categories[0] : null;
+//         console.log(categories[0].questions);
+//       });
+//   },
+// };
 </script>
 
 <style>
-* {
+/* * {
   margin: 0px;
 }
 .app {
@@ -449,14 +431,14 @@ export default {
   height: 15px;
   margin: 10px;
 }
-/* .left {
+.left {
   transform: rotate(135deg);
   -webkit-transform: rotate(135deg);
 }
 .right {
   transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg); */
-/* } */
+  -webkit-transform: rotate(-45deg);
+}
 .avator__box {
   display: flex;
   flex-direction: column;
@@ -481,22 +463,5 @@ export default {
   background-repeat: no-repeat;
   margin-bottom: 20px;
   width: 80px;
-}
-
-
-.nav-menu{
-        margin-top:0px; 
-        background-color: rgb(72,61,139);
-        color:#fff;
-        display:flex;
-    }
-
-    .nav-menu .btn{
-        background-color:rgb(72,61,139);
-        border:none;
-        padding:0px;    
-        margin-right:15px;
-        color:white;
-        outline:none;
-    }
+} */
 </style>

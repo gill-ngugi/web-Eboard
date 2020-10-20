@@ -108,7 +108,7 @@
                 </div>
 
             <!-- Table -->
-                <table style="width:100%;">
+                <table style="width:100%; overflow:auto;">
                     <tr>
                         <td>
                             <table style="width:100%;">
@@ -578,6 +578,7 @@
         margin-bottom: 4%;
         background-color:#f8f9f9;
         border-top: 5px solid rgb(227,58,58);
+        overflow: auto;
     }
 
     .left-bottom{
@@ -585,6 +586,7 @@
         height: 49%;
         background-color:#f8f9f9;
         border-top: 5px solid rgb(227,58,58);
+        overflow: auto;
     }
 
     .left a{
@@ -602,6 +604,7 @@
         background-color:#f8f9f9;
         height: 100%;
         border-top: 5px solid rgb(227,58,58);
+        overflow: auto;
     }
 
     .parent {

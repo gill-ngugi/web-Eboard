@@ -31,58 +31,206 @@
                             </div>
                         </div>
                         <div class="right1" style="float:left; width:86%; height:700px; overflow:auto; background-color:#f5f5f5; margin-right:1%;">
+                            <div class="main__contentReview" v-if="showReview">
+                                <div
+                                    v-for="category in categories1"
+                                    v-bind:key="category.categoryId"
+                                    class="review_category "
+                                >
+                                    <p style="font-size:17px; font-weight:bold; margin-top:20px;">{{ category.categoryName }}</p> 
+                                    <div class="review_cointainer">
+                                    <div
+                                        v-for="(question, index) in category.questions"
+                                        v-bind:key="question.questionId"
+                                        class="question_row"
+                                    >
+                                        <div class="question">
+                                        {{ index + 1 }} {{ question.questionName }}
+                                        </div>
+                                        <div class="question__rate">
+                                        <div
+                                            v-bind:key="n"
+                                            v-for="n in 5"
+                                            class="rating_circle"
+                                            v-on:click="
+                                            () => {
+                                                //answerSelected(question, activeCategory, n);
+                                            }
+                                            "
+                                            v-bind:class="{
+                                            ['rating_circle__active ']: n == question.userRate,
+                                            }"
+                                        >
+                                            {{ n }}
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="save__continue"
+                                    v-on:click="
+                                    () => {
+                                        submitEvaluation();
+                                    }
+                                    "
+                                >
+                                    Submit Evalution
+                                </div>
+                            </div>
+
+
+                            <!--<div v-else>
+                                <div class="category_top">
+                                    <div class="category__list">
+                                    <div
+                                        v-for="category in categories1"
+                                        v-bind:key="category.categoryId"
+                                        class="category "
+                                        v-bind:class="{
+                                        ['category_active']:
+                                            category.categoryId == activeCategory.categoryId,
+                                        }"
+                                    >
+                                        {{ category.categoryName }}
+                                    </div>
+                                    </div>
+                                    <div class="array__container">
+                                    <div class="arrow right array__container"></div>
+                                    </div>
+                                </div>
+                                <div class="progress__count_section">
+                                    {{ currentProgress }}
+                                </div>
+                                <div class="question_cointainer">
+                                    <div
+                                    v-for="(question, index) in activeCategory.questions"
+                                    v-bind:key="question.questionId"
+                                    class="question_row"
+                                    >
+                                    <div class="question">
+                                        {{ index + 1 }} {{ question.questionName }}
+                                    </div>
+                                    <div class="question__rate">
+                                        <div
+                                        v-bind:key="n"
+                                        v-for="n in 5"
+                                        class="rating_circle"
+                                        v-on:click="
+                                            () => {
+                                            answerSelected(question, activeCategory, n);
+                                            }
+                                        "
+                                        v-bind:class="{
+                                            ['rating_circle__active ']: n == question.userRate,
+                                        }"
+                                        >
+                                        {{ n }}
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div
+                                    class="save__continue"
+                                    v-on:click="
+                                        () => {
+                                        !isLastQuiz ? nextCategory() : reviewEvalution();
+                                        }
+                                    "
+                                    >
+                                    {{ isLastQuiz ? "Review" : " Save And Continue" }}
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <div v-else>
                             <v-card>
                                 <v-card-text v-if="setsttId == 3" style="color:red; font-weight:bold; font-size:19px;">Evaluation Completed!</v-card-text>
                                 <v-tabs grow show-arrows v-model="tab" background-color="rgb(220,220,220)" color="rgb(72,61,139)" style="font-weight:bolder;">
                                 <v-tabs-slider></v-tabs-slider>
-                                    <!-- <v-tab v-for="(item, index) in categories" :key="index" style="">
-                                        <p v-if="item.isComplete == 0" style="margin-top:10px; pointer-events:none;">{{ item.categoryName }}</p>
-                                        <p v-else style="margin-top:10px; color:green;">{{ item.categoryName }}</p>
-                                    </v-tab> -->
 
-                                    <div v-for="(item, index) in categories" :key="index">
-                                        <v-tab v-if="item.isComplete == 0" style="pointer-events:none;">
-                                            <p style="margin-top:10px;">{{ item.categoryName }}</p>
+                                    <div 
+                                        v-for="(category) in categories1" 
+                                        v-bind:key="category.categoryId"
+                                        class="category "
+                                        v-bind:class="{
+                                            ['category_active']:
+                                            category.categoryId == activeCategory.categoryId,
+                                        }"
+                                    >
+                                        <v-tab v-if="category.isComplete == 0" style="pointer-events:none;">
+                                            <p style="margin-top:10px;">{{ category.categoryName }}</p>
                                         </v-tab>
                                         <v-tab v-else style="">
-                                            <p style="margin-top:10px; color:green;">{{ item.categoryName }}</p>
+                                            <p style="margin-top:10px; color:green;">{{ category.categoryName }}</p>
                                         </v-tab>
                                     </div>
                                 </v-tabs>
                                 <v-tabs-items v-model="tab">
-                                    <!-- <v-card-text v-if="quesLength != ansLength" style="color:red; font-weight:bold; font-size:19px;">Answer all questions!</v-card-text> -->
-                                    <v-tab-item v-for="(item, index) in categories" :key="index">
+                                    <v-tab-item 
+                                        v-for="(category) in categories1" 
+                                        v-bind:key="category.categoryId"
+                                        class="category "
+                                        v-bind:class="{
+                                            ['category_active']:
+                                            category.categoryId == activeCategory.categoryId,
+                                        }"
+                                    >
                                         <v-card v-if="setsttId == 1 || setsttId == 7">
-                                            <v-card flat v-for="(itemy, index) in item.questions" :key="index" style="display:flex; border-bottom:1px solid rgb(220,220,220)">
+                                            <v-card flat v-for="(question, index) in activeCategory.questions" v-bind:key="question.questionId" style="display:flex; border-bottom:1px solid rgb(220,220,220)">
                                                 <v-card-text style="font-size:19px;">
-                                                    {{ index + 1 + "." }} {{ itemy.questionName }} 
+                                                    {{ index + 1 + "." }} {{ question.questionName }} 
                                                 </v-card-text>
 
-                                                <button v-for="(item, index) in itemy.buttonLoop" :key="index" :id="itemy.questionId" class="targety" style="border-radius:60%;" 
+                                                <!-- <button v-for="(item, index) in itemy.buttonLoop" :key="index" :id="itemy.questionId" class="targety" style="border-radius:60%;" 
                                                     @click="saveContinue(itemy.questionId, item.val)">
                                                     {{item.val}}
-                                                </button>
-                                            </v-card>
-                                            <!-- <v-btn v-if="(categories[categories.length - 1]) == item" v-bind="attrs" v-on="on" @click="clickMe(item, index, categories)" color="rgb(220,220,220)" style="width:100%; display:flex; padding-top:10px;">
-                                                <p style="color:rgb(72,61,139);">Review</p>
-                                            </v-btn>
-                                            <v-btn v-else @click="tab++; clickMe(item, index, categories)" color="rgb(220,220,220)" style="width:100%; display:flex; padding-top:10px;">
-                                                <p style="color:rgb(72,61,139);">Save and Continue</p>
-                                            </v-btn> -->
+                                                </button> -->
 
-                                            <template v-if="item.isComplete == 0">
-                                                <div class="text-center">
+                                                <div class="question__rate">
+                                                    <div
+                                                    v-bind:key="n"
+                                                    v-for="n in 5"
+                                                    class="rating_circle"
+                                                    v-on:click="
+                                                        () => {
+                                                        answerSelected(question, activeCategory, n);
+                                                        }
+                                                    "
+                                                    v-bind:class="{
+                                                        ['rating_circle__active ']: n == question.userRate,
+                                                    }"
+                                                    >
+                                                    {{ n }}
+                                                    </div>
+                                                </div>
+                                            </v-card>
+                                           
+                                            <div v-if="category.isComplete == 0">
+                                                <!-- <template v-if="category.isComplete == 0"> -->
+                                                <!-- <div class="text-center">
                                                     <v-dialog v-model="dialogg" width="1200">
-                                                        <template v-slot:activator="{ on, attrs }">
-                                                            <v-btn v-if="(categories[categories.length - 1]) == item" v-bind="attrs" v-on="on" @click="setCategoryId(item.categoryId); clickMe(item, index, categories);" color="rgb(220,220,220)" style="width:100%; display:flex; padding-top:10px; border:1px solid rgb(72,61,139);">
+                                                        <template v-slot:activator="{ on, attrs }"> -->
+                                                            <div
+                                                                class="save__continue"
+                                                                v-on:click="
+                                                                    () => {
+                                                                    !isLastQuiz ? nextCategory() : reviewEvalution();
+                                                                    setCategoryId(category.categoryId);
+                                                                    }
+                                                                "
+                                                                style="width:100%; display:flex; padding-top:10px; border:1px solid rgb(72,61,139)"
+                                                                >
+                                                                {{ isLastQuiz ? "Review" : " Save And Continue" }}
+                                                            </div>
+                                                            <!-- <v-btn v-if="(categories1[categories1.length - 1]) == item" v-bind="attrs" v-on="on" @click="setCategoryId(category.categoryId);" color="rgb(220,220,220)" style="width:100%; display:flex; padding-top:10px; border:1px solid rgb(72,61,139);">
                                                                 <p style="color:rgb(72,61,139);">Review</p>
                                                             </v-btn>
-                                                            <v-btn v-else @click="tab++; setCategoryId(item.categoryId); clickMe(item, index, categories)" color="rgb(220,220,220)" style="width:100%; display:flex; padding-top:10px; border:1px solid rgb(72,61,139)">
+                                                            <v-btn v-else @click="tab++; setCategoryId(category.categoryId);" color="rgb(220,220,220)" style="width:100%; display:flex; padding-top:10px; border:1px solid rgb(72,61,139)">
                                                                 <p style="color:rgb(72,61,139);">Save and Continue</p>
-                                                            </v-btn>
-                                                        </template>
+                                                            </v-btn> -->
+                                                        <!-- </div> -->
 
-                                                        <div class="grey lighten-2" style="height:700px; border-top:5px solid rgb(72,61,139);">
+                                                        <!-- <div class="grey lighten-2" style="height:700px; border-top:5px solid rgb(72,61,139);">
                                                             <div style="height:8%; background-color:purple;">
                                                                 <v-card-title class="headline grey lighten-2" style="color:rgb(72,61,139); margin-bottom:15px; padding-bottom:15px;">
                                                                     <v-btn @click="dialogg = false" color="rgb(72,61,139)" dark style="margin-right:10px;">
@@ -115,30 +263,48 @@
                                                                     <p style="color:rgb(72,61,139);">Submit Evaluation</p>
                                                                 </v-btn>
                                                             </div>
-                                                        </div>
-                                                    </v-dialog>
-                                                </div>
-                                            </template>
+                                                        </div> -->
+                                                    <!-- </v-dialog> -->
+                                                <!-- </div> -->
+                                            </div>
 
-                                            <template v-else></template>
-
+                                            <div v-else></div>
                                         </v-card>
                                         <v-card v-else>
-                                            <v-card flat v-for="(itemy, index) in item.questions" :key="index" style="display:flex; border-bottom:1px solid rgb(220,220,220)">
+                                            <v-card flat v-for="(question, index) in activeCategory.questions" v-bind:key="question.questionId" style="display:flex; border-bottom:1px solid rgb(220,220,220)">
                                                 <v-card-text style="font-size:19px;">
-                                                    {{ index + 1 + "." }} {{ itemy.questionName }} 
+                                                    {{ index + 1 + "." }} {{ question.questionName }} 
                                                 </v-card-text>
 
-                                                <button v-for="(item, index) in itemy.buttonLoop" :key="index" :id="itemy.questionId" class="targety" style="border-radius:60%; pointer-events:none" 
+                                                <div class="question__rate">
+                                                    <div
+                                                        v-bind:key="n"
+                                                        v-for="n in 5"
+                                                        class="rating_circle"
+                                                        style="border-radius:50%; pointer-events:none;"
+                                                        v-on:click="
+                                                            () => {
+                                                            answerSelected(question, activeCategory, n);
+                                                            }
+                                                        "
+                                                        v-bind:class="{
+                                                            ['rating_circle__active ']: n == question.userRate,
+                                                        }"
+                                                        >
+                                                        {{ n }}
+                                                    </div>
+                                                </div>
+
+                                                <!-- <button v-for="(item, index) in itemy.buttonLoop" :key="index" :id="itemy.questionId" class="targety" style="border-radius:60%; pointer-events:none" 
                                                     @click="saveContinue(itemy.questionId, item.val)">
                                                     {{item.val}}
-                                                </button>
+                                                </button> -->
                                             </v-card>
                                         </v-card>
                                     </v-tab-item>
                                 </v-tabs-items>
                             </v-card>
-                            
+                            </div>
                         </div>
                     </div>
 
@@ -636,16 +802,8 @@
                 }
             ],
             parentItemId:"",
-            items2: [
-                { title: 'Name' },
-                { title: 'Size' },
-                { title: 'Modified On' },
-                { title: 'Submitted By' },
-            ],
          
             currentComponent: null,
-
-            componentsArray: ['comp1', 'comp2'],
 
             dynamicComponent: {
                 template: `<p>Wheee</p>`
@@ -662,27 +820,6 @@
                 { id: 3, name: 'Bill Smith', leave: 23.45 },
                 { id: 4, name: 'John Doe', leave: 133.53 }
             ],
-
-            tabItems: [
-                { tab: 'One', content: 'Tab 1 Content' },
-                { tab: 'Two', content: 'Tab 2 Content' },
-                { tab: 'Three', content: 'Tab 3 Content' },
-                { tab: 'Four', content: 'Tab 4 Content' },
-                { tab: 'Five', content: 'Tab 5 Content' },
-                { tab: 'Six', content: 'Tab 6 Content' },
-                { tab: 'Seven', content: 'Tab 7 Content' },
-                { tab: 'Eight', content: 'Tab 8 Content' },
-                { tab: 'Nine', content: 'Tab 9 Content' },
-                { tab: 'Ten', content: 'Tab 10 Content' },
-            ],
-
-            // buttonLoop: [
-            //     {val: "1"},
-            //     {val: "2"},
-            //     {val: "3"},
-            //     {val: "4"},
-            //     {val: "5"},
-            // ],
 
             load:{
                 userId: '45',
@@ -714,6 +851,10 @@
             commentsDialog: false,
             commentsDialog2: false,
             commentsDialog3: false,
+
+            categories1: [],
+            activeCategory: {},
+            showReview: false,
         }),
 
         methods: {
@@ -896,38 +1037,24 @@
                                     })]
                                 }
                             });
-                        console.log(this.getEvaluationDetailArray);
-
-                        //    this.categories =this.getEvaluationDetailArray.evaluationDetail.categories.map((category)=>{
-                        //        return {  
-                        //            ...category,
-                        //              "questions":[...category.questions.map(question=>{
-                        //                  return {
-                        //                      ...question,
-                        //                      "answer":null
-                        //                  }
-                        //              })]
-                        //            }
-                        //     });
-                        // console.log("original",this.categories);
-                        //console.log("modified",modifiedCategory);
-                
-
-                        // for(var i in this.questions){
-                        //     var name = this.questions[i];
-                        //     for(var j in name){
-                        //         var questionName = name[j].questionName;
-                        //         console.log(questionName);
-                        //     }
-                        // }
+                         const categories1 = this.getEvaluationDetailArray.evaluationDetail.categories.map(
+                            (category) => {
+                                return {
+                                ...category,
+                                questions: category.questions.map((quiz) => {
+                                    return {
+                                    ...quiz,
+                                    userRate: null,
+                                    };   
+                                }),
+                                };
+                            }
+                        );
+                        this.categories1 = categories1;
+                        this.activeCategory = categories1.length > 0 ? categories1[0] : null;
+                        console.log(categories1[0].questions);
                     })
             },
-
-            // saveContinue(questionId, val){
-            //     this.valSelect = val;
-            //     this.questionX = questionId;
-            //     console.log(val);
-            // },
 
             saveContinue(itemy, val){   //itemy is the question array
                 var choice = {"answer":val, "question":itemy}
@@ -1076,10 +1203,122 @@
 
             swapComponent: function(component) {
                 this.currentComponent = component;
-            }    
+            },    
+
+
+
+            reviewEvalution: function() {
+                this.showReview = true;
+            },
+
+            answeClicked: () => {
+                alert("david");
+            },
+
+            nextCategory: function() {
+                //console.log(this.activeCategory)
+                var currentIndex = this.categories1.findIndex((category) => {
+                    return this.activeCategory.categoryId == category.categoryId;
+                });
+                console.log(currentIndex);
+                this.submitPerCategory(this.activeCategory);
+                this.activeCategory = this.categories1[currentIndex + 1];
+            },
+
+            previousCategory: () => {
+
+            },
+
+            submitPerCategory: function(activeCategorySubmit) {
+            var answers = activeCategorySubmit.questions
+                .filter((quiz) => {
+                console.log(quiz);
+                return quiz.userRate != null;
+                })
+                .map((quiz) => {
+                return quiz.userRate;
+                });
+            var questions = activeCategorySubmit.questions
+                .filter((quiz) => {
+                console.log(quiz);
+                return quiz.userRate != null;
+                })
+                .map((quiz) => {
+                return quiz.questionId;
+                });
+
+            //console.log("answers",answers);
+            var payload = {
+                userId: UserData.getUserId(),
+                companyCode: UserData.getCompanyCode(),
+                accessToken: UserData.getAccessToken(),
+                model: "updateAllQuestions",
+                companyId: UserData.getCompanyId(),
+                evaluations: [
+                {
+                    answer: `${answers.join()}`,
+                    userId: UserData.getUserId(),
+                    evaluationId: UserData.getEvaluationId(),
+                    question: `${questions.join()}`,
+                },
+                ],
+            };
+            console.log(payload);
+            },
+
+            submitEvaluation(){
+                var payload = {
+                    userId: UserData.getUserId(),
+                    companyCode: UserData.getCompanyCode(),
+                    accessToken: UserData.getAccessToken(),
+                    model: "submitEvaluation",
+                    companyId: UserData.getCompanyId(),
+                    evaluationId: UserData.getEvaluationId(),
+                    evaluateeId: UserData.getEvaluateeId(),
+                };
+                // console.log(payload)
+                alert("Update Evaluations List?");
+                this.getEvaluationList();
+                // alert("Evaluations List is updated.");
+                // this.$router.replace({ name: "Evaluation" });
+                // this.$router.push("Evaluation");
+            },
+            
+            answerSelected: function(question, activeCategory, index) {
+            var activeCategoryCopy = activeCategory;
+            var updatedQuiz = activeCategory.questions.map((quiz) => {
+                if (question.questionId == quiz.questionId) {
+                return {
+                    ...quiz,
+                    userRate: index,
+                };
+                } else {
+                return {
+                    ...quiz,
+                };
+                }
+            });
+
+            activeCategoryCopy.questions = updatedQuiz;
+            this.activeCategory = activeCategoryCopy;
+            var categories1 = this.categories1.map((category) => {
+                if (this.activeCategory.categoryId == category.categoryId) {
+                return {
+                    ...activeCategory,
+                };
+                } else {
+                return {
+                    ...category,
+                };
+                }
+            });
+            this.categories1 = categories1;
+            },
+
+
         },
 
-        computed: {
+        computed: { 
             sortedData2 () {
                 if(!this.sort.field){
                     return this.evaluationList
@@ -1105,7 +1344,22 @@
                     })
                 })
                 return evalArray;
-            }
+            },
+
+            isLastQuiz: function() {
+                var currentIndex = this.categories1.findIndex((category) => {
+                    return this.activeCategory.categoryId == category.categoryId;
+                });
+                return currentIndex == this.categories1.length - 1;
+            },
+
+            currentProgress: function() {
+                var index =
+                    this.categories1.findIndex((category) => {
+                    return this.activeCategory.categoryId == category.categoryId;
+                    }) + 1;
+                return index + " of " + this.categories1.length;
+            },
         },
       
         beforeMount(){
@@ -1113,11 +1367,35 @@
         },
 
         mounted() {
-            const getRecentDocuments = JSON.parse(this.$localStorage.get('getRecentDocuments'));
-            
-            if (getRecentDocuments) {  
-                this.getRecentDocuments = getRecentDocuments;
-            }
+            // const formData = new FormData;
+            //     formData.append("userId", UserData.getUserId());
+            //     formData.append("companyCode", UserData.getCompanyCode());
+            //     formData.append("accessToken", UserData.getAccessToken());
+            //     formData.append("model", "getEvaluationDetail");
+            //     formData.append("companyId", UserData.getCompanyId());
+            //     formData.append("evaluationId", UserData.getEvaluationId());
+            //     formData.append("evaluateeId", UserData.getEvaluateeId());
+
+            // axios.post(UserData.getBaseUrl(), formData)
+            // .then(response => {
+            //     this.catArr = response.data;
+            //     const categories1 = this.catArr.evaluationDetail.categories.map(
+            //     (category) => {
+            //         return {
+            //         ...category,
+            //         questions: category.questions.map((quiz) => {
+            //             return {
+            //             ...quiz,
+            //             userRate: null,
+            //             };   
+            //         }),
+            //         };
+            //     }
+            //     );
+            //     this.categories1 = categories1;
+            //     this.activeCategory = categories1.length > 0 ? categories1[0] : null;
+            //     console.log(categories1[0].questions);
+            // });
         },
 
         components: {
@@ -1296,5 +1574,168 @@
         color:rgb(72,61,139); 
         background-color:red;
         color:aqua; 
+    }
+
+
+
+    .review_cointainer {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    }
+    .save__continue {
+    display:flex; 
+    /* padding-top:10px;  */
+    cursor: pointer;
+    border:1px solid rgb(72,61,139);
+    background-color: grey;
+    width: 100%;
+    /* height: 20px; */
+    /* margin: 20px; */
+    justify-content: center;
+    color: #55138e;
+    }
+    .main__contentReview {
+    height: 20px;
+    }
+    .question_cointainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    }
+    .question_row {
+    border-bottom: 1px solid grey;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    }
+    .question {
+    flex: 0.7;
+    }
+    .question__rate {
+    flex: 0.3;
+    display: flex;
+    }
+    .progress__count_section {
+    height: 8%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: grey;
+    width: 30%;
+    }
+    .category {
+    /* width: 10%; */
+    color: grey;
+    /* margin: 30px; */
+    }
+    .category_active {
+    color: #55138e;
+    }
+    .category__list {
+    color: #000;
+    display: flex;
+    align-items: center;
+
+    height: 10%;
+    width: 100%;
+    }
+    .header__bar {
+    height: 10%;
+    display: flex;
+    align-items: center;
+    }
+    .content_area {
+    display: flex;
+    height: 90%;
+
+    width: 100vw;
+    }
+
+    .category_top {
+    background-color: #e5e5e5;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 10%;
+    }
+    .array__container {
+    background-color: #55138e;
+    height: 30px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin: 20px;
+    }
+    .rating_circle {
+    width: 50px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 10px;
+    height: 50px;
+    }
+    .rating_circle:hover {
+    background-color: grey !important;
+    }
+    .rating_circle__active {
+    background-color: #55138e !important;
+    }
+    .side__bar {
+    margin: 2px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: flex;
+    border-right: 1px solid grey;
+    flex: 0.1;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    }
+    .main__content {
+    display: flex;
+    flex-direction: column;
+    flex: 0.9;
+    background-color: white;
+    }
+    .arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    width: 15px;
+
+    height: 15px;
+    margin: 10px;
+    }
+    .avator__box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: white;
+    height: 20%;
+    }
+
+    .avator__box_active {
+        background-color: grey !important;
+    }
+
+    .avator {
+        height: 80px;
+        border-radius: 50%;    
+        border: 2px solid grey;
+        object-fit: contain;
+        background-color: white;
+        background-image: url("http://www.pngmart.com/files/3/Bill-Gates-PNG-Transparent-Image.png");
+        background-repeat: no-repeat;
+        margin-bottom: 20px;
+        width: 80px;
     }
    </style>
