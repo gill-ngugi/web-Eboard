@@ -15,7 +15,7 @@
     "@fullcalendar/daygrid": "^4.3.0",
     "@fullcalendar/vue": "^4.3.1",
     "@jeremyhamm/vue-slider": "^0.1.16",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "core-js": "^2.6.11",
     "devexpress-reporting": "^20.1.4",
